@@ -43,7 +43,15 @@ class Minitiative extends CI_Model {
     	$this->db->join('program', 'program.id = initiative.program_id');
     	$this->db->order_by('initiative.code', 'asc');
     	$query = $this->db->get('initiative');
-        return $query->result();
+        $res = $query->result();
+        $arr = array(); $i=0;
+        foreach($res as $int){
+        	$arr[$i]['int']=$int;
+        	$arr[$i]['stat']=$this->get_initiative_status($int->id)['status'];
+        	$arr[$i]['wb']=$this->get_initiative_status($int->id)['sumwb'];
+        	$i++;
+        }
+        return $arr;
     }
     
     function get_initiative_by_id($id){
@@ -54,6 +62,52 @@ class Minitiative extends CI_Model {
         }else{
             return false;
         }
+    }
+    
+    function get_initiative_status($id){
+    	$this->db->where('initiative_id', $id);
+    	//$this->db->order_by('status', 'asc');
+    	$query = $this->db->get('workblock');
+        $result = $query->result();
+        $status = ""; $arr = array();
+        foreach($result as $res){
+        	$res_status = $this->get_workblock_status($res->id);
+        	if($status){
+        		if($res_status == "Delay"){$status = "Delay";}
+        		else{
+        			if($status != "Delay"){
+        				if($res_status == "In Progress"){$status = "In Progress";}
+        				elseif($status=="Completed" && $res_status == "Not Started Yet"){$status = "In Progress";}
+        				elseif($res_status=="Completed" && $status == "Not Started Yet"){$status = "In Progress";}
+        			}
+        		}
+        	}
+        	else{$status = $res_status;}
+        }
+        $arr['status']=$status;
+        $arr['sumwb']=count($result);
+        return $arr;
+    }
+    
+    function get_workblock_status($id){
+    	$this->db->where('workblock_id', $id);
+    	$this->db->order_by('status', 'asc');
+    	$query = $this->db->get('milestone');
+        $result = $query->result();
+        $status = "";
+        foreach($result as $res){
+        	if($status){
+        		if($res->status == "Delay"){$status = "Delay";}
+        		else{
+        			if($status != "Delay"){
+        				if($res->status == "In Progress"){$status = "In Progress";}
+        				elseif($status=="Completed" && $res->status == "Not Started Yet"){$status = "In Progress";}
+        			}
+        		}
+        	}
+        	else{$status = $res->status;}
+        }
+        return $status;
     }
     
     //UPDATE FUNCTION

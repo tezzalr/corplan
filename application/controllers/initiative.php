@@ -60,11 +60,13 @@ class Initiative extends CI_Controller {
         $program['program_id'] = $this->input->post('program');
         $program['dependencies'] = $this->input->post('depen');
         
-        $start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
-    	$program['start'] = $start->format('Y-m-d');
+        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
+    		$program['start'] = $start->format('Y-m-d');
+    	}
     	
-    	$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
-    	$program['end'] = $end->format('Y-m-d');
+    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
+    		$program['end'] = $end->format('Y-m-d');
+    	}
         
         if($id){
         	if($this->minitiative->update_initiative($program,$id)){redirect('initiative/list_initiative');}

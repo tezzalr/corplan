@@ -29,6 +29,21 @@ class Mworkblock extends CI_Model {
     	$this->db->where('initiative_id', $initiative_id);
     	$this->db->order_by('id', 'asc');
     	$query = $this->db->get('workblock');
+        $res = $query->result();
+        $arr = array(); $i=0;
+        foreach($res as $wb){
+        	$arr[$i]['wb']=$wb;
+        	$arr[$i]['stat']=$this->get_workblock_status($wb->id);
+        	$arr[$i]['ms']=$this->get_all_workblock_milestone($wb->id);
+        	$i++;
+        }
+        return $arr;
+    }
+    
+    function get_all_workblock_milestone($workblock_id){
+    	$this->db->where('workblock_id', $workblock_id);
+    	$this->db->order_by('id', 'asc');
+    	$query = $this->db->get('milestone');
         return $query->result();
     }
     
@@ -42,7 +57,32 @@ class Mworkblock extends CI_Model {
         }
     }
     
+    function get_workblock_status($id){
+    	$this->db->where('workblock_id', $id);
+    	$this->db->order_by('status', 'asc');
+    	$query = $this->db->get('milestone');
+        $result = $query->result();
+        $status = "";
+        foreach($result as $res){
+        	if($status){
+        		if($res->status == "Delay"){$status = "Delay";}
+        		else{
+        			if($status != "Delay"){
+        				if($res->status == "In Progress"){$status = "In Progress";}
+        				elseif($status=="Completed" && $res->status == "Not Started Yet"){$status = "In Progress";}
+        			}
+        		}
+        	}
+        	else{$status = $res->status;}
+        }
+        return $status;
+    }
+    
     //UPDATE FUNCTION
+    function update_workblock($program,$id){
+        $this->db->where('id',$id);
+        return $this->db->update('workblock', $program);
+    }
     
     //DELETE FUNCTION
     
@@ -65,7 +105,7 @@ class Mworkblock extends CI_Model {
     		return true;
     	}
     	else{
-    		return false;
+    		return true;
     	}
     }
     

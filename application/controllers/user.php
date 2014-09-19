@@ -31,7 +31,7 @@ class User extends CI_Controller {
         }*/
     	$data['title'] = "User Login";
     	
-        $data['header'] = '';	
+        $data['header'] = '';
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
         $data['content'] = $this->load->view('user/login',array('params' => $params),TRUE);
     
@@ -40,9 +40,10 @@ class User extends CI_Controller {
     
     public function input_user()
     {
+    	$user = $this->session->userdata('user');
     	$data['title'] = "Input User";
     	
-        $data['header'] = $this->load->view('shared/header','',TRUE);	
+        $data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
         $data['content'] = $this->load->view('user/input',array(),TRUE);
     

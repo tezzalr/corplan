@@ -1,6 +1,6 @@
 <div id="" class="container no_pad">
 	<div class="no_pad" style="margin-bottom: 30px;">
-		<h2 style=""><?php echo $wb->title?></h2>
+		<a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb->initiative_id?>"><h2 style=""><?php echo $wb->title?></h2></a>
 	</div>
 	<div>
 		<div>

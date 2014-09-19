@@ -28,10 +28,13 @@ class Milestone extends CI_Controller {
         $program['status'] = $this->input->post('status');
         $program['reason'] = $this->input->post('reason');
         
-        $start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
-    	$program['start'] = $start->format('Y-m-d');
-    	$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
-    	$program['end'] = $end->format('Y-m-d');
+        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
+    		$program['start'] = $start->format('Y-m-d');
+    	}
+    	
+    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
+    		$program['end'] = $end->format('Y-m-d');
+    	}
     	
     	if($this->input->post('revised')){
     		$revised = DateTime::createFromFormat('m/d/Y', $this->input->post('revised'));

@@ -39,21 +39,26 @@ class Workblock extends CI_Controller {
     }
     
     public function submit_workblock(){
+      	$id = $this->uri->segment(3);
       	$program['title'] = $this->input->post('title');
       	$program['pic'] = $this->input->post('pic');
       	$program['objective'] = $this->input->post('objective');
         $program['initiative_id'] = $this->input->post('initiative');
         
-        $start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
-    	$program['start'] = $start->format('Y-m-d');
+        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
+    		$program['start'] = $start->format('Y-m-d');}
     	
-    	$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
-    	$program['end'] = $end->format('Y-m-d');
+    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
+    		$program['end'] = $end->format('Y-m-d');}
         
-        
-        if($this->mworkblock->insert_workblock($program)){
-        	redirect("initiative/detail_initiative/".$program['initiative_id']);
-        }else{redirect("initiative/detail_initiative/".$program['initiative_id']);}
+        if($id){
+        	if($this->mworkblock->update_workblock($program,$id)){redirect("initiative/detail_initiative/".$program['initiative_id']);}
+        	else{redirect("initiative/detail_initiative/".$program['initiative_id']);}
+        }
+        else{
+        	if($this->mworkblock->insert_workblock($program)){redirect("initiative/detail_initiative/".$program['initiative_id']);}
+        	else{redirect("initiative/detail_initiative/".$program['initiative_id']);}
+		}
     }
     
     public function delete_workblock(){
