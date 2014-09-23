@@ -15,11 +15,11 @@ $(document).ready(function(){
 				required: true,
 			},
 			password: {
-				required: true,
+				//required: true,
 				minlength: 5
 			},
 			verify_password: {
-				required: true,
+				//required: true,
 				equalTo: "#password"
 			},
 			name: "required",
@@ -47,19 +47,20 @@ $(document).ready(function(){
 		<div class="form-signin">
 		<h3 class="form-signin-heading">New User</h3>
 		<p class="desc_login_form">Enter new user</p>
-		<form class="form-horizontal" action="<?php echo base_url();?>user/register" method ="post" id="formsignup" role="form">
+		<form class="form-horizontal" action="<?php if($info){echo base_url()."user/register/".$info->id;}else{echo base_url()."user/register";}?>" method ="post" id="formsignup" role="form">
 			 <div class="form-group">
 				<label class="col-sm-3 control-label">Name</label>
 				<div class="col-sm-9">
-					<input type="text" class="form-control" id="name" name="name" placeholder="Name">
+					<input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php if($info){echo $info->name;}?>">
 				</div>
 			</div>
 			 <div class="form-group">
 				<label class="col-sm-3 control-label">Username</label>
 				<div class="col-sm-9">
-					<input type="text" class="form-control" name="username" id="username" placeholder="Username">
+					<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?php if($info){echo $info->username;}?>">
 				</div>
 			</div>
+			<?php if(!$info){?>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Password</label>
 				<div class="col-sm-9">
@@ -72,13 +73,32 @@ $(document).ready(function(){
 					<input type="password" class="form-control" id="verify_password" name="verify_password" placeholder="Confirm Password">
 				</div>
 			</div>
+			<?php }?>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Role</label>
 				<div class="col-sm-9">
 					<select id="" class="form-control" name="role">
-						<option value='2' >PIC</option>
-						<option value='3' >PMO</option>
+						<option value='PIC' >PIC</option>
+						<option value='PMO' >PMO</option>
+						<option value='admin' >Admin</option>
 					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Jabatan</label>
+				<div class="col-sm-9">
+					<select id="" class="form-control" name="jabatan">
+						<option value="GH" <?php if($info){if($info->jabatan=="GH"){echo "selected";}}?>>GH</option>
+						<option value="DH" <?php if($info){if($info->jabatan=="DH"){echo "selected";}}?>>DH</option>
+						<option value="Allother" <?php if($info){if($info->jabatan=="Allother"){echo "selected";}}?>>Other</option>
+						<option value="" <?php if($info){if($info->jabatan==""){echo "selected";}}?>>-none-</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Initiative</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="initiative" name="initiative" placeholder="Initiative" value="<?php if($info){echo $info->initiative;}?>">
 				</div>
 			</div>
 			<hr>

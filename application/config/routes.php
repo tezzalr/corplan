@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "anchor";
+$route['default_controller'] = "initiative";
 $route['404_override'] = '';
 
 

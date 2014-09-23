@@ -13,5 +13,8 @@
 	<div class="header_top" style="float:left; margin-right:20px;"><?php echo date("d/M/y", strtotime(date('Y-m-d')));?></div>
 	<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/logout">Logout</a></div>
 	<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail"><?php echo $user['name']?></a></div>
+	<?php if($user['role']=='admin'){?>
+		<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/">User</a></div>
+	<?php }?>
 	<div style="clear:both"></div>
 </div>

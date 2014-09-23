@@ -19,7 +19,7 @@ class Initiative extends CI_Controller {
      */
     public function index()
     {
-		
+		redirect('initiative/list_initiative');
     }
     
     /*Initiative*/

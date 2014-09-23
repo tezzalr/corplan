@@ -49,6 +49,7 @@ class Minitiative extends CI_Model {
         	$arr[$i]['int']=$int;
         	$arr[$i]['stat']=$this->get_initiative_status($int->id)['status'];
         	$arr[$i]['wb']=$this->get_initiative_status($int->id)['sumwb'];
+        	$arr[$i]['pic']=$this->get_initiative_pic($int->code);
         	$i++;
         }
         return $arr;
@@ -87,6 +88,13 @@ class Minitiative extends CI_Model {
         $arr['status']=$status;
         $arr['sumwb']=count($result);
         return $arr;
+    }
+    
+    function get_initiative_pic($code){
+    	$this->db->like('initiative',$code);
+    	$this->db->order_by('jabatan', 'desc');
+    	$query = $this->db->get('user');
+        return $query->result();
     }
     
     function get_workblock_status($id){

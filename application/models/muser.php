@@ -64,11 +64,20 @@ class Muser extends CI_Model {
     
     //GET FUNCTION
     
-    function get_all_customer(){
-    	$this->db->where('role', 3);
-    	$this->db->order_by('id', 'desc');
+    function get_all_user(){
+    	$this->db->order_by('name', 'asc');
     	$query = $this->db->get('user');
         return $query->result();
+    }
+    
+    function get_user_by_id($id){
+        $this->db->where('id',$id);
+        $result = $this->db->get('user');
+        if($result->num_rows==1){
+            return $result->row(0);
+        }else{
+            return false;
+        }
     }
     
     function get_all_customer_order($atr, $how){
@@ -112,16 +121,6 @@ class Muser extends CI_Model {
     function get_customer_id_by_username($username){
         $this->db->where('username',$username);
         $this->db->where('role',3);
-        $result = $this->db->get('user');
-        if($result->num_rows==1){
-            return $result->row(0);
-        }else{
-            return false;
-        }
-    }
-    
-    function get_user_by_id($id){
-        $this->db->where('id',$id);
         $result = $this->db->get('user');
         if($result->num_rows==1){
             return $result->row(0);
@@ -375,45 +374,9 @@ class Muser extends CI_Model {
     }
     
     //UPDATE FUNCTION
-    function update_profil($profil,$id){
+    function update_user($user,$id){
         $this->db->where('id',$id);
-        return $this->db->update('profil', $profil);
-    }
-    
-    function update_get_address($profil,$id){
-    	if($this->update_profil($profil,$id)){
-    		return $this->get_address_by_id($id);
-    	}
-    }
-    
-    function update_user($user){
-    	$usr = $this->session->userdata('user');
-        $this->db->where('id', $usr['user_id']);
         return $this->db->update('user', $user);
-    }
-    
-    function update_user_with_username($user,$username){
-        $this->db->where('username', $username);
-        return $this->db->update('user', $user);
-    }
-    
-    function update_payment($payment,$id){
-        $this->db->where('id',$id);
-        return $this->db->update('payment', $payment);
-    }
-    
-    function update_shipping($shipping,$id){
-        $this->db->where('id',$id);
-        return $this->db->update('shipping', $shipping);
-    }
-    
-    function update_misc($misc){
-        $this->db->where('id',1);
-        return $this->db->update('misc', $misc);
-    }
-    function update_sosmed($sosmed,$id){
-        $this->db->where('id',$id);
-        return $this->db->update('sosmed', $sosmed);
     }
     
     
@@ -429,46 +392,15 @@ class Muser extends CI_Model {
     		return $this->db->delete('profil');
     	}
     }
-    function delete_customer($id){
-    	$this->db->where('user_id',$id);
-    	if($this->db->delete('profil')){
-    		$this->db->where('id',$id);
-    		return $this->db->delete('user');
-    	}
-    }
-    
-     function delete_photo_slider($id){
+    function delete_user(){
+    	$id = $this->input->post('id');
     	$this->db->where('id',$id);
-    	$this->db->delete('photo_slider');
+    	$this->db->delete('user');
     	if($this->db->affected_rows()>0){
     		return true;
     	}
     	else{
     		return false;
-    	}
-    }
-    
-    function delete_payment(){
-    	$id = $this->input->post('id');
-    	if($this->is_payment_used($id)){
-    		$this->db->where('id',$id);
-    		$payment['use'] = 0;
-			return $this->db->update('payment', $payment);	
-    	}else{
-    		$this->db->where('id',$id);
-    		return $this->db->delete('payment');
-    	}
-    }
-    
-    function delete_shipping(){
-    	$id = $this->input->post('id');
-    	if($this->is_shipping_used($id)){
-    		$this->db->where('id',$id);
-    		$shipping['use'] = 0;
-			return $this->db->update('shipping', $shipping);	
-    	}else{
-    		$this->db->where('id',$id);
-    		return $this->db->delete('shipping');
     	}
     }
     

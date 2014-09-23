@@ -10,16 +10,14 @@ class User extends CI_Controller {
     
     public function index()
     {
-        //$data['title'] = "beranda";
-        
-        $bahasa = $this->session->userdata('bahasa');
-        
-        if(!$bahasa){
-        	redirect('welcome');
-        }
-        else{
-        	redirect('home');
-        }
+    	$user = $this->muser->get_all_user();
+        $data['title'] = "User List";
+    	
+        $data['header'] = '';
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+        $data['content'] = $this->load->view('user/list_user',array('user'=>$user),TRUE);
+    
+        $this->load->view('front',$data);
         
     }
     
@@ -40,10 +38,14 @@ class User extends CI_Controller {
     
     public function input_user()
     {
+    	$user_id = $this->uri->segment(3); $data_user="";
+    	
+    	if($user_id){$data_user = $this->muser->get_user_by_id($user_id);}
+    	
     	$user = $this->session->userdata('user');
     	$data['title'] = "Input User";
     	
-        $data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);
+        $data['header'] = $this->load->view('shared/header',array('user' => $user,'info'=>$data_user),TRUE);
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
         $data['content'] = $this->load->view('user/input',array(),TRUE);
     
@@ -65,11 +67,12 @@ class User extends CI_Controller {
                 'role' => $user->role
             );
             $this->session->set_userdata('user',$data);
-            if($user->role == 1){
+            /*if($user->role == 1){
                 redirect('initiative/list_initiative');
             }elseif($user->role == 3){
                 redirect('initiative/list_initiative');
-            }
+            }*/
+            redirect('initiative/list_initiative');
         }else{
             $params['type_login']="failed";
             $this->login($params);
@@ -86,29 +89,42 @@ class User extends CI_Controller {
     }
     
     public function register(){
+      	$id = $this->uri->segment(3);
       	$user['username'] = $this->input->post('username');
-        $user['password'] = md5($this->input->post('password'));
+      	if(!$id){
+        	$user['password'] = md5($this->input->post('password'));
+        }
         $user['name'] = $this->input->post('name');
         $user['role'] = $this->input->post('role');
+        $user['jabatan'] = $this->input->post('jabatan');
+        $user['initiative'] = $this->input->post('initiative');
         
-        if($this->muser->register($user)){
-        	$user_id = $this->muser->get_user_id_by_username($user['username']);
-            $data = array(
-                'username' => $user['username'],
-                'id' => $user_id->id,
-                'name' => $user_id->name,
-                'is_logged_in' => true,
-                'role' => $user_id->role
-            );
-            $this->session->set_userdata('user',$data);
-        	redirect('home');
-        }else{redirect('home');}
+        if($id){
+			if($this->muser->update_user($user,$id)){
+				redirect('user');
+			}
+    	}else{
+			if($this->muser->register($user)){
+        		redirect('user');
+			}
+    	}
     }
     
     public function logout(){
         $this->session->unset_userdata('user');
         redirect('/user/login');
     }
+    
+    public function delete_user(){
+        if($this->muser->delete_user()){
+    		$json['status'] = 1;
+    	}
+    	else{
+    		$json['status'] = 0;
+    	}
+    	$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
     
     public function check_existing_email($email=null,$format=null){
          if($email==null){
@@ -206,120 +222,6 @@ class User extends CI_Controller {
         $this->output->set_content_type('application/json')
                      ->set_output(json_encode($json));
     }
-      
-	function random_password($length = 10) {
-        $validCharacters = "abcdefghijklmnopqrstuxyvwzABCDEFGHIJKLMNOPQRSTUXYVWZ!@#$%^()1234567890";
-        $validCharNumber = strlen($validCharacters);
-        $result = "";
-        for ($i = 0; $i < $length; $i++) {
-            $index = mt_rand(0, $validCharNumber - 1);
-            $result .= $validCharacters[$index];
-        }
-        return $result;
-     }
-
-	private function welcome(){
-		$data['title'] = "Welcome New User";
-		$user_name = $this->muser->get_user_name_header();
-		$stock = $this->mitem->check_all_items_stock();
-		$lookbook_header = $this->mlookbook->get_lookbook_header();
-		$cart_items = $this->mcart->get_user_item_unfinished_cart();
-		$tablecart_td = $this->load->view('shared/header/_tablecart_td',array('cart_items' => $cart_items),TRUE); 
-		$tablecart = $this->load->view('shared/header/_tablecart',array('tablecart_td' => $tablecart_td),TRUE);
-
-		$data['header'] = $this->load->view('shared/header',array('user_name' => $user_name,'stock' => $stock, 'lookbook_header' => $lookbook_header,'tablecart' => $tablecart, 'sum_ci' => count($cart_items), 'blog_header' =>$this->mblog->get_all_blog_show()),TRUE);	
-		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('user/welcome',array('user'=>$this->muser->get_user_login(), 'follow' => $this->load->view('shared/_followus',array('sosmed' => $this->muser->get_sosmed()),TRUE)),TRUE);
-
-		$this->load->view('front',$data);
-	}
-    
-    public function input_address(){
-    	$id = $this->input->get('id');
-    	$form = 'new'; $adr=''; $prov_id=1;
-    	if($id){
-    		$adr = $this->muser->get_address_by_id($id);
-    		$form = 'update';
-    		$prov_id = $adr->province;
-    	}
-    	$iptadr = $this->load->view('customer/address/_inputaddress',array('form'=>$form, 'adr'=>$adr, 
-    	'provinces' => $this->muser->get_province(), 'cities' => $this->muser->get_city_by_province($prov_id)),TRUE);
-    	$json['html']= $iptadr;
-    	$this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
-    }
-    
-    public function delete_address(){
-        if($this->muser->delete_address()){
-    		$json['status'] = 1;
-    	}
-    	else{
-    		$json['status'] = 0;
-    	}
-    	$this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
-    }
-    
-    public function load_cities(){
-    	$prov=$this->uri->segment(3);
-    	echo $this->load->view('user/_cities',array('cities' => $this->muser->get_city_by_province($prov),TRUE));
-    }
-    
-    /* Cart Function
-    --------------------------------------------------------*/
-    public function add_to_cart(){
-    	$session = $this->session->userdata('user');
-        if(!$session){
-            $data = array(
-                'url' => 'catalogue/detail/'.$this->input->post('gender').'/'.$this->input->post('kind').'/'.$this->input->post('code')
-        	);
-        	$this->session->set_userdata('lasturl',$data);
-            $json['status']=0;
-            $json['redirect']=base_url().'user/not_login_yet';
-        }else{
-        	$cart_item['size'] = $this->input->post('size');
-        	$cart_item['item_id'] = $this->input->post('item_id');
-        	$cart_items = $this->mcart->insert_to_cart($cart_item);
-        	$json['status']=1;
-        	$json['sum_ci']=count($this->mcart->get_user_item_unfinished_cart());//$cart_items['SizeName'].' '.$cart_items['Info']->name;
-        }
-        $this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
-    }
-    
-    public function load_cart_items(){
-    	$cart_items = $this->mcart->get_user_item_unfinished_cart();
-        $tablecart_td = $this->load->view('shared/header/_tablecart_td',array('cart_items' => $cart_items),TRUE); 
-        
-    	echo $tablecart_td;
-    }
-    
-    public function delete_cart_item(){
-        $cart_item_id = $this->input->post('cart_item_id');
-        if($this->mcart->delete_cart_item($cart_item_id)){
-    		$json['status'] = 1;
-    		$json['sum_ci']=count($this->mcart->get_user_item_unfinished_cart());
-    	}
-    	else{
-    		$json['status'] = 0;
-    	}
-    	$this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
-	}
-	
-	public function detail_purchase(){
-		$ordernum = $this->uri->segment(3);
-		$session = $this->session->userdata('user');
-		if(!$session){
-			$data = array(
-                'url' => 'customer/detail_purchase/'.$ordernum
-        	);
-        	$this->session->set_userdata('lasturl',$data);
-            redirect('user/not_login_yet');
-		}else{
-			redirect('customer/detail_purchase/'.$ordernum);
-		}
-	}
     
     public function not_login_yet(){
     	$params['type_login']="not_login";

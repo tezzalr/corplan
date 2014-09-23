@@ -87,7 +87,17 @@
 					<td style="width:40px"><center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center></td>				
 					<td><?php echo $int['int']->code?> <a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></td>
 					<td style="width:20px"><?php echo $int['wb']?></td>
-					<td></td>
+					<td><?php $sumpic = count($int['pic']); $i=1;
+						if($int['pic']){
+							foreach($int['pic'] as $pic){
+								$namaar = explode(' ',$pic->name);
+								echo $namaar[0];
+								if($i<$sumpic){
+									echo ", ";
+								} $i++;
+							}
+						}?>
+					</td>
 					<td><?php if($int['int']->start){echo date("j M y", strtotime($int['int']->start));}?></td>
 					<td><?php if($int['int']->end){echo date("j M y", strtotime($int['int']->end));}?></td>
 					<td><?php echo $int['int']->dependencies?></td>
