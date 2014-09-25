@@ -75,7 +75,7 @@
 			<tbody>
 				<?php $prog=""; $np=1; foreach($ints as $int){?>
 				<?php if($prog != $int['int']->program){?>
-				<tr style="background-color:#F7F2E0; font-size:16px"><td colspan=9><?php echo $np.". ".$int['int']->program?></td></tr>
+				<tr style="background-color:#F7F2E0; font-size:16px"><td colspan=9><?php echo $int['int']->progcode." ".$int['int']->program?></td></tr>
 				<?php $prog=$int['int']->program; $np++;}?>
 				<tr>
 					<?php 

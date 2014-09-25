@@ -11,9 +11,9 @@ $(document).ready(function(){
 });
 </script>
 
-<div id="" class="container no_pad">
-	<div class="col-xs-12 col-md-5 login-form" style="margin 0 auto">
-		<form class="form-signin" action="<?php echo base_url();?>user/userEnter" method="post" role="form">
+<div id="" class="container no_pad" style="height:100%">
+	<div class="col-md-6 login-form" style="margin 0 auto;  position: relative; top: 30%;">
+		<form class="form-signin" action="<?php echo base_url();?>user/userEnter" method="post" role="form" style="width:75%">
 			<h3 class="form-signin-heading">Mandiri Corplan 2020</h3>
 			<p class="desc_login_form">Please login here: </p>
 			<input type="text" class="form-control" placeholder="Username" name="username" required autofocus>
@@ -29,4 +29,11 @@ $(document).ready(function(){
 		</div>
 		<?php }?>
 	</div>
+	<div class="col-md-6" style="margin: 0 auto; position: relative; top: 15%;">
+		<div style="float:right;">
+			<img src="<?php echo base_url()?>assets/img/general/mandiri.png" style="width:190px"><br>
+			<label style="font-size:21px">Mandiri Corplan 2020</label><br>
+		</div><div style="clear:both"></div>
+		<div style="margin-top:20px"><img src="<?php echo base_url()?>assets/img/general/Transformasi.png" style="width:100%"></div>
+		</div>
 </div>

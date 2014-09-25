@@ -33,7 +33,7 @@ class Workblock extends CI_Controller {
 		
 		$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('workblock/detail',array('wb' => $workblock, 'ms' => $milestones),TRUE);
+		$data['content'] = $this->load->view('workblock/detail_wb',array('wb' => $workblock, 'ms' => $milestones),TRUE);
 
 		$this->load->view('front',$data);
     }

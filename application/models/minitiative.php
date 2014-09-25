@@ -39,7 +39,7 @@ class Minitiative extends CI_Model {
     
     function get_all_initiatives(){
     	//$this->db->where('role', 3);
-    	$this->db->select('initiative.*, program.title as program');
+    	$this->db->select('initiative.*, program.title as program, program.code as progcode');
     	$this->db->join('program', 'program.id = initiative.program_id');
     	$this->db->order_by('initiative.code', 'asc');
     	$query = $this->db->get('initiative');
@@ -49,10 +49,21 @@ class Minitiative extends CI_Model {
         	$arr[$i]['int']=$int;
         	$arr[$i]['stat']=$this->get_initiative_status($int->id)['status'];
         	$arr[$i]['wb']=$this->get_initiative_status($int->id)['sumwb'];
+        	$arr[$i]['wbs']=$this->get_initiative_status($int->id)['wb'];
         	$arr[$i]['pic']=$this->get_initiative_pic($int->code);
         	$i++;
         }
         return $arr;
+    }
+    
+    function get_all_just_initiatives(){
+    	//$this->db->where('role', 3);
+    	$this->db->select('initiative.*, program.title as program');
+    	$this->db->join('program', 'program.id = initiative.program_id');
+    	$this->db->order_by('initiative.code', 'asc');
+    	$query = $this->db->get('initiative');
+        $res = $query->result();
+        return $res;
     }
     
     function get_initiative_by_id($id){
@@ -87,6 +98,7 @@ class Minitiative extends CI_Model {
         }
         $arr['status']=$status;
         $arr['sumwb']=count($result);
+        $arr['wb']=$result;
         return $arr;
     }
     
@@ -124,102 +136,22 @@ class Minitiative extends CI_Model {
         return $this->db->update('initiative', $program);
     }
     
-    function update_profil($profil,$id){
-        $this->db->where('id',$id);
-        return $this->db->update('profil', $profil);
-    }
-    
-    function update_get_address($profil,$id){
-    	if($this->update_profil($profil,$id)){
-    		return $this->get_address_by_id($id);
+    function check_initiative_status(){
+    	$datenow = date("Y-m-d");
+    	$initiatives = $this->get_all_initiatives();
+    	foreach($initiatives as $int){
+    		foreach($int['wbs'] as $wb){
+    			$ms['status'] = "Delay";
+    			$this->db->where('workblock_id', $wb->id);
+    			$this->db->where('end <', $datenow);
+    			$this->db->update('milestone', $ms);
+    		}
     	}
-    }
-    
-    function update_user($user){
-    	$usr = $this->session->userdata('user');
-        $this->db->where('id', $usr['user_id']);
-        return $this->db->update('user', $user);
-    }
-    
-    function update_user_with_username($user,$username){
-        $this->db->where('username', $username);
-        return $this->db->update('user', $user);
-    }
-    
-    function update_payment($payment,$id){
-        $this->db->where('id',$id);
-        return $this->db->update('payment', $payment);
-    }
-    
-    function update_shipping($shipping,$id){
-        $this->db->where('id',$id);
-        return $this->db->update('shipping', $shipping);
-    }
-    
-    function update_misc($misc){
-        $this->db->where('id',1);
-        return $this->db->update('misc', $misc);
-    }
-    function update_sosmed($sosmed,$id){
-        $this->db->where('id',$id);
-        return $this->db->update('sosmed', $sosmed);
     }
     
     
     //DELETE FUNCTION
-    function delete_address(){
-    	$address_id = $this->input->post('address_id');
-    	if($this->is_address_used($address_id)){
-    		$this->db->where('id',$address_id);
-    		$profil['user_id'] = '';
-			return $this->db->update('profil', $profil);	
-    	}else{
-    		$this->db->where('id',$address_id);
-    		return $this->db->delete('profil');
-    	}
-    }
-    function delete_customer($id){
-    	$this->db->where('user_id',$id);
-    	if($this->db->delete('profil')){
-    		$this->db->where('id',$id);
-    		return $this->db->delete('user');
-    	}
-    }
     
-     function delete_photo_slider($id){
-    	$this->db->where('id',$id);
-    	$this->db->delete('photo_slider');
-    	if($this->db->affected_rows()>0){
-    		return true;
-    	}
-    	else{
-    		return false;
-    	}
-    }
-    
-    function delete_payment(){
-    	$id = $this->input->post('id');
-    	if($this->is_payment_used($id)){
-    		$this->db->where('id',$id);
-    		$payment['use'] = 0;
-			return $this->db->update('payment', $payment);	
-    	}else{
-    		$this->db->where('id',$id);
-    		return $this->db->delete('payment');
-    	}
-    }
-    
-    function delete_shipping(){
-    	$id = $this->input->post('id');
-    	if($this->is_shipping_used($id)){
-    		$this->db->where('id',$id);
-    		$shipping['use'] = 0;
-			return $this->db->update('shipping', $shipping);	
-    	}else{
-    		$this->db->where('id',$id);
-    		return $this->db->delete('shipping');
-    	}
-    }
     
     // OTHER FUNCTION
     function config_email(){

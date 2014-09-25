@@ -28,6 +28,8 @@ class Initiative extends CI_Controller {
 		
 		$user = $this->session->userdata('user');
 		
+		$this->minitiative->check_initiative_status();
+		
 		$programs = $this->minitiative->get_all_programs();
 		$initiatives = $this->minitiative->get_all_initiatives();
 		

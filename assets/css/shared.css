@@ -19,7 +19,9 @@ body a:hover{
 	background-color:#0B3861;
 	color:white;
 }
-
+.headertab th {
+	text-align:center
+}
 /* Wrapper for page content to push down footer */
 #wrap {
   min-height: 100%;

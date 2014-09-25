@@ -23,6 +23,7 @@ class Milestone extends CI_Controller {
     }
     
     public function submit_milestone(){
+      	$id = $this->uri->segment(3);
       	$program['title'] = $this->input->post('title');
         $program['workblock_id'] = $this->input->post('workblock');
         $program['status'] = $this->input->post('status');
@@ -41,9 +42,44 @@ class Milestone extends CI_Controller {
     		$program['revised'] = $revised->format('Y-m-d');
         }
         
-        if($this->mmilestone->insert_milestone($program)){
-        	redirect("workblock/detail_workblock/".$program['workblock_id']);
-        }else{redirect("workblock/detail_workblock/".$program['workblock_id']);}
+        if(!$id){
+        	if($this->mmilestone->insert_milestone($program)){
+        		redirect("workblock/detail_workblock/".$program['workblock_id']);
+        	}else{redirect("workblock/detail_workblock/".$program['workblock_id']);}
+        }
+        else{
+        	if($this->mmilestone->update_milestone($program,$id)){
+        		redirect("workblock/detail_workblock/".$program['workblock_id']);
+        	}else{redirect("workblock/detail_workblock/".$program['workblock_id']);}
+		}
+    }
+    
+    public function submit_revised(){
+    	$id = $this->uri->segment(3);
+    	$wb = $this->uri->segment(4);
+    	$program['milestone_id'] = $id;
+    	$program['reason'] = $this->input->post('reason');
+    	if($this->input->post('revised')){
+    		$revised = DateTime::createFromFormat('m/d/Y', $this->input->post('revised'));
+    		$program['revised_date'] = $revised->format('Y-m-d');
+        }
+        if($this->mmilestone->insert_revised($program)){
+			redirect("workblock/detail_workblock/".$wb);
+		}else{redirect("workblock/detail_workblock/".$wb);}
+    }
+    
+    public function change_status(){
+    	$stat = $this->uri->segment(3);
+    	$id = $this->uri->segment(4);
+    	$wb = $this->uri->segment(5);
+    	if($stat == "start"){$ms['status'] = "In Progress";}
+    	elseif($stat == "end"){$ms['status'] = "Completed";}
+    	
+    	if($stat){
+    		if($this->mmilestone->update_milestone($ms, $id)){
+				redirect("workblock/detail_workblock/".$wb);
+			}else{redirect("workblock/detail_workblock/".$wb);}
+    	}
     }
     
     public function delete_milestone(){

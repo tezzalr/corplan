@@ -1,19 +1,20 @@
 <div id="" class="container no_pad">
-	<div class="no_pad" style="margin-bottom: 50px;">
-		<h4 style="color:grey">Initiative <?php echo $initiative->code?></h4>
-		<h2 style=""><?php echo $initiative->title?></h2>
-	</div>
-	<div>
-		<div>
+	<div class="no_pad" style="margin-bottom: 10px; float:right">
+		<h5 style="color:grey">Initiative</h5>
+		<h4 style="color:grey">
+		<button class="btn btn-success btn-xs" disabled><span class="glyphicon glyphicon-ok"></span></button> 
+		<?php echo $initiative->code?> <?php echo $initiative->title?></h4>
+		<!--<div>
 			<table class="table table-bordered" style="width:250px">
 				<tbody>
 					<tr><td>Start Date</td><td><?php echo $initiative->start?></td></tr>
 					<tr><td>End Date</td><td><?php echo $initiative->end?></td></tr>
 				</tbody>
 			</table>
-		</div><br>
-		
-		<h4>Workblock</h4>
+		</div><br>-->
+	</div><div style="clear:both"></div>
+	<h3>Workblock Summary</h3>
+	<div>
 		<button style="float:right; margin-top:-34px;" class="btn btn-info btn-sm" onclick="toggle_visibility('new_workblock');">
 			<span class="glyphicon glyphicon-plus"></span> Workblock
 		</button>
@@ -58,15 +59,16 @@
 		</div>
 		<table class="table table-bordered" style="margin-top:20px">
 			<thead>
-				<tr><th></th><th>Workblock</th><th>Milestone</th><th>Status</th><th>Start Date</th><th>End Date</th><th style="width:80px"></th></tr>
+				<tr class="headertab"><th></th><th>Workblock</th><th>Milestone</th><th>Status</th><th>Start Date</th><th>End Date</th><th style="width:80px"></th></tr>
 			</thead>
 			<tbody>
 				<?php $i=1; foreach($workblocks as $wb){?>
 				<tr id="wbdtl_<?php echo $wb['wb']->id?>">
-					<td rowspan=<?php echo count($wb['ms'])+1?>><?php echo $i;?></td>
-					<td colspan=2><a href="<?php echo base_url()?>workblock/detail_workblock/<?php echo $wb['wb']->id?>"><?php echo $wb['wb']->title?></a></td>
+					<td rowspan=<?php echo count($wb['ms'])+1?>></td>
+					<td colspan=2><?php echo $i;?>. <a href="<?php echo base_url()?>workblock/detail_workblock/<?php echo $wb['wb']->id?>"><?php echo $wb['wb']->title?></a></td>
 					<td><?php echo $wb['stat'];?></td>
-					<td><?php if($wb['wb']->start){echo date("d M y", strtotime($wb['wb']->start));}?></td><td><?php if($wb['wb']->end){echo date("d M y", strtotime($wb['wb']->end));}?></td>
+					<td><?php if($wb['wb']->start){echo date("d M y", strtotime($wb['wb']->start));}?></td>
+					<td><?php if($wb['wb']->end){echo date("d M y", strtotime($wb['wb']->end));}?></td>
 					<td>
 						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_wb_<?php echo $wb['wb']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_workblock(<?php echo $wb['wb']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
@@ -116,13 +118,13 @@
 					</td>
 					
 				</tr>
-				<?php foreach($wb['ms'] as $ms){?>
+				<?php $j=1; foreach($wb['ms'] as $ms){?>
 				<tr class="ms_wb_<?php echo $wb['wb']->id?>">
-					<td></td><td><?php echo $ms->title?></td><td><?php echo $ms->status?></td>
+					<td></td><td><?php echo $j.". ".$ms->title?></td><td><?php echo $ms->status?></td>
 					<td><?php if($ms->start){echo date("j M y", strtotime($ms->start));}?></td>
 					<td><?php if($ms->end){echo date("j M y", strtotime($ms->end));}?></td><td></td>
 				</tr>
-				<?php }?>
+				<?php $j++;}?>
 				<?php $i++; }?>
 			</tbody>
 		</table>
@@ -140,7 +142,7 @@
 	});
     function edit_wb(id){
     	toggle_visibility('edit_wb_'+id);
-    	toggle_visibility('ms_wb_'+id);
+    	//toggle_visibility('ms_wb_'+id);
     }
 	function delete_workblock(id, event){
 		bootbox.confirm("Apa anda yakin?", function(confirmed) {

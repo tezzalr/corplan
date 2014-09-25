@@ -23,6 +23,10 @@ class Mmilestone extends CI_Model {
         return $this->db->insert('milestone', $milestone);
     }
     
+    function insert_revised($milestone){
+        return $this->db->insert('revised', $milestone);
+    }
+    
     //GET FUNCTION
     
     function get_all_workblock_milestone($workblock_id){
@@ -43,6 +47,10 @@ class Mmilestone extends CI_Model {
     }
     
     //UPDATE FUNCTION
+    function update_milestone($ms, $id){
+        $this->db->where('id',$id);
+        return $this->db->update('milestone', $ms);
+    }
     
     //DELETE FUNCTION
     

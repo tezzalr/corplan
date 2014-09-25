@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 23, 2014 at 02:41 AM
+-- Generation Time: Sep 25, 2014 at 11:37 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -103,18 +103,18 @@ CREATE TABLE IF NOT EXISTS `milestone` (
   `revised` date DEFAULT NULL,
   `reason` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
 
 --
 -- Dumping data for table `milestone`
 --
 
 INSERT INTO `milestone` (`id`, `title`, `start`, `end`, `status`, `workblock_id`, `revised`, `reason`) VALUES
-(25, 'Define the nature of the credit analyst function', NULL, '2014-07-03', 'Not Started Yet', 17, NULL, ''),
-(26, 'Develop operating procedure related to credit analyst function', NULL, '2014-07-03', 'Not Started Yet', 17, NULL, ''),
-(27, 'Pilot Project CA Function Implementation', NULL, '2015-01-14', 'Not Started Yet', 17, NULL, ''),
+(25, 'Define the nature of the credit analyst function', NULL, '2014-07-03', 'Delay', 17, NULL, ''),
+(26, 'Develop operating procedure related to credit analyst function', NULL, '2014-07-03', 'Delay', 17, NULL, ''),
+(27, 'Pilot Project CA Function Implementation', NULL, '2015-01-14', 'In Progress', 17, NULL, ''),
 (28, 'Interim evaluation', NULL, '2014-10-15', 'Not Started Yet', 17, NULL, ''),
-(29, 'Mapping headcount CA within all organization', NULL, '2014-12-31', 'Not Started Yet', 18, NULL, ''),
+(29, 'Mapping headcount CA within all organization', NULL, '2014-12-31', 'In Progress', 18, NULL, ''),
 (30, 'Define source of manning fulfillment', NULL, '2014-12-31', 'Not Started Yet', 18, NULL, ''),
 (31, 'Manning fulfillment CA', NULL, '2015-10-15', 'Not Started Yet', 18, NULL, ''),
 (32, 'Detailing lending product team organization', NULL, '2015-03-31', 'Not Started Yet', 19, NULL, ''),
@@ -152,6 +152,31 @@ INSERT INTO `program` (`id`, `title`, `code`, `start_date`, `end_date`, `segment
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `revised`
+--
+
+CREATE TABLE IF NOT EXISTS `revised` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `milestone_id` int(11) NOT NULL,
+  `revised_date` date NOT NULL,
+  `reason` text NOT NULL,
+  `aprv_PMO` date DEFAULT NULL,
+  `aprv_GH` date DEFAULT NULL,
+  `PMO_id` int(11) NOT NULL,
+  `GH_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `revised`
+--
+
+INSERT INTO `revised` (`id`, `milestone_id`, `revised_date`, `reason`, `aprv_PMO`, `aprv_GH`, `PMO_id`, `GH_id`) VALUES
+(1, 25, '2014-12-18', 'Lala lili lululu', NULL, NULL, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -165,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `jabatan` varchar(600) DEFAULT NULL,
   `initiative` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `user`
@@ -193,7 +218,8 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 (27, 'rustam', '5f4dcc3b5aa765d61d8327deb882cf99', 'Rustam', 'PIC', NULL, 'GH', '1.2.C'),
 (28, 'tongki', '5f4dcc3b5aa765d61d8327deb882cf99', 'Tongki Lentari', 'PIC', NULL, 'DH', '1.2.C'),
 (29, 'didiek', '5f4dcc3b5aa765d61d8327deb882cf99', 'Didiek H', 'PIC', NULL, 'GH', '1.4.D'),
-(30, 'oktav', '5f4dcc3b5aa765d61d8327deb882cf99', 'Oktav', 'PIC', NULL, 'DH', '1.4.D');
+(30, 'oktav', '5f4dcc3b5aa765d61d8327deb882cf99', 'Oktav', 'PIC', NULL, 'DH', '1.4.D'),
+(31, 'yoyok', '804da344974611d34d496565f15376f4', 'Hermawan Soebagio', 'admin', NULL, '', '');
 
 -- --------------------------------------------------------
 

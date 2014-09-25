@@ -10,14 +10,20 @@ class User extends CI_Controller {
     
     public function index()
     {
-    	$user = $this->muser->get_all_user();
-        $data['title'] = "User List";
-    	
-        $data['header'] = '';
-		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-        $data['content'] = $this->load->view('user/list_user',array('user'=>$user),TRUE);
-    
-        $this->load->view('front',$data);
+    	$user = $this->session->userdata('user');
+		
+		if($user){
+			$users = $this->muser->get_all_user();
+			$data['title'] = "User List";
+		
+			$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
+			$data['footer'] = $this->load->view('shared/footer','',TRUE);
+			$data['content'] = $this->load->view('user/list_user',array('user'=>$users),TRUE);
+	
+			$this->load->view('front',$data);
+        }else{
+        	redirect('user/login');
+        }
         
     }
     
