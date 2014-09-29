@@ -59,11 +59,12 @@ class Milestone extends CI_Controller {
     	$wb = $this->uri->segment(4);
     	$program['milestone_id'] = $id;
     	$program['reason'] = $this->input->post('reason');
+    	$program['action'] = $this->input->post('action');
     	if($this->input->post('revised')){
     		$revised = DateTime::createFromFormat('m/d/Y', $this->input->post('revised'));
     		$program['revised_date'] = $revised->format('Y-m-d');
         }
-        if($this->mmilestone->insert_revised($program)){
+        if($this->mmilestone->insert_revised($program,$wb)){
 			redirect("workblock/detail_workblock/".$wb);
 		}else{redirect("workblock/detail_workblock/".$wb);}
     }

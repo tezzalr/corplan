@@ -82,7 +82,8 @@ class Initiative extends CI_Controller {
     
     public function detail_initiative(){
     	$id = $this->uri->segment(3);
-    	$initiative = $this->minitiative->get_initiative_by_id($id);
+    	$initiative['int'] = $this->minitiative->get_initiative_by_id($id);
+    	$initiative['stat'] = $this->minitiative->get_initiative_status($id)['status'];
 		$workblocks = $this->mworkblock->get_all_initiative_workblock($id);
 		
 		$user = $this->session->userdata('user');

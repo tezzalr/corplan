@@ -24,12 +24,13 @@ class Workblock extends CI_Controller {
     
     public function detail_workblock(){
     	$id = $this->uri->segment(3);
-    	$workblock = $this->mworkblock->get_workblock_by_id($id);
+    	$workblock['wb'] = $this->mworkblock->get_workblock_by_id($id);
+    	$workblock['stat'] = $this->mworkblock->get_workblock_status($id);
 		$milestones = $this->mmilestone->get_all_workblock_milestone($id);
     	
     	$user = $this->session->userdata('user');
     	
-    	$data['title'] = $workblock->title;
+    	$data['title'] = $workblock['wb']->title;
 		
 		$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);

@@ -3,9 +3,9 @@
 		<h2 style="">Wholesale Initiative</h2>
 	</div>
 	<div>
-		<div style="margin-bottom:10px; float:right;">
+		<?php if($user['role']=='admin'){?><div style="margin-bottom:10px; float:right;">
 		<button onclick="toggle_visibility('new_initiative');" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> Initiative</button>
-		</div><div style="clear:both"></div>
+		</div><div style="clear:both"></div><?php }?>
 		
 		<div id="new_initiative" style="display:none">
 			<hr>
@@ -70,12 +70,12 @@
 		
 		<table class="table table-bordered">
 			<thead>
-				<tr class="headertab"><th style="width:60px">Program</th><th>Initiatives</th><th>WB</th><th>PIC</th><th>Start</th><th>End</th><th>Dependency</th><th>Tier</th><th style="width:70px"></th></tr>
+				<tr class="headertab"><th style="width:60px">Program</th><th>Initiatives</th><th>WB</th><th>PIC</th><th>Start</th><th>End</th><th>Dependency</th><th>Tier</th></tr>
 			</thead>
 			<tbody>
 				<?php $prog=""; $np=1; foreach($ints as $int){?>
 				<?php if($prog != $int['int']->program){?>
-				<tr style="background-color:#F7F2E0; font-size:16px"><td colspan=9><?php echo $int['int']->progcode." ".$int['int']->program?></td></tr>
+				<tr style="background-color:#F7F2E0; font-size:16px"><td colspan=8><?php echo $int['int']->progcode." ".$int['int']->program?></td></tr>
 				<?php $prog=$int['int']->program; $np++;}?>
 				<tr>
 					<?php 
@@ -102,10 +102,10 @@
 					<td><?php if($int['int']->end){echo date("j M y", strtotime($int['int']->end));}?></td>
 					<td><?php echo $int['int']->dependencies?></td>
 					<td><?php if($int['int']->tier){echo $int['int']->tier;}?></td>
-					<td>
+					<?php if($user['role']=='admin'){?><td>
 						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_int_<?php echo $int['int']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_workblock(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
-					</td>
+					</td><?php }?>
 				</tr>
 				<tr id="edit_int_<?php echo $int['int']->id?>" style="display:none"><td></td>
 					<div>

@@ -1,19 +1,20 @@
 <div id="" class="container no_pad">
-	<div class="no_pad" style="margin-bottom: 30px;">
-		<a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb->initiative_id?>"><h2 style=""><?php echo $wb->title?></h2></a>
-	</div>
+	<div class="no_pad" style="margin-bottom: 10px; float:right">
+		<h5><a  style="color:grey" href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb['wb']->initiative_id?>">Workblock</a></h5>
+		<h4 style="color:grey">
+			<?php 
+				if($wb['stat']=="Delay"){$clr="danger"; $icn="remove";}
+				elseif($wb['stat']=="In Progress"){$clr="warning"; $icn="refresh";}
+				elseif($wb['stat']=="Completed"){$clr="success"; $icn="ok";}
+				else{$clr="inverse"; $icn="off";}
+			?>
+			<button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button>
+			<?php echo $wb['wb']->title?>
+		</h4>
+	</div><div style="clear:both"></div>
 	<div>
 		<div>
-			<table class="table table-bordered" style="width:50%">
-				<tbody>
-					<tr><td style="width:125px">Start Date</td><td><?php echo $wb->start?></td></tr>
-					<tr><td>End Date</td><td><?php echo $wb->end?></td></tr>
-					<tr><td>Objectives</td><td><?php echo $wb->objective?></td></tr>
-				</tbody>
-			</table>
-		</div><br>
-		<div>
-			<h4>Key Milestones</h4>
+			<h3>Milestones</h3>
 			<button style="float:right; margin-top:-34px;" class="btn btn-info btn-sm" onclick="toggle_visibility('new_milestone');">
 				<span class="glyphicon glyphicon-plus"></span> Milestone
 			</button>
@@ -21,7 +22,7 @@
 				<hr>
 				<h3>New Milestone</h3>
 				<form class="form-horizontal" method="post" id="form_src_rm" action="<?php echo base_url();?>milestone/submit_milestone">
-					<input type="hidden" value="<?php echo $wb->id?>" name="workblock">
+					<input type="hidden" value="<?php echo $wb['wb']->id?>" name="workblock">
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Milestone</label>
 						<div class="col-sm-4">
@@ -80,68 +81,68 @@
 				</thead>
 				<tbody>
 					<?php $i=1; foreach($ms as $each){?>
-					<tr id="msdtl_<?php echo $each->id?>">
+					<tr id="msdtl_<?php echo $each['ms']->id?>">
 						<?php 
-							if($each->status=="Delay"){$clr="danger"; $icn="remove";}
-							elseif($each->status=="In Progress"){$clr="warning"; $icn="refresh";}
-							elseif($each->status=="Completed"){$clr="success"; $icn="ok";}
+							if($each['ms']->status=="Delay"){$clr="danger"; $icn="remove";}
+							elseif($each['ms']->status=="In Progress"){$clr="warning"; $icn="refresh";}
+							elseif($each['ms']->status=="Completed"){$clr="success"; $icn="ok";}
 							else{$clr="inverse"; $icn="off";}
 						?>
 						<td style="width:40px"><center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center></td>	
 						
-						<td style="min-width:500px"><?php echo $i?>. <?php echo $each->title?></td>
+						<td style="min-width:500px"><?php echo $i?>. <?php echo $each['ms']->title?></td>
 						<td style="width:40px"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-comment"></span></button></td>
-						<td><?php if($each->start){echo date("d M y", strtotime($each->start));}?></td>
-						<td><?php if($each->end){echo date("d M y", strtotime($each->end));}?></td>
+						<td><?php if($each['ms']->start){echo date("j M y", strtotime($each['ms']->start));}?></td>
+						<td><?php if($each['ms']->end){echo date("j M y", strtotime($each['ms']->end));}?></td>
 						<!--<td></td>-->
 						<td></td>
 						<td></td>
 						<td>
-							<?php if($each->status == "Not Started Yet"){?>
-							<form method="post" action="<?php echo base_url();?>milestone/change_status/start/<?php echo $each->id?>/<?php echo $each->workblock_id?>"><button type="submit" class="btn btn-warning btn-xs">Start</button></form>
-							<?php }elseif($each->status == "In Progress"){?>
-							<form method="post" action="<?php echo base_url();?>milestone/change_status/end/<?php echo $each->id?>/<?php echo $each->workblock_id?>"><button type="submit" class="btn btn-success btn-xs">End</button></form>
-							<?php }elseif($each->status == "Delay"){?>
-							<button type="submit" class="btn btn-danger btn-xs" onclick="revise_ms(<?php echo $each->id?>)">Revise</button>
+							<?php if($each['ms']->status == "Not Started Yet"){?>
+							<form method="post" action="<?php echo base_url();?>milestone/change_status/start/<?php echo $each['ms']->id?>/<?php echo $each['ms']->workblock_id?>"><button type="submit" class="btn btn-warning btn-xs">Start</button></form>
+							<?php }elseif($each['ms']->status == "In Progress"){?>
+							<form method="post" action="<?php echo base_url();?>milestone/change_status/end/<?php echo $each['ms']->id?>/<?php echo $each['ms']->workblock_id?>"><button type="submit" class="btn btn-success btn-xs">End</button></form>
+							<?php }elseif($each['ms']->status == "Delay"){?>
+							<button type="submit" class="btn btn-danger btn-xs" onclick="revise_ms(<?php echo $each['ms']->id?>)">Revise</button>
 							<?php }?>
 						</td>
 						<?php if($user['role']=='admin'){?><td>
-							<button class="btn btn-warning  btn-xs" onclick="edit_ms(<?php echo $each->id?>)"><span class="glyphicon glyphicon-pencil"></span></button>
-							<button class="btn btn-danger btn-xs" onclick="delete_milestone(<?php echo $each->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
+							<button class="btn btn-warning  btn-xs" onclick="edit_ms(<?php echo $each['ms']->id?>)"><span class="glyphicon glyphicon-pencil"></span></button>
+							<button class="btn btn-danger btn-xs" onclick="delete_milestone(<?php echo $each['ms']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 						</td><?php }?>
 					</tr>
-					<tr id="edit_ms_<?php echo $each->id?>" style="display:none">	
+					<tr id="edit_ms_<?php echo $each['ms']->id?>" style="display:none">	
 						<td colspan=8>
-							<form class="form-horizontal" method="post" action="<?php echo base_url();?>milestone/submit_milestone/<?php echo $each->id?>">
+							<form class="form-horizontal disabled" method="post" action="<?php echo base_url();?>milestone/submit_milestone/<?php echo $each['ms']->id?>">
 								<input type="hidden" value="<?php echo $wb->id?>" name="workblock">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Milestone</label>
 									<div class="col-sm-4">
-									  <input type="text" class="form-control" placeholder="Milestone" name="title" value="<?php echo $each->title?>">
+									  <input type="text" class="form-control" placeholder="Milestone" name="title" value="<?php echo $each['ms']->title?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Status</label>
 									<div class="col-sm-4">
 									  <select class="form-control" name="status" id="status">
-										<option value="Not Started Yet" <?php if($each->status == "Not Started Yet"){echo "selected";}?>>Not Started Yet</option>
-										<option value="In Progress" <?php if($each->status == "In Progress"){echo "selected";}?>>In Progress</option>
-										<option value="Completed" <?php if($each->status == "Completed"){echo "selected";}?>>Completed</option>
-										<option value="Delay" <?php if($each->status == "Delay"){echo "selected";}?>>Delay</option>
+										<option value="Not Started Yet" <?php if($each['ms']->status == "Not Started Yet"){echo "selected";}?>>Not Started Yet</option>
+										<option value="In Progress" <?php if($each['ms']->status == "In Progress"){echo "selected";}?>>In Progress</option>
+										<option value="Completed" <?php if($each['ms']->status == "Completed"){echo "selected";}?>>Completed</option>
+										<option value="Delay" <?php if($each['ms']->status == "Delay"){echo "selected";}?>>Delay</option>
 									  </select>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Start Date</label>
 									<div class="col-sm-4">
-										<?php $start=""; if($each->start){$start = date("m/d/Y", strtotime($each->start));}?>
+										<?php $start=""; if($each['ms']->start){$start = date("m/d/Y", strtotime($each['ms']->start));}?>
 										<input type="date" class="form-control" id="start" name="start" placeholder="mm/dd/YYYY" value="<?php echo $start?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">End Date</label>
 									<div class="col-sm-4">
-										<?php $end=""; if($each->end){$end = date("m/d/Y", strtotime($each->end));}?>
+										<?php $end=""; if($each['ms']->end){$end = date("m/d/Y", strtotime($each['ms']->end));}?>
 										<input type="date" class="form-control" id="end" name="end" placeholder="mm/dd/YYYY" value="<?php echo $end?>">
 									</div>
 								</div>
@@ -151,39 +152,71 @@
 								</form>
 							</td>
 						</tr>
-						<tr id="revise_ms_<?php echo $each->id?>" style="display:none">
-							<td colspan=8>
-								<form class="form-horizontal" method="post" action="<?php echo base_url();?>milestone/submit_revised/<?php echo $each->id."/".$wb->id?>">
+					<tr id="revise_ms_<?php echo $each['ms']->id?>" style="display:none">
+						<td colspan=8>
+							<div style="width:45%; float:left;">
+								<form class="form-horizontal" method="post" action="<?php echo base_url();?>milestone/submit_revised/<?php echo $each['ms']->id."/".$wb['wb']->id?>">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Revised Date</label>
-										<div class="col-sm-4">
-											<?php $rev=""; if($each->revised){$rev = date("m/d/Y", strtotime($each->revised));}else{$rev = date("m/d/Y", strtotime($each->end));}?>
-											<input type="date" class="form-control" id="revised_<?php echo $each->id?>" name="revised" placeholder="mm/dd/YYYY" value="<?php echo $rev?>">
+										<label class="col-sm-4 control-label">Revised Date</label>
+										<div class="col-sm-8">
+											<?php $rev=""; if($each['revise']){$rev = date("m/d/Y", strtotime($each['revise']->revised_date));}else{$rev = date("m/d/Y", strtotime($each['ms']->end));}?>
+											<input type="date" class="form-control" id="revised_<?php echo $each['ms']->id?>" name="revised" placeholder="mm/dd/YYYY" value="<?php echo $rev?>" <?php if($each['revise']){echo "disabled";}?>>
+											<small style="color:grey">*format: mm/dd/YYYY</small>
 										</div>
 										<script>
-											$('#revised_'+<?php echo $each->id?>).datepicker({
+											$('#revised_'+<?php echo $each['ms']->id?>).datepicker({
 												autoclose: true,
 												todayHighlight: true
 											});
 										</script>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Reason for Delay</label>
-										<div class="col-sm-4">
-											<textarea class="form-control" placeholder="Reason" name="reason" style="height:80px" value="<?php echo $each->reason?>"></textarea>
+										<label class="col-sm-4 control-label">Reason for Delay</label>
+										<div class="col-sm-8">
+											<textarea class="form-control" placeholder="Reason" name="reason" style="height:80px" <?php if($each['revise']){echo "disabled";}?>><?php if($each['revise']){echo $each['revise']->reason;}?></textarea>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Action Plan</label>
-										<div class="col-sm-4">
-											<textarea class="form-control" placeholder="Action Plan" name="reason" style="height:80px" value="<?php echo $each->reason?>"></textarea>
+										<label class="col-sm-4 control-label">Action Plan</label>
+										<div class="col-sm-8">
+											<textarea class="form-control" placeholder="Action Plan" name="action" style="height:80px" <?php if($each['revise']){echo "disabled";}?>><?php if($each['revise']){echo $each['revise']->action;}?></textarea>
 										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label"></label><div class="col-sm-4"><input type="submit" class="btn btn-success" ></div>
-								</div>
+									<?php if(!$each['revise']){?><div class="form-group">
+										<label class="col-sm-4 control-label"></label><div class="col-sm-6"><input type="submit" class="btn btn-success" ></div>
+									</div><?php }?>
+								</div>					
 							</form>
+							</div>
+							<?php if($each['revise']){?>
+							<div style="width:50%; float:left; margin-left:20px; background-color:#F5F6CE; padding:0 0 15px 15px">
+								<center><h4>Approval</h4></center>
+								<div>
+									<label>GH</label><br>
+									<?php 
+										if($each['revise']->desc_GH=="No"){$gsts="danger";}
+										elseif($each['revise']->desc_GH=="Yes"){$gsts="success";}
+										else{$gsts="inverse";}
+									?>
+									<button style="margin-top:-5px" class="btn btn-<?php echo $gsts?> btn-sm" disabled></button>
+									<span style="margin-left:10px">
+										<?php echo $each['revise']->GH?>
+									</span>
+								</div><hr>
+								<div>
+									<label>PMO</label><br>
+									<?php 
+										if($each['revise']->desc_PMO=="No"){$psts="danger";}
+										elseif($each['revise']->desc_PMO=="Yes"){$psts="success";}
+										else{$psts="inverse";}
+									?>
+									<button style="margin-top:-5px" class="btn btn-<?php echo $gsts?> btn-sm" disabled></button>
+									<span style="margin-left:10px">
+										<?php echo $each['revise']->PMO?>
+									</span>
+								</div>
+							</div><div style="clear:both"></div>
+							<?php }?>
 						</td>
 					</tr>
 					<?php $i++;}?>
