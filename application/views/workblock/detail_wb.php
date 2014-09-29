@@ -118,7 +118,7 @@
 					<tr id="edit_ms_<?php echo $each['ms']->id?>" style="display:none">	
 						<td colspan=8>
 							<form class="form-horizontal" method="post" action="<?php echo base_url();?>milestone/submit_milestone/<?php echo $each['ms']->id?>">
-								<input type="hidden" value="<?php echo $wb->id?>" name="workblock">
+								<input type="hidden" value="<?php echo $wb['wb']->id?>" name="workblock">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Milestone</label>
 									<div class="col-sm-4">

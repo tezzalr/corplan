@@ -147,6 +147,7 @@ class Minitiative extends CI_Model {
     			$ms['status'] = "Delay";
     			$this->db->where('workblock_id', $wb->id);
     			$this->db->where('end <', $datenow);
+    			$this->db->where('status !=', 'Completed');
     			$this->db->update('milestone', $ms);
     		}
     	}
