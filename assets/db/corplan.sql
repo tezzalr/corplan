@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 29, 2014 at 03:23 AM
+-- Generation Time: Sep 29, 2014 at 11:26 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `milestone` (
   `revised` date DEFAULT NULL,
   `reason` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `milestone`
@@ -166,11 +166,11 @@ CREATE TABLE IF NOT EXISTS `revised` (
   `PMO_id` varchar(600) NOT NULL,
   `GH_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `PMO_cmnt` text NOT NULL,
-  `GH_cmnt` text NOT NULL,
+  `PMO_cmnt` text,
+  `GH_cmnt` text,
   `date_update` datetime NOT NULL,
-  `desc_GH` varchar(600) DEFAULT NULL,
-  `desc_PMO` varchar(600) DEFAULT NULL,
+  `desc_GH` varchar(600) NOT NULL DEFAULT 'Not Yet',
+  `desc_PMO` varchar(600) NOT NULL DEFAULT 'Not Yet',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `jabatan` varchar(600) DEFAULT NULL,
   `initiative` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `user`
@@ -200,7 +200,7 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 (4, 'tezzalr', 'a6313405d7d34459bca505ebc6cebd93', 'Tezza Lantika Riyanto', 'admin', '0', NULL, NULL),
 (5, 'nixon', '93be821e64ce643fd708112c77531da8', 'Nixon', 'PIC', NULL, 'GH', '1.3.A'),
 (6, 'marita', '4aed0aa3acc1d77dd569aac8029bb84b', 'Marita', 'PIC', NULL, 'DH', '1.3.A'),
-(12, 'gaby', '5f4dcc3b5aa765d61d8327deb882cf99', 'Gaby Valeria', 'PIC', 'Wholesale', 'GH', '1.1.A;1.1.B;1.1.C;1.1.E;1.3.C;1.5.A;1.6.A;1.6.B;1.6.C'),
+(12, 'gaby', '5f4dcc3b5aa765d61d8327deb882cf99', 'Gaby Valeria', 'PIC,PMO', 'Wholesale', 'GH', '1.1.A;1.1.B;1.1.C;1.1.E;1.3.C;1.5.A;1.6.A;1.6.B;1.6.C'),
 (13, 'putu', '5f4dcc3b5aa765d61d8327deb882cf99', 'Putu Anandika', 'PIC', NULL, 'DH', '1.1.A;1.1.B;1.1.C;1.1.E;1.3.C;1.5.A;1.6.A;1.6.B;1.6.C'),
 (14, 'ferry', '5f4dcc3b5aa765d61d8327deb882cf99', 'Ferry M Robbani', 'PIC', NULL, 'GH', '1.4.F;1.4.G'),
 (15, 'henni', '5f4dcc3b5aa765d61d8327deb882cf99', 'Henni', 'PIC', NULL, 'DH', '1.4.G'),
@@ -219,7 +219,8 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 (28, 'tongki', '5f4dcc3b5aa765d61d8327deb882cf99', 'Tongki Lentari', 'PIC', NULL, 'DH', '1.2.C'),
 (29, 'didiek', '5f4dcc3b5aa765d61d8327deb882cf99', 'Didiek H', 'PIC', NULL, 'GH', '1.4.D'),
 (30, 'oktav', '5f4dcc3b5aa765d61d8327deb882cf99', 'Oktav', 'PIC', NULL, 'DH', '1.4.D'),
-(31, 'yoyok', '804da344974611d34d496565f15376f4', 'Hermawan Soebagio', 'admin', NULL, '', '');
+(31, 'yoyok', '804da344974611d34d496565f15376f4', 'Hermawan Soebagio', 'admin', NULL, '', ''),
+(32, '1084353929', 'cfdeb44dfa760c6dca6f3296867d1833', 'Andi Widyo Cahyono', 'PMO', 'Wholesale', 'Allother', '');
 
 -- --------------------------------------------------------
 
@@ -236,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `workblock` (
   `initiative_id` int(11) NOT NULL,
   `pic` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
 
 --
 -- Dumping data for table `workblock`
@@ -262,7 +263,8 @@ INSERT INTO `workblock` (`id`, `title`, `start`, `end`, `objective`, `initiative
 (34, 'Bundling Build Branding strategy', NULL, NULL, '', 4, ''),
 (35, 'Post Survey Branding Analysis and Review', NULL, NULL, '', 4, ''),
 (36, 'Socialization New Branding', NULL, NULL, '', 4, ''),
-(37, 'Upgrade MCM', NULL, NULL, '', 20, '');
+(37, 'Upgrade MCM', NULL, NULL, '', 20, ''),
+(38, 'Quick Fix MCM', NULL, NULL, '', 25, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
