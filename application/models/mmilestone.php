@@ -56,8 +56,7 @@ class Mmilestone extends CI_Model {
     	$this->db->join('user as userpmo', 'userpmo.segment = revised.PMO_id');
     	$this->db->select('revised.*, usergh.name as GH, userpmo.name as PMO, userpmo.id as PMOid');
     	$this->db->where('milestone_id', $id);
-    	$this->db->where('aprv_PMO', null);
-    	$this->db->where('aprv_GH', null);
+    	$this->db->where("(desc_PMO != 'Approved' OR desc_GH != 'Approved')");
     	$this->db->order_by('revised.id', 'desc');
     	$this->db->limit(1);
     	$query = $this->db->get('revised');
@@ -100,10 +99,31 @@ class Mmilestone extends CI_Model {
         return $query->row(0)->id;
     }
     
+    function get_pending_aprv($id,$role){
+    	if($role == 'PIC'){$aut = 'GH';}
+    	else{$aut = 'PMO';}
+    	
+    	$this->db->select('*,milestone.title as milestone,workblock.title as workblock,initiative.title as initiative, initiative.code as code');
+		$this->db->join('milestone', 'milestone.id = revised.milestone_id');    	
+		$this->db->join('workblock', 'workblock.id = milestone.workblock_id');
+    	$this->db->join('initiative', 'initiative.id = workblock.initiative_id');
+
+    	$this->db->where($aut.'_id',$id);
+    	$this->db->where('desc_'.$aut,'Not Yet');
+    	$query = $this->db->get('revised');
+    	
+    	return $query->result();
+    }
+    
     //UPDATE FUNCTION
     function update_milestone($ms, $id){
         $this->db->where('id',$id);
         return $this->db->update('milestone', $ms);
+    }
+    
+    function update_revised($ms, $id){
+        $this->db->where('id',$id);
+        return $this->db->update('revised', $ms);
     }
     
     //DELETE FUNCTION

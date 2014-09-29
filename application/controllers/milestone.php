@@ -69,6 +69,23 @@ class Milestone extends CI_Controller {
 		}else{redirect("workblock/detail_workblock/".$wb);}
     }
     
+    public function aprove_revised(){
+    	$aut = $this->uri->segment(3);
+    	$id = $this->uri->segment(4);
+    	$ms = $this->uri->segment(5);
+    	$wb = $this->uri->segment(6);
+    	if (isset($_POST['yes'])) {
+			$revised['desc_'.$aut]="Approved";
+		} else if (isset($_POST['no'])) {
+			$revised['desc_'.$aut]="Rejected";
+		}
+		$revised[$aut.'_cmnt']=$this->input->post('cmnt_'.$aut);
+		$revised['aprv_'.$aut]=date('Y-m-d');
+		if($this->mmilestone->update_revised($revised,$id)){
+			redirect("workblock/detail_workblock/".$wb);
+		}else{redirect("workblock/detail_workblock/".$wb);}
+    } 
+    
     public function change_status(){
     	$stat = $this->uri->segment(3);
     	$id = $this->uri->segment(4);

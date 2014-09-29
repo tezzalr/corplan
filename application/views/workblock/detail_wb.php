@@ -1,3 +1,6 @@
+<?php 
+	$msid = $this->uri->segment(4);
+?>
 <div id="" class="container no_pad">
 	<div class="no_pad" style="margin-bottom: 10px; float:right">
 		<h5><a  style="color:grey" href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb['wb']->initiative_id?>">Workblock</a></h5>
@@ -103,7 +106,8 @@
 							<?php }elseif($each['ms']->status == "In Progress"){?>
 							<form method="post" action="<?php echo base_url();?>milestone/change_status/end/<?php echo $each['ms']->id?>/<?php echo $each['ms']->workblock_id?>"><button type="submit" class="btn btn-success btn-xs">End</button></form>
 							<?php }elseif($each['ms']->status == "Delay"){?>
-							<button type="submit" class="btn btn-danger btn-xs" onclick="revise_ms(<?php echo $each['ms']->id?>)">Revise</button>
+							<?php if($each['revise']){$tul = "Fw-up";}else{$tul = "Revise";}?>
+							<button type="submit" class="btn btn-danger btn-xs" onclick="revise_ms(<?php echo $each['ms']->id?>)"><?php echo $tul?></button>
 							<?php }?>
 						</td>
 						<?php if($user['role']=='admin'){?><td>
@@ -113,7 +117,7 @@
 					</tr>
 					<tr id="edit_ms_<?php echo $each['ms']->id?>" style="display:none">	
 						<td colspan=8>
-							<form class="form-horizontal disabled" method="post" action="<?php echo base_url();?>milestone/submit_milestone/<?php echo $each['ms']->id?>">
+							<form class="form-horizontal" method="post" action="<?php echo base_url();?>milestone/submit_milestone/<?php echo $each['ms']->id?>">
 								<input type="hidden" value="<?php echo $wb->id?>" name="workblock">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Milestone</label>
@@ -152,16 +156,27 @@
 								</form>
 							</td>
 						</tr>
-					<tr id="revise_ms_<?php echo $each['ms']->id?>" style="display:none">
+					<tr id="revise_ms_<?php echo $each['ms']->id?>" style="<?php if($msid!=$each['ms']->id){echo "display:none";}?>">
 						<td colspan=8>
 							<div style="width:45%; float:left;">
 								<form class="form-horizontal" method="post" action="<?php echo base_url();?>milestone/submit_revised/<?php echo $each['ms']->id."/".$wb['wb']->id?>">
+									<?php $statform = "";
+										if($each['revise']){
+											if($each['revise']->user_id!= $user['id'] || ($each['revise'] && (!($each['revise']->desc_GH=="Rejected")&&!($each['revise']->desc_PMO=="Rejected")))){
+												$statform = "disabled";
+											}
+										}
+									?>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Revised Date</label>
 										<div class="col-sm-8">
-											<?php $rev=""; if($each['revise']){$rev = date("m/d/Y", strtotime($each['revise']->revised_date));}else{$rev = date("m/d/Y", strtotime($each['ms']->end));}?>
-											<input type="date" class="form-control" id="revised_<?php echo $each['ms']->id?>" name="revised" placeholder="mm/dd/YYYY" value="<?php echo $rev?>" <?php if($each['revise']){echo "disabled";}?>>
-											<small style="color:grey">*format: mm/dd/YYYY</small>
+											<?php if(!$statform){?>
+												<?php $rev=""; if($each['revise']){$rev = date("m/d/Y", strtotime($each['revise']->revised_date));}else{$rev = date("m/d/Y", strtotime($each['ms']->end));}?>
+												<input type="date" class="form-control" id="revised_<?php echo $each['ms']->id?>" name="revised" placeholder="mm/dd/YYYY" value="<?php echo $rev?>" <?php echo $statform?>>
+												<small style="color:grey">*format: mm/dd/YYYY</small>
+											<?php }else{
+												echo "<p class=\"form-control-static\">".date("j M Y", strtotime($each['revise']->revised_date))."</p>";
+											}?>
 										</div>
 										<script>
 											$('#revised_'+<?php echo $each['ms']->id?>).datepicker({
@@ -173,44 +188,66 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Reason for Delay</label>
 										<div class="col-sm-8">
-											<textarea class="form-control" placeholder="Reason" name="reason" style="height:80px" <?php if($each['revise']){echo "disabled";}?>><?php if($each['revise']){echo $each['revise']->reason;}?></textarea>
+											<textarea class="form-control" placeholder="Reason" name="reason" style="height:80px" <?php echo $statform?>><?php if($each['revise']){echo $each['revise']->reason;}?></textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label">Action Plan</label>
 										<div class="col-sm-8">
-											<textarea class="form-control" placeholder="Action Plan" name="action" style="height:80px" <?php if($each['revise']){echo "disabled";}?>><?php if($each['revise']){echo $each['revise']->action;}?></textarea>
+											<textarea class="form-control" placeholder="Action Plan" name="action" style="height:80px" <?php echo $statform?>><?php if($each['revise']){echo $each['revise']->action;}?></textarea>
 										</div>
 									</div>
-									<?php if(!$each['revise']){?><div class="form-group">
-										<label class="col-sm-4 control-label"></label><div class="col-sm-6"><input type="submit" class="btn btn-success" ></div>
+									<?php if(!$statform){?><div class="form-group">
+										<label class="col-sm-4 control-label"></label><div class="col-sm-6"><input type="submit" class="btn btn-success" value="Submit"></div>
 									</div><?php }?>
 								</div>					
 							</form>
 							</div>
 							<?php if($each['revise']){?>
-							<div style="width:50%; float:left; margin-left:20px; background-color:#F5F6CE; padding:0 0 15px 15px">
+							<div style="width:50%; float:left; margin-left:20px; background-color:#EBF4FC; padding:0 15px 15px 15px">
 								<center><h4>Approval</h4></center>
 								<div>
 									<label>GH</label><br>
 									<?php 
-										if($each['revise']->desc_GH=="No"){$gsts="danger";}
-										elseif($each['revise']->desc_GH=="Yes"){$gsts="success";}
+										if($each['revise']->desc_GH=="Rejected"){$gsts="danger";}
+										elseif($each['revise']->desc_GH=="Approved"){$gsts="success";}
 										else{$gsts="inverse";}
 									?>
 									<button style="margin-top:-5px" class="btn btn-<?php echo $gsts?> btn-sm" disabled></button>
 									<span style="margin-left:10px">
 										<?php echo $each['revise']->GH?>
 									</span>
+									<?php if($each['revise']->aprv_GH){?>
+										<span style="float:right; margin-right:10px">
+											<?php echo $each['revise']->desc_GH." at ".date("j M Y", strtotime($each['revise']->aprv_GH))?>
+										</span><div style="clear:both"></div>
+									<?php }?>
+									<?php if($each['revise']->GH_cmnt){?>
+										<div style="margin-top:10px">
+											<small style="color:grey">Notes</small>
+											<p><?php echo $each['revise']->GH_cmnt?></p>
+										</div>
+									<?php }?>
+									<?php if($user['id']==$each['revise']->GH_id){?>
+										<div style="margin-top:20px">
+											<form id="GH_aprvl_form" action="<?php echo base_url().'milestone/aprove_revised/GH/'.$each['revise']->id.'/'.$each['ms']->id.'/'.$wb['wb']->id?>" method="post">	
+												<div class="form-group">
+													<textarea class="form-control" style="width:80%" placeholder="Comment for PIC" name="cmnt_GH"><?php echo $each['revise']->GH_cmnt?></textarea>
+												</div>
+												<input type="submit" class="btn btn-success btn-sm" name="yes" value="Yes">
+												<input type="submit" class="btn btn-danger btn-sm" name="no" value="No">
+											</form>
+										</div>
+									<?php }?>
 								</div><hr>
 								<div>
 									<label>PMO</label><br>
 									<?php 
-										if($each['revise']->desc_PMO=="No"){$psts="danger";}
-										elseif($each['revise']->desc_PMO=="Yes"){$psts="success";}
+										if($each['revise']->desc_PMO=="Approved"){$psts="danger";}
+										elseif($each['revise']->desc_PMO=="Rejected"){$psts="success";}
 										else{$psts="inverse";}
 									?>
-									<button style="margin-top:-5px" class="btn btn-<?php echo $gsts?> btn-sm" disabled></button>
+									<button style="margin-top:-5px" class="btn btn-<?php echo $psts?> btn-sm" disabled></button>
 									<span style="margin-left:10px">
 										<?php echo $each['revise']->PMO?>
 									</span>

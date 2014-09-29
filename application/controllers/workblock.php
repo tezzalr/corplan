@@ -27,12 +27,12 @@ class Workblock extends CI_Controller {
     	$workblock['wb'] = $this->mworkblock->get_workblock_by_id($id);
     	$workblock['stat'] = $this->mworkblock->get_workblock_status($id);
 		$milestones = $this->mmilestone->get_all_workblock_milestone($id);
+    	$data['title'] = $workblock['wb']->title;
     	
     	$user = $this->session->userdata('user');
-    	
-    	$data['title'] = $workblock['wb']->title;
+    	$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
 		$data['content'] = $this->load->view('workblock/detail_wb',array('wb' => $workblock, 'ms' => $milestones),TRUE);
 

@@ -7,6 +7,8 @@ class Initiative extends CI_Controller {
         parent::__construct();
         $this->load->model('minitiative');
         $this->load->model('mworkblock');
+        $this->load->model('mmilestone');
+        $this->load->model('muser');
         
         $session = $this->session->userdata('user');
         
@@ -26,14 +28,20 @@ class Initiative extends CI_Controller {
     public function list_initiative(){
     	$data['title'] = "List All Initiatives";
 		
+		//Header
 		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
 		$this->minitiative->check_initiative_status();
 		
 		$programs = $this->minitiative->get_all_programs();
-		$initiatives = $this->minitiative->get_all_initiatives();
-		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
+		$user_info = $this->muser->get_user_by_id($user['id']);
+		$roles = explode(',',$user['role']); $user_initiative="";
+		if((in_array('PIC',$roles))&&!(in_array('PMO',$roles))){
+			$user_initiative = explode(';',$user_info->initiative);	
+		}
+		$initiatives = $this->minitiative->get_all_initiatives($user_initiative);
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
 		$data['content'] = $this->load->view('initiative/list_initiative',array('ints' => $initiatives,'programs' => $programs),TRUE);
 
@@ -87,9 +95,10 @@ class Initiative extends CI_Controller {
 		$workblocks = $this->mworkblock->get_all_initiative_workblock($id);
 		
 		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
 		$data['title'] = "Initiative";
-		$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
 		$data['content'] = $this->load->view('initiative/detail',array('initiative' => $initiative,'workblocks' => $workblocks),TRUE);
 

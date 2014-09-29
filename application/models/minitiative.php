@@ -37,11 +37,14 @@ class Minitiative extends CI_Model {
         return $query->result();
     }
     
-    function get_all_initiatives(){
+    function get_all_initiatives($user_initiative){
     	//$this->db->where('role', 3);
     	$this->db->select('initiative.*, program.title as program, program.code as progcode');
     	$this->db->join('program', 'program.id = initiative.program_id');
     	$this->db->order_by('initiative.code', 'asc');
+    	if($user_initiative){
+    		$this->db->where_in('initiative.code', $user_initiative);
+    	}
     	$query = $this->db->get('initiative');
         $res = $query->result();
         $arr = array(); $i=0;
@@ -138,7 +141,7 @@ class Minitiative extends CI_Model {
     
     function check_initiative_status(){
     	$datenow = date("Y-m-d");
-    	$initiatives = $this->get_all_initiatives();
+    	$initiatives = $this->get_all_initiatives("");
     	foreach($initiatives as $int){
     		foreach($int['wbs'] as $wb){
     			$ms['status'] = "Delay";
