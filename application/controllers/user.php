@@ -75,7 +75,8 @@ class User extends CI_Controller {
 					'name' => $user->name,
 					'is_logged_in' => true,
 					'role' => $user->role,
-					'jabatan' => $user->jabatan
+					'jabatan' => $user->jabatan,
+					'initiative' => $user->initiative
 				);
 			$this->session->set_userdata('user',$data);
             if(count($user_roles)>100){
@@ -123,6 +124,7 @@ class User extends CI_Controller {
         $user['role'] = $this->input->post('role');
         $user['jabatan'] = $this->input->post('jabatan');
         $user['initiative'] = $this->input->post('initiative');
+        $user['segment'] = $this->input->post('segment');
         
         if($id){
 			if($this->muser->update_user($user,$id)){

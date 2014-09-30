@@ -5,8 +5,19 @@
 	<div>
 		<?php if($user['role']=='admin'){?><div style="margin-bottom:10px; float:right;">
 		<button onclick="toggle_visibility('new_initiative');" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> Initiative</button>
-		</div><div style="clear:both"></div><?php }?>
+		</div></div><?php }?>
+		<?php
+			//echo date_format(date_create('2014-05-01'), 'l');
+		?>
 		
+		<div style="margin-bottom:10px; float:left">
+			<a href="<?php echo base_url()?>initiative/list_initiative/" style="color:black">Status:</a>
+			<a href="<?php echo base_url()?>initiative/list_initiative/nsy" style="color:black"><button class="btn btn-inverse btn-xs"><span style="color:grey" class="glyphicon glyphicon-off"></span></button><span style="margin-right:10px"> Not Started Yet</span></a>
+			<a href="<?php echo base_url()?>initiative/list_initiative/progress" style="color:black"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-refresh"></span></button><span style="margin-right:10px"> On Progress</span></a>
+			<a href="<?php echo base_url()?>initiative/list_initiative/completed" style="color:black"><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button><span style="margin-right:10px"> Completed</span></a>
+			<a href="<?php echo base_url()?>initiative/list_initiative/delay" style="color:black"><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button><span> Delay</span></a>
+		</div>
+		<div style="clear:both">
 		<div id="new_initiative" style="display:none">
 			<hr>
 				<h3 class="form-signin-heading">Input Initiative</h3>
@@ -73,8 +84,16 @@
 				<tr class="headertab"><th style="width:60px">Program</th><th>Initiatives</th><th>WB</th><th>PIC</th><th>Start</th><th>End</th><th>Dependency</th><th>Tier</th></tr>
 			</thead>
 			<tbody>
-				<?php $prog=""; $np=1; foreach($ints as $int){?>
-				<?php if($prog != $int['int']->program){?>
+				<?php 
+					$statshow=$this->uri->segment(3); $prog=""; $np=1; 
+					if($statshow){
+						if($statshow == "progress"){$statshow = "In Progress";}
+						elseif($statshow == "completed"){$statshow = "Completed";}
+						elseif($statshow == "delay"){$statshow = "Delay";}
+						else{$statshow = "Not Started Yet";}
+					}
+				foreach($ints as $int){?>
+				<?php if(!$statshow || ($statshow && ($statshow == $int['stat']))){if($prog != $int['int']->program){?>
 				<tr style="background-color:#F7F2E0; font-size:16px"><td colspan=8><?php echo $int['int']->progcode." ".$int['int']->program?></td></tr>
 				<?php $prog=$int['int']->program; $np++;}?>
 				<tr>
@@ -168,7 +187,7 @@
 						</form>
 					</div>
 				</tr>
-				<?php }?>
+				<?php }}?>
 			</tbody>
 		</table>
 	</div><div style="clear:both"></div><br>

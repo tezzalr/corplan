@@ -97,6 +97,12 @@ $(document).ready(function(){
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-3 control-label">Segment</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="segment" name="segment" placeholder="Segment" value="<?php if($info){echo $info->segment;}?>">
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-3 control-label">Initiative</label>
 				<div class="col-sm-9">
 					<input type="text" class="form-control" id="initiative" name="initiative" placeholder="Initiative" value="<?php if($info){echo $info->initiative;}?>">

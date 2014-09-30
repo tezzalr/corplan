@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.9
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Sep 29, 2014 at 11:26 AM
--- Server version: 5.6.14
--- PHP Version: 5.5.6
+-- Host: 127.0.0.1
+-- Generation Time: Sep 29, 2014 at 12:34 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -103,23 +103,73 @@ CREATE TABLE IF NOT EXISTS `milestone` (
   `revised` date DEFAULT NULL,
   `reason` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=85 ;
 
 --
 -- Dumping data for table `milestone`
 --
 
 INSERT INTO `milestone` (`id`, `title`, `start`, `end`, `status`, `workblock_id`, `revised`, `reason`) VALUES
-(25, 'Define the nature of the credit analyst function', NULL, '2014-07-03', 'Delay', 17, NULL, ''),
-(26, 'Develop operating procedure related to credit analyst function', NULL, '2014-07-03', 'Delay', 17, NULL, ''),
+(25, 'Define the nature of the credit analyst function', NULL, '2014-07-03', 'Completed', 17, NULL, '0'),
+(26, 'Develop operating procedure related to credit analyst function', NULL, '2014-07-03', 'Completed', 17, NULL, '0'),
 (27, 'Pilot Project CA Function Implementation', NULL, '2015-01-14', 'In Progress', 17, NULL, ''),
-(28, 'Interim evaluation', NULL, '2014-10-15', 'Not Started Yet', 17, NULL, ''),
+(28, 'Interim evaluation', NULL, '2014-10-15', 'In Progress', 17, NULL, ''),
 (29, 'Mapping headcount CA within all organization', NULL, '2014-12-31', 'In Progress', 18, NULL, ''),
-(30, 'Define source of manning fulfillment', NULL, '2014-12-31', 'Not Started Yet', 18, NULL, ''),
-(31, 'Manning fulfillment CA', NULL, '2015-10-15', 'Not Started Yet', 18, NULL, ''),
-(32, 'Detailing lending product team organization', NULL, '2015-03-31', 'Not Started Yet', 19, NULL, ''),
-(33, 'Inventarisir CA dan RM berikut debitur yang dikelola', NULL, '2015-03-31', 'Not Started Yet', 19, NULL, ''),
-(34, ' Block move CA to lending product team', NULL, '2015-10-15', 'Not Started Yet', 19, NULL, '');
+(30, 'Define source of manning fulfillment', NULL, '2014-12-31', 'In Progress', 18, NULL, ''),
+(31, 'Manning fulfillment CA', NULL, '2015-10-15', 'Delay', 18, NULL, '0'),
+(32, 'Detailing lending product team organization', NULL, '2015-03-31', 'Delay', 19, NULL, '0'),
+(33, 'Inventarisir CA dan RM berikut debitur yang dikelola', NULL, '2015-03-31', 'Delay', 19, NULL, '0'),
+(34, ' Block move CA to lending product team', NULL, '2015-10-15', 'Delay', 19, NULL, '0'),
+(35, 'RFP & PMP	', NULL, '2015-01-09', 'Not Started Yet', 37, NULL, ''),
+(36, 'FSD	', NULL, '2015-01-16', 'Not Started Yet', 37, NULL, ''),
+(37, 'System development	', NULL, '2015-03-31', 'Not Started Yet', 37, NULL, ''),
+(38, 'SIT	', NULL, '2015-04-30', 'Not Started Yet', 37, NULL, ''),
+(39, 'UAT	', NULL, '2015-06-17', 'Not Started Yet', 37, NULL, ''),
+(40, 'Migration	', NULL, '2015-06-19', 'Not Started Yet', 37, NULL, ''),
+(41, 'Full Live Implementation	', NULL, '2015-06-30', 'Not Started Yet', 37, NULL, ''),
+(42, 'System development	', NULL, '2014-07-25', 'Completed', 38, NULL, '0'),
+(43, 'SIT	', NULL, '2014-08-31', 'Completed', 38, NULL, '0'),
+(44, 'UAT	', NULL, '2014-09-30', 'In Progress', 38, NULL, ''),
+(45, 'Migration	', NULL, '2014-11-30', 'In Progress', 38, NULL, ''),
+(46, 'Implementations Collection and Liquidity Solutions for BPJS Kesehatan	', NULL, '2014-09-29', 'Completed', 39, NULL, '0'),
+(47, 'Implementations  Payment solutions for BPJS Kes/Collection for Hospitals', NULL, '2015-02-28', 'In Progress', 39, NULL, ''),
+(48, 'Implementations  Collection solutions for In Health', NULL, '2014-12-31', 'In Progress', 39, NULL, ''),
+(49, 'Implementations PaymentSolutions for Hospitals 	', NULL, '2015-02-28', 'In Progress', 39, NULL, ''),
+(50, 'Explore Business Models and Needs', NULL, '2015-06-30', 'In Progress', 40, NULL, ''),
+(51, 'Implement SCM in Pharmaceuticals Distribution Chain', NULL, '2015-09-30', 'In Progress', 40, NULL, ''),
+(52, 'Explore Needs and Solutions for Healthcare Entities 	', NULL, '2014-10-31', 'In Progress', 41, NULL, ''),
+(53, 'Distribute hospitals list and solutions  to relevant Business Unit', NULL, '2014-03-31', 'Completed', 42, NULL, ''),
+(54, 'Roll Out Plans', NULL, '2014-12-31', 'In Progress', 42, NULL, '0'),
+(55, 'Develop tracking and monitoring tools', NULL, '2014-03-30', 'Completed', 43, NULL, ''),
+(56, 'Final evaluation	', NULL, '2014-12-31', 'In Progress', 17, NULL, ''),
+(57, 'Develop job descprtion & required skill related to credit analyst function', NULL, '3014-12-31', 'In Progress', 17, NULL, ''),
+(58, 'Develop credit analyst career path	', NULL, '2015-03-31', 'In Progress', 17, NULL, ''),
+(59, 'Completed RFP	', NULL, '2014-03-28', 'Completed', 27, NULL, ''),
+(60, 'RFP sent to vendors	', NULL, '2014-03-28', 'Completed', 27, NULL, ''),
+(61, 'RFP response 	', NULL, '2014-09-29', 'Completed', 28, NULL, '0'),
+(62, 'Proof of Concept 	', NULL, '2014-09-29', 'Completed', 28, NULL, ''),
+(63, 'Assessment result	', NULL, '2014-09-29', 'Completed', 28, NULL, ''),
+(64, 'Vendor selected/contract sign off	', NULL, '2014-10-24', 'In Progress', 28, NULL, ''),
+(65, 'Functional Specification Document', NULL, '2014-12-05', 'In Progress', 29, NULL, ''),
+(66, 'Technical Specification Document	', NULL, '2014-12-05', 'In Progress', 29, NULL, ''),
+(67, 'Supporting documents	', NULL, '2015-07-31', 'In Progress', 30, NULL, ''),
+(68, 'Fully-running system	', NULL, '2015-07-31', 'In Progress', 30, NULL, ''),
+(69, 'Migration documentation	', NULL, '2015-08-31', 'In Progress', 31, NULL, ''),
+(70, 'Full clients migration (Phase I)	', NULL, '2015-08-31', 'In Progress', 31, NULL, ''),
+(71, 'Pembuatan feasibilty Study peningkatan ijin usaha cabang Mansek di Singapore	', NULL, '2014-09-30', 'In Progress', 26, NULL, ''),
+(72, 'Pengajuan ijin ke CnIC	', NULL, '2014-12-31', 'Not Started Yet', 26, NULL, ''),
+(73, 'Pengajuan ijin usaha ke MAS (Monetary Authority of Singapore)	', NULL, '2015-12-31', 'Not Started Yet', 26, NULL, ''),
+(74, 'SWOT Analysis 	', NULL, '2015-01-31', 'In Progress', 32, NULL, ''),
+(75, 'Consumers Insight analysis	', NULL, '2015-01-31', 'In Progress', 33, NULL, ''),
+(76, 'Bundling Build Branding strategy 	', NULL, '2015-05-01', 'In Progress', 34, NULL, ''),
+(77, 'Post Survey Branding Analysis and Review	', NULL, '2015-05-31', 'In Progress', 35, NULL, ''),
+(78, 'Socialization New Branding 	', NULL, '2015-07-15', 'In Progress', 36, NULL, ''),
+(79, 'Detailed study of client needs on specific products', NULL, '2014-12-31', 'Not Started Yet', 20, NULL, ''),
+(80, 'Study of competitor offerings', NULL, '2014-12-31', 'Not Started Yet', 20, NULL, ''),
+(81, 'Detailed product proposition including pricing, currency pairs etc.', NULL, '2014-12-31', 'Not Started Yet', 20, NULL, ''),
+(82, 'Gap analysis based on current and target state product proposition', NULL, '2014-12-31', 'Not Started Yet', 20, NULL, ''),
+(83, 'Cost & coverage evaluation, system capacity, agreement preparation, legal review', NULL, '2014-09-30', 'Not Started Yet', 47, NULL, ''),
+(84, 'Developing front end trade system for correspondent banks', NULL, '2015-03-30', 'Not Started Yet', 46, NULL, '0');
 
 -- --------------------------------------------------------
 
@@ -166,11 +216,11 @@ CREATE TABLE IF NOT EXISTS `revised` (
   `PMO_id` varchar(600) NOT NULL,
   `GH_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `PMO_cmnt` text,
-  `GH_cmnt` text,
+  `PMO_cmnt` text NOT NULL,
+  `GH_cmnt` text NOT NULL,
   `date_update` datetime NOT NULL,
-  `desc_GH` varchar(600) NOT NULL DEFAULT 'Not Yet',
-  `desc_PMO` varchar(600) NOT NULL DEFAULT 'Not Yet',
+  `desc_GH` varchar(600) DEFAULT NULL,
+  `desc_PMO` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -220,7 +270,7 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 (29, 'didiek', '5f4dcc3b5aa765d61d8327deb882cf99', 'Didiek H', 'PIC', NULL, 'GH', '1.4.D'),
 (30, 'oktav', '5f4dcc3b5aa765d61d8327deb882cf99', 'Oktav', 'PIC', NULL, 'DH', '1.4.D'),
 (31, 'yoyok', '804da344974611d34d496565f15376f4', 'Hermawan Soebagio', 'admin', NULL, '', ''),
-(32, '1084353929', 'cfdeb44dfa760c6dca6f3296867d1833', 'Andi Widyo Cahyono', 'PMO', 'Wholesale', 'Allother', '');
+(32, '1084353929', 'cfdeb44dfa760c6dca6f3296867d1833', 'Andi Widyo Cahyono', 'PMO', NULL, 'GH', '');
 
 -- --------------------------------------------------------
 
@@ -237,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `workblock` (
   `initiative_id` int(11) NOT NULL,
   `pic` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=48 ;
 
 --
 -- Dumping data for table `workblock`
@@ -264,7 +314,16 @@ INSERT INTO `workblock` (`id`, `title`, `start`, `end`, `objective`, `initiative
 (35, 'Post Survey Branding Analysis and Review', NULL, NULL, '', 4, ''),
 (36, 'Socialization New Branding', NULL, NULL, '', 4, ''),
 (37, 'Upgrade MCM', NULL, NULL, '', 20, ''),
-(38, 'Quick Fix MCM', NULL, NULL, '', 25, '');
+(38, 'Quick Fix MCM', NULL, NULL, 'Improving the reliability & performance of MCM', 25, ''),
+(39, 'Implementation of pilot program for BPJS Kesehatan, In Health & Providers -Hospitals', NULL, NULL, '', 16, ''),
+(40, 'Opportunity Assessment  for COB Model, Accelerate Claims & Pharmaceuticals Chain', NULL, NULL, 'Provide healthcare solutions for claim collection, registration portal for COB Model, integrated services beetween providers & Pharmacy', 16, ''),
+(41, 'Update Bank Mandiri Healthcare Sector Pitchbook	', NULL, NULL, 'Adjust our current Pitchbook for Healthcare Entities', 16, ''),
+(42, 'Develop Client List and finalize roll out plans', NULL, NULL, 'Distribution of lists to the relevant Business Unit', 16, ''),
+(43, 'Track and facilitate on going outreach process', NULL, NULL, 'Monitor solutions implementation	', 16, ''),
+(44, 'Developing Custodian Supporting Application (CSA)', NULL, NULL, '', 24, ''),
+(45, 'Enhancing Custody System', NULL, NULL, '', 24, ''),
+(46, 'Packaging Bank Mandiri Trade Services System as other bank’s back office', NULL, NULL, '', 24, ''),
+(47, 'Export Bill Collection Services', NULL, NULL, '', 24, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

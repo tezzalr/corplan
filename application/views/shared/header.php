@@ -18,9 +18,10 @@
 </style>
 <div style="width:100%; background-color:black; color:white; padding:5px; padding-left:60px; ">
 	<div class="header_top" style="float:left; margin-right:20px;"><img src="<?php echo base_url()?>assets/img/general/mandiri.png" style="width:70px"></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>initiative/list_programs">Overview</a></div>
+	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>general/overview">Overview</a></div>
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>initiative/list_programs">Programs</a></div>
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>initiative/list_initiative">Initiatives</a></div>
+	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">Log</a></div>
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">PIC</a></div>
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">MoM</a></div>
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">FAQ</a></div>

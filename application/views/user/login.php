@@ -32,8 +32,7 @@ $(document).ready(function(){
 	<div class="col-md-6" style="margin: 0 auto; position: relative; top: 15%;">
 		<div style="float:right;">
 			<img src="<?php echo base_url()?>assets/img/general/mandiri.png" style="width:190px"><br>
-			<label style="font-size:21px">Mandiri Corplan 2020</label><br>
 		</div><div style="clear:both"></div>
-		<div style="margin-top:20px"><img src="<?php echo base_url()?>assets/img/general/Transformasi.png" style="width:100%"></div>
+		<div style="margin-top:10px"><img src="<?php echo base_url()?>assets/img/general/Transformasi.png" style="width:100%"></div>
 		</div>
 </div>

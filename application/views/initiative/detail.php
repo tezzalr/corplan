@@ -1,16 +1,35 @@
 <div id="" class="container no_pad">
-	<div class="no_pad" style="margin-bottom: 10px; float:right">
-		<h5 style="color:grey">Initiative</h5>
-		<h4 style="color:grey">
-			<?php 
-				if($initiative['stat']=="Delay"){$clr="danger"; $icn="remove";}
-				elseif($initiative['stat']=="In Progress"){$clr="warning"; $icn="refresh";}
-				elseif($initiative['stat']=="Completed"){$clr="success"; $icn="ok";}
-				else{$clr="inverse"; $icn="off";}
+	<div class="no_pad" style="margin-bottom: 0px; color:grey; float:right">
+		<div>
+			<h5 style="color:grey">Initiative</h5>
+			<h4>
+				<?php 
+					if($initiative['stat']=="Delay"){$clr="danger"; $icn="remove";}
+					elseif($initiative['stat']=="In Progress"){$clr="warning"; $icn="refresh";}
+					elseif($initiative['stat']=="Completed"){$clr="success"; $icn="ok";}
+					else{$clr="inverse"; $icn="off";}
+				?>
+				<button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button>
+				<?php echo $initiative['int']->code?> <?php echo $initiative['int']->title?>
+			</h4>
+		</div>
+		<div style="width:400px; float:right">
+			<?php
+				$stdate = strtotime($initiative['int']->start);
+				$eddate = strtotime($initiative['int']->end);
+				$crdate = strtotime(date('Y-m-d'));
+				$pcttgl = ($crdate-$stdate)/($eddate-$stdate)*100;
+				if($pcttgl<1){$pcttgl = 0;}
 			?>
-			<button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button>
-			<?php echo $initiative['int']->code?> <?php echo $initiative['int']->title?>
-		</h4>
+			<span><?php echo date("j M y", $stdate);?></span>
+			<span style="float:right"><?php echo date("j M y", $eddate);?></span>
+			<div class="progress">
+			  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $pcttgl?>%">
+				<span><?php echo number_format($pcttgl,1)?>%</span>
+			  </div>
+			</div>
+			
+		</div>
 	</div><div style="clear:both"></div>
 	<h3>Workblock Summary</h3>
 	<div>
@@ -119,7 +138,7 @@
 						</form>
 				</tr>
 				<?php $j=1; foreach($wb['ms'] as $ms){?>
-				<tr class="ms_wb_<?php echo $wb['wb']->id?>">
+				<tr class="ms_wb_<?php echo $wb['wb']->id?>" style="">
 					<td><?php 
 						if($ms->status=="Delay"){$clr="danger"; $icn="remove";}
 						elseif($ms->status=="In Progress"){$clr="warning"; $icn="refresh";}
