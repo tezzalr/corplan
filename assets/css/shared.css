@@ -80,6 +80,10 @@ body a:hover{
 .container .text-muted {
   margin: 20px 0;
 }
+.container{
+	//height:88%;
+	//overflow:scroll;
+}
 
 #footer > .container {
   padding-left: 10px;

@@ -91,18 +91,26 @@ class Initiative extends CI_Controller {
     public function detail_initiative(){
     	$id = $this->uri->segment(3);
     	$initiative['int'] = $this->minitiative->get_initiative_by_id($id);
-    	$initiative['stat'] = $this->minitiative->get_initiative_status($id)['status'];
-		$workblocks = $this->mworkblock->get_all_initiative_workblock($id);
+    	$user = $this->session->userdata('user');
+    	$roles = explode(',',$user['role']);
+    	$inits = explode(';',$user['initiative']); 
+    	if((in_array('PIC',$roles)&&(count($roles)==1))&& !(in_array($initiative['int']->code,$inits))){
+    		redirect('initiative/list_initiative');
+    	}
+    	else{
+			$initiative['stat'] = $this->minitiative->get_initiative_status($id)['status'];
+			$workblocks = $this->mworkblock->get_all_initiative_workblock($id);
 		
-		$user = $this->session->userdata('user');
-		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+			$user = $this->session->userdata('user');
+			$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
-		$data['title'] = "Initiative";
-		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
-		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('initiative/detail',array('initiative' => $initiative,'workblocks' => $workblocks),TRUE);
+			$data['title'] = "Initiative";
+			$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+			$data['footer'] = $this->load->view('shared/footer','',TRUE);
+			$data['content'] = $this->load->view('initiative/detail',array('initiative' => $initiative,'workblocks' => $workblocks),TRUE);
 
-		$this->load->view('front',$data);
+			$this->load->view('front',$data);
+		}
     }
     
     /*Program*/
@@ -110,12 +118,13 @@ class Initiative extends CI_Controller {
     	$data['title'] = "List All Initiatives";
 		
 		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
 		$programs = $this->minitiative->get_all_programs();
 		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user,'programs' => $programs),TRUE);	
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('initiative/list_program',array(),TRUE);
+		$data['content'] = $this->load->view('initiative/list_program',array('programs' => $programs),TRUE);
 
 		$this->load->view('front',$data);
     }
@@ -124,8 +133,9 @@ class Initiative extends CI_Controller {
     	$data['title'] = "List All Initiatives";
 		
 		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
 		$data['content'] = $this->load->view('initiative/input_program',array(),TRUE);
 
@@ -135,11 +145,22 @@ class Initiative extends CI_Controller {
     public function submit_program(){
       	$program['title'] = $this->input->post('title');
         $program['code'] = $this->input->post('code');
-        $program['segment'] = "Wholesale";
+        $program['segment'] = $this->input->post('segment');
         
         if($this->minitiative->insert_program($program)){
         	redirect('initiative/list_programs');
         }else{redirect('initiative/input_program');}
     }
+    
+    public function delete_program(){
+        if($this->minitiative->delete_program()){
+    		$json['status'] = 1;
+    	}
+    	else{
+    		$json['status'] = 0;
+    	}
+    	$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
     
 }

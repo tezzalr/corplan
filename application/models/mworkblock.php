@@ -48,7 +48,9 @@ class Mworkblock extends CI_Model {
     }
     
     function get_workblock_by_id($id){
-        $this->db->where('id',$id);
+    	$this->db->select('workblock.*,initiative.code as code');
+        $this->db->join('initiative', 'initiative.id = workblock.initiative_id');
+        $this->db->where('workblock.id',$id);
         $result = $this->db->get('workblock');
         if($result->num_rows==1){
             return $result->row(0);

@@ -8,9 +8,19 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label" for="">Segment</label>
 				<div class="col-sm-9">
-					<select class="form-control" name="program">
+					<select class="form-control" name="segment">
 						<option value="Wholesale">Wholesale</option>
 						<option value="SME">SME</option>
+						<option value="Mikro">Mikro</option>
+						<option value="Individuals">Individuals</option>
+						<option value="IT">IT</option>
+						<option value="HC">HC</option>
+						<option value="Risk">Risk</option>
+						<option value="Distribution">Distribution</option>
+						<option value="Organization">Organization</option>
+						<option value="Performance Management">Performance Management</option>
+						<option value="Marketing">Marketing</option>
+						
 					</select>
 				</div>
 			</div>

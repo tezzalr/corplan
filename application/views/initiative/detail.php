@@ -33,9 +33,11 @@
 	</div><div style="clear:both"></div>
 	<h3>Workblock Summary</h3>
 	<div>
+		<?php $inits = explode(';',$user['initiative']); if(in_array($initiative['int']->code,$inits)){?>
 		<button style="float:right; margin-top:-34px;" class="btn btn-info btn-sm" onclick="toggle_visibility('new_workblock');">
 			<span class="glyphicon glyphicon-plus"></span> Workblock
 		</button>
+		<?php }?>
 		<div id="new_workblock" style="display:none">
 			<hr>
 			<h3>New Workblock</h3>
@@ -92,7 +94,7 @@
 					<td colspan=2><?php echo $i;?>. <a href="<?php echo base_url()?>workblock/detail_workblock/<?php echo $wb['wb']->id?>"><?php echo $wb['wb']->title?></a></td>
 					<td><?php if($wb['wb']->start){echo date("j M y", strtotime($wb['wb']->start));}?></td>
 					<td><?php if($wb['wb']->end){echo date("j M y", strtotime($wb['wb']->end));}?></td>
-					<?php if($user['role']=='admin'){?><td>
+					<?php if($user['role']=='admin'){?><td style="width:70px">
 						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_wb_<?php echo $wb['wb']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_workblock(<?php echo $wb['wb']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 					</td><?php }?>

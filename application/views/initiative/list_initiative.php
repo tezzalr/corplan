@@ -3,9 +3,9 @@
 		<h2 style="">Wholesale Initiative</h2>
 	</div>
 	<div>
-		<?php if($user['role']=='admin'){?><div style="margin-bottom:10px; float:right;">
+		<?php $roles = explode(',',$user['role']); if(in_array("PMO",$roles) || in_array("admin",$roles)){?><div style="margin-bottom:10px; float:right;">
 		<button onclick="toggle_visibility('new_initiative');" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> Initiative</button>
-		</div></div><?php }?>
+		</div><?php }?>
 		<?php
 			//echo date_format(date_create('2014-05-01'), 'l');
 		?>
@@ -28,7 +28,7 @@
 							<div class="col-sm-9">
 								<select class="form-control" name="program">
 									<?php foreach($programs as $prg){?>
-									<option value="<?php echo $prg->id?>"><?php echo $prg->title?></option>
+									<option value="<?php echo $prg['prog']->id?>"><?php echo $prg['prog']->title?></option>
 									<?php }?>
 								</select>
 							</div>
@@ -121,7 +121,7 @@
 					<td><?php if($int['int']->end){echo date("j M y", strtotime($int['int']->end));}?></td>
 					<td><?php echo $int['int']->dependencies?></td>
 					<td><?php if($int['int']->tier){echo $int['int']->tier;}?></td>
-					<?php if($user['role']=='admin'){?><td>
+					<?php if($user['role']=='admin'){?><td style="width:70px">
 						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_int_<?php echo $int['int']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_workblock(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 					</td><?php }?>
@@ -192,7 +192,7 @@
 		</table>
 	</div><div style="clear:both"></div><br>
 </div>
-
+</div>
 <script>
     $('#start').datepicker({
 		autoclose: true,

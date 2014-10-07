@@ -18,9 +18,11 @@
 	<div>
 		<div>
 			<h3>Milestones</h3>
+			<?php $inits = explode(';',$user['initiative']); if(in_array($wb['wb']->code,$inits)){?>
 			<button style="float:right; margin-top:-34px;" class="btn btn-info btn-sm" onclick="toggle_visibility('new_milestone');">
 				<span class="glyphicon glyphicon-plus"></span> Milestone
 			</button>
+			<?php }?>
 			<div id="new_milestone" style="display:none">
 				<hr>
 				<h3>New Milestone</h3>
@@ -110,7 +112,7 @@
 							<button type="submit" class="btn btn-danger btn-xs" onclick="revise_ms(<?php echo $each['ms']->id?>)"><?php echo $tul?></button>
 							<?php }?>
 						</td>
-						<?php if($user['role']=='admin'){?><td>
+						<?php if($user['role']=='admin'){?><td style="width:70px">
 							<button class="btn btn-warning  btn-xs" onclick="edit_ms(<?php echo $each['ms']->id?>)"><span class="glyphicon glyphicon-pencil"></span></button>
 							<button class="btn btn-danger btn-xs" onclick="delete_milestone(<?php echo $each['ms']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 						</td><?php }?>

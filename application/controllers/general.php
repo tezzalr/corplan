@@ -22,19 +22,15 @@ class General extends CI_Controller {
 		
     }
     
-    public function detail_workblock(){
-    	$id = $this->uri->segment(3);
-    	$workblock['wb'] = $this->mworkblock->get_workblock_by_id($id);
-    	$workblock['stat'] = $this->mworkblock->get_workblock_status($id);
-		$milestones = $this->mmilestone->get_all_workblock_milestone($id);
-    	$data['title'] = $workblock['wb']->title;
+    public function overview(){
+    	$data['title'] = 'Overview Corplan';
     	
     	$user = $this->session->userdata('user');
     	$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
 		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('workblock/detail_wb',array('wb' => $workblock, 'ms' => $milestones),TRUE);
+		$data['content'] = $this->load->view('general/overview',array(),TRUE);
 
 		$this->load->view('front',$data);
     }

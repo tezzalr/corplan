@@ -34,7 +34,34 @@ class Minitiative extends CI_Model {
     	//$this->db->where('role', 3);
     	$this->db->order_by('code', 'asc');
     	$query = $this->db->get('program');
-        return $query->result();
+    	$arr = array(); $i=0;
+        $progs = $query->result();
+        foreach($progs as $prog){
+        	$arr[$i]['prog'] = $prog;
+        	$code = explode('.',$prog->code);
+        	$arr[$i]['code'] = ($code[0]*100)+$code[1];
+        	$arr[$i]['date'] = $this->get_initiative_minmax_date($prog->id);
+        	
+        	$initiatives = $this->get_all_program_initiatives($prog->id);
+        	$status = "";
+        	foreach($initiatives as $int){
+        		$res_status = $this->get_initiative_status($int->id)['status'];
+        		if($status){
+					if($res_status == "Delay"){$status = "Delay";}
+					else{
+						if($status != "Delay"){
+							if($res_status == "In Progress"){$status = "In Progress";}
+							elseif($status=="Completed" && $res_status == "Not Started Yet"){$status = "In Progress";}
+							elseif($res_status=="Completed" && $status == "Not Started Yet"){$status = "In Progress";}
+						}
+					}
+				}
+				else{$status = $res_status;}
+        	}
+        	$arr[$i]['status'] = $status;
+        	$i++;
+        }
+        return $arr;
     }
     
     function get_all_initiatives($user_initiative){
@@ -64,6 +91,14 @@ class Minitiative extends CI_Model {
     	$this->db->select('initiative.*, program.title as program');
     	$this->db->join('program', 'program.id = initiative.program_id');
     	$this->db->order_by('initiative.code', 'asc');
+    	$query = $this->db->get('initiative');
+        $res = $query->result();
+        return $res;
+    }
+    
+    function get_all_program_initiatives($id){
+    	$this->db->where('program_id', $id);
+    	$this->db->select('initiative.*');
     	$query = $this->db->get('initiative');
         $res = $query->result();
         return $res;
@@ -133,6 +168,13 @@ class Minitiative extends CI_Model {
         return $status;
     }
     
+    function get_initiative_minmax_date($id){
+    	$this->db->select('MAX(end) max_end, MIN(start) min_start');
+    	$this->db->where('program_id', $id);
+    	$query = $this->db->get('initiative');
+        return $query->row(0);
+    }
+    
     //UPDATE FUNCTION
     function update_initiative($program,$id){
         $this->db->where('id',$id);
@@ -155,7 +197,17 @@ class Minitiative extends CI_Model {
     
     
     //DELETE FUNCTION
-    
+    function delete_program(){
+    	$id = $this->input->post('id');
+    	$this->db->where('id',$id);
+    	$this->db->delete('program');
+    	if($this->db->affected_rows()>0){
+    		return true;
+    	}
+    	else{
+    		return false;
+    	}
+    }
     
     // OTHER FUNCTION
     function config_email(){
