@@ -64,7 +64,16 @@ class Minitiative extends CI_Model {
         return $arr;
     }
     
-    function get_all_initiatives($user_initiative){
+    function get_all_programs_with_segment($segment){
+    	$this->db->order_by('code', 'asc');
+    	if($segment != 'all'){
+    		$this->db->where('segment', $segment);
+    	}
+    	$query = $this->db->get('program');
+    	return $query->result();
+    }
+    
+    function get_all_initiatives($user_initiative, $segment){
     	//$this->db->where('role', 3);
     	$this->db->select('initiative.*, program.title as program, program.code as progcode');
     	$this->db->join('program', 'program.id = initiative.program_id');
@@ -72,11 +81,16 @@ class Minitiative extends CI_Model {
     	if($user_initiative){
     		$this->db->where_in('initiative.code', $user_initiative);
     	}
+    	if($segment != 'all'){
+    		$this->db->where('program.segment', $segment);	
+    	}
     	$query = $this->db->get('initiative');
         $res = $query->result();
         $arr = array(); $i=0;
         foreach($res as $int){
         	$arr[$i]['int']=$int;
+        	$code = explode('.',$int->code);
+        	$arr[$i]['code'] = ($code[0]*10000)+$code[1]*100+(ord($code[2])-96);
         	$arr[$i]['stat']=$this->get_initiative_status($int->id)['status'];
         	$arr[$i]['wb']=$this->get_initiative_status($int->id)['sumwb'];
         	$arr[$i]['wbs']=$this->get_initiative_status($int->id)['wb'];
@@ -183,7 +197,7 @@ class Minitiative extends CI_Model {
     
     function check_initiative_status(){
     	$datenow = date("Y-m-d");
-    	$initiatives = $this->get_all_initiatives("");
+    	$initiatives = $this->get_all_initiatives("",'all');
     	foreach($initiatives as $int){
     		foreach($int['wbs'] as $wb){
     			$ms['status'] = "Delay";
@@ -209,17 +223,51 @@ class Minitiative extends CI_Model {
     	}
     }
     
-    // OTHER FUNCTION
-    function config_email(){
-    	$config['protocol'] = 'smtp';
-        $config['smtp_port'] = '25';
-        $config['smtp_host'] = 'mail.dync-store.com';
-        $config['smtp_user'] = 'dyn10000';
-        $config['smtp_pass'] = 'dyn24157';
-        $config['mailtype'] = 'html';
-        $config['newline'] = "<br>";
-        $config['wordwrap'] = TRUE;
-        
-        return $config;
+    function delete_initiative(){
+    	$id = $this->input->post('id');
+    	$this->db->where('id',$id);
+    	$this->db->delete('initiative');
+    	if($this->db->affected_rows()>0){
+    		$wbs = $this->get_all_workblock_initiative($id);
+    		if($wbs){
+				foreach($wbs as $wb){
+					$this->delete_milestone_workblock($wb->id);
+				}
+    		}
+    		return $this->delete_workblock_initiative($id);
+    	}
+    	else{
+    		return false;
+    	}
     }
+    
+    function delete_workblock_initiative($id){
+    	$this->db->where('initiative_id',$id);
+    	$this->db->delete('workblock');
+    	if($this->db->affected_rows()>0){
+    		return true;
+    	}
+    	else{
+    		return true;
+    	}
+    }
+    
+    function delete_milestone_workblock($id){
+    	$this->db->where('workblock_id',$id);
+    	$this->db->delete('milestone');
+    	if($this->db->affected_rows()>0){
+    		return true;
+    	}
+    	else{
+    		return true;
+    	}
+    }
+    
+    function get_all_workblock_initiative($id){
+    	$this->db->where('initiative_id', $id);
+    	$query = $this->db->get('workblock');
+        return $query->result();
+    }
+    
+    // OTHER FUNCTION
 }

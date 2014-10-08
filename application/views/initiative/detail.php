@@ -15,12 +15,15 @@
 		</div>
 		<div style="width:400px; float:right">
 			<?php
-				$stdate = strtotime($initiative['int']->start);
-				$eddate = strtotime($initiative['int']->end);
-				$crdate = strtotime(date('Y-m-d'));
-				$pcttgl = ($crdate-$stdate)/($eddate-$stdate)*100;
-				if($pcttgl<1){$pcttgl = 0;}
+				if($initiative['int']->start && $initiative['int']->end){
+					$stdate = strtotime($initiative['int']->start);
+					$eddate = strtotime($initiative['int']->end);
+					$crdate = strtotime(date('Y-m-d'));
+					$pcttgl = ($crdate-$stdate)/($eddate-$stdate)*100;
+					if($pcttgl<1){$pcttgl = 0;}
+				}else{$pcttgl=0;}
 			?>
+			<?php if($initiative['int']->start && $initiative['int']->end){ ?>
 			<span><?php echo date("j M y", $stdate);?></span>
 			<span style="float:right"><?php echo date("j M y", $eddate);?></span>
 			<div class="progress">
@@ -28,12 +31,12 @@
 				<span><?php echo number_format($pcttgl,1)?>%</span>
 			  </div>
 			</div>
-			
+			<?php }?>
 		</div>
 	</div><div style="clear:both"></div>
 	<h3>Workblock Summary</h3>
 	<div>
-		<?php $inits = explode(';',$user['initiative']); if(in_array($initiative['int']->code,$inits)){?>
+		<?php $inits = explode(';',$user['initiative']); if($user['role']=='admin' || in_array($initiative['int']->code,$inits)){?>
 		<button style="float:right; margin-top:-34px;" class="btn btn-info btn-sm" onclick="toggle_visibility('new_workblock');">
 			<span class="glyphicon glyphicon-plus"></span> Workblock
 		</button>
@@ -84,7 +87,9 @@
 			<tbody>
 				<?php $i=1; foreach($workblocks as $wb){?>
 				<tr id="wbdtl_<?php echo $wb['wb']->id?>">
-					<td rowspan=<?php echo count($wb['ms'])+1?>><?php 
+					<!--<td rowspan=<?php echo count($wb['ms'])+1?>>-->
+					<td>
+					<?php 
 						if($wb['stat']=="Delay"){$clr="danger"; $icn="remove";}
 						elseif($wb['stat']=="In Progress"){$clr="warning"; $icn="refresh";}
 						elseif($wb['stat']=="Completed"){$clr="success"; $icn="ok";}
@@ -140,7 +145,8 @@
 						</form>
 				</tr>
 				<?php $j=1; foreach($wb['ms'] as $ms){?>
-				<tr class="ms_wb_<?php echo $wb['wb']->id?>" style="">
+				<tr class="ms_wb_<?php echo $wb['wb']->id?>" style="display:none">
+					<td></td>
 					<td><?php 
 						if($ms->status=="Delay"){$clr="danger"; $icn="remove";}
 						elseif($ms->status=="In Progress"){$clr="warning"; $icn="refresh";}

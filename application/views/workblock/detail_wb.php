@@ -18,7 +18,7 @@
 	<div>
 		<div>
 			<h3>Milestones</h3>
-			<?php $inits = explode(';',$user['initiative']); if(in_array($wb['wb']->code,$inits)){?>
+			<?php $inits = explode(';',$user['initiative']); if($user['role']=='admin' || in_array($wb['wb']->code,$inits)){?>
 			<button style="float:right; margin-top:-34px;" class="btn btn-info btn-sm" onclick="toggle_visibility('new_milestone');">
 				<span class="glyphicon glyphicon-plus"></span> Milestone
 			</button>

@@ -27,6 +27,7 @@ class Initiative extends CI_Controller {
     /*Initiative*/
     public function list_initiative(){
     	$data['title'] = "List All Initiatives";
+		$segment = $this->uri->segment(3);
 		
 		//Header
 		$user = $this->session->userdata('user');
@@ -34,16 +35,19 @@ class Initiative extends CI_Controller {
 		
 		$this->minitiative->check_initiative_status();
 		
-		$programs = $this->minitiative->get_all_programs();
+		$programs = $this->minitiative->get_all_programs_with_segment($segment);
 		$user_info = $this->muser->get_user_by_id($user['id']);
 		$roles = explode(',',$user['role']); $user_initiative="";
 		if((in_array('PIC',$roles))&&!(in_array('PMO',$roles))){
 			$user_initiative = explode(';',$user_info->initiative);	
 		}
-		$initiatives = $this->minitiative->get_all_initiatives($user_initiative);
+		
+		$form_new = $this->load->view('initiative/input_initiative',array('programs' => $programs,'segment' => $segment),TRUE);
+		
+		$initiatives = $this->minitiative->get_all_initiatives($user_initiative, $segment);
 		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('initiative/list_initiative',array('ints' => $initiatives,'programs' => $programs),TRUE);
+		$data['content'] = $this->load->view('initiative/list_initiative',array('ints' => $initiatives,'programs' => $programs, 'form_new' => $form_new),TRUE);
 
 		$this->load->view('front',$data);
     }
@@ -64,11 +68,14 @@ class Initiative extends CI_Controller {
     
     public function submit_initiative(){
       	$id = $this->uri->segment(3);
+      	$segment = $this->input->post('segment');
       	$program['title'] = $this->input->post('title');
         $program['code'] = $this->input->post('code');
         $program['tier'] = $this->input->post('tier');
         $program['program_id'] = $this->input->post('program');
-        $program['dependencies'] = $this->input->post('depen');
+        $program['kickoff'] = $this->input->post('kickoff');
+        $program['completion'] = $this->input->post('completion');
+        $program['description'] = $this->input->post('description');
         
         if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
     		$program['start'] = $start->format('Y-m-d');
@@ -79,12 +86,12 @@ class Initiative extends CI_Controller {
     	}
         
         if($id){
-        	if($this->minitiative->update_initiative($program,$id)){redirect('initiative/list_initiative');}
-        	else{redirect('initiative/input_initiative');}
+        	if($this->minitiative->update_initiative($program,$id)){redirect('initiative/list_initiative/'.$segment);}
+        	else{redirect('initiative/input_initiative/'.$segment);}
         }
         else{
-        	if($this->minitiative->insert_initiative($program)){redirect('initiative/list_initiative');}
-        	else{redirect('initiative/input_initiative');}
+        	if($this->minitiative->insert_initiative($program)){redirect('initiative/list_initiative/'.$segment);}
+        	else{redirect('initiative/input_initiative/'.$segment);}
         }
     }
     
@@ -160,6 +167,31 @@ class Initiative extends CI_Controller {
     		$json['status'] = 0;
     	}
     	$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+	
+	public function delete_initiative(){
+        if($this->minitiative->delete_initiative()){
+    		$json['status'] = 1;
+    	}
+    	else{
+    		$json['status'] = 0;
+    	}
+    	$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+	
+	public function get_description(){
+       	$id = $this->input->get('id');
+    	$descrp = $this->minitiative->get_initiative_by_id($id); 
+		if($descrp){
+			$json['status'] = 1;
+            $json['message'] = $descrp->description;
+            $json['title'] = $descrp->title;
+		}else{
+			$json['status'] = 0;
+		}
+		$this->output->set_content_type('application/json')
                      ->set_output(json_encode($json));
 	}
     

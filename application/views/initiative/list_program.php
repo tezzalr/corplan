@@ -16,7 +16,13 @@
 						return $a['code'] - $b['code'];
 					});
 				?>
-				<?php $i=1; foreach($programs as $prog){?>
+				<?php $segment=""; $i=1; $segnum=1; foreach($programs as $prog){?>
+				<?php if($segment != $prog['prog']->segment){?>
+					<tr style="background-color:#F7F2E0; font-size:16px"><td colspan=6>
+						<?php echo $segnum.'. ';?><a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $prog['prog']->segment?>"><?php echo $prog['prog']->segment?></a>
+					</td></tr>
+				<?php $segment=$prog['prog']->segment; $segnum++;}?>
+				
 				<tr id="prog_<?php echo $prog['prog']->id?>">
 					<?php 
 						if($prog['status']=="Delay"){$clr="danger"; $icn="remove";}
