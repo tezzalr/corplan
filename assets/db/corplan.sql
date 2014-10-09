@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 09, 2014 at 04:25 AM
+-- Generation Time: Oct 09, 2014 at 04:34 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -484,7 +484,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `jabatan` varchar(600) DEFAULT NULL,
   `initiative` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `user`
@@ -515,7 +515,8 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 (30, 'oktav', '5f4dcc3b5aa765d61d8327deb882cf99', 'Oktav', 'PIC', NULL, 'DH', '1.4.D'),
 (31, 'yoyok', '804da344974611d34d496565f15376f4', 'Hermawan Soebagio', 'admin', NULL, '', ''),
 (32, '1084353929', 'cfdeb44dfa760c6dca6f3296867d1833', 'Andi Widyo Cahyono', 'PMO', 'Wholesale', 'GH', ''),
-(33, 'cmt', '5f4dcc3b5aa765d61d8327deb882cf99', 'CMTers', 'admin', '', 'GH', '');
+(33, 'cmt', '5f4dcc3b5aa765d61d8327deb882cf99', 'CMTers', 'admin', '', 'GH', ''),
+(34, '0675289276', '140d3ea2b0c7a720b8fcc236deedd04f', 'Nyoman Bagus Nugraha', 'PMO', '', 'DH', '');
 
 -- --------------------------------------------------------
 
