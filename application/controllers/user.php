@@ -87,7 +87,7 @@ class User extends CI_Controller {
 	
 				$this->load->view('front',$data);
             }else{
-				redirect('initiative/list_initiative');
+				redirect('initiative/list_programs');
             }
         }else{
             $params['type_login']="failed";

@@ -130,14 +130,14 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Kick-off</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control" id="kickoff" name="kickoff" placeholder="Dependecies Kick-off" value="<?php echo $int['int']->kickoff?>">
+									<input type="text" class="form-control" id="kickoff" name="kickoff" placeholder="Dependecies Kick-off" value="<?php if($int['int']->kickoff){echo $int['int']->kickoff;}?>">
 									<small style="color:grey">jika lebih dari satu pisahkan dengan ","</small>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Completion</label>
 								<div class="col-sm-4">
-									<input type="text" class="form-control" id="kickoff" name="kickoff" placeholder="Dependecies Completion" value="<?php echo $int['int']->completion?>">
+									<input type="text" class="form-control" id="completion" name="completion" placeholder="Dependecies Completion" value="<?php if($int['int']->completion){echo $int['int']->completion;}?>">
 									<small style="color:grey">jika lebih dari satu pisahkan dengan ","</small>
 								</div>
 							</div>

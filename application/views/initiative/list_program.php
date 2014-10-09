@@ -1,6 +1,6 @@
 <div id="" class="container no_pad">
 	<div class="no_pad" style="margin-bottom: 50px;">
-		<h2 style="">Wholesale Programs</h2>
+		<h2 style="">Programs</h2>
 	</div>
 	<div style="">
 		<div style="margin-bottom:10px; float:right;">
@@ -45,13 +45,19 @@
 							$crdate = strtotime(date('Y-m-d'));
 							$pcttgl = ($crdate-$stdate)/($eddate-$stdate)*100;
 							if($pcttgl<1){$pcttgl = 0;}
+							if($pcttgl>100){$pcttgl = 100;}
 						?>
 						<div style="font-size:12px">
 							<span><?php echo date("j M y", $stdate);?></span>
 							<span style="float:right"><?php echo date("j M y", $eddate);?></span>
+							<?php 
+								if($pcttgl <= 50 ){$barcol="success";}
+								elseif($pcttgl > 50 && $pcttgl <= 80){$barcol="warning";}
+								elseif($pcttgl > 80 ){$barcol="danger";}
+							?>
 							<div class="progress" style="margin-bottom:0">
-							  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $pcttgl?>%">
-								<span><?php echo number_format($pcttgl,1)?>%</span>
+							  <div class="progress-bar progress-bar-<?php echo $barcol?>" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $pcttgl?>%">
+								<span style="color:black"><?php echo number_format($pcttgl,1)?>%</span>
 							  </div>
 							</div>
 						</div>
