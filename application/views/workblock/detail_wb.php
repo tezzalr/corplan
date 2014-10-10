@@ -2,18 +2,21 @@
 	$msid = $this->uri->segment(4);
 ?>
 <div id="" class="container no_pad">
-	<div class="no_pad" style="margin-bottom: 10px; float:right">
-		<h5><a  style="color:grey" href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb['wb']->initiative_id?>">Workblock</a></h5>
-		<h4 style="color:grey">
-			<?php 
-				if($wb['stat']=="Delay"){$clr="danger"; $icn="remove";}
-				elseif($wb['stat']=="In Progress"){$clr="warning"; $icn="refresh";}
-				elseif($wb['stat']=="Completed"){$clr="success"; $icn="ok";}
-				else{$clr="inverse"; $icn="off";}
-			?>
-			<button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button>
-			<?php echo $wb['wb']->title?>
-		</h4>
+	<div class="no_pad breadmy" style="margin-bottom: 0px; color:#E0DD24; float:left; margin-top:20px">
+		<div>
+			<div style="float:left">
+				<a href="<?php echo base_url()?>initiative/list_programs"><span><?php echo $wb['wb']->program_code?></span>
+				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->program?></span></a>/
+			</div>
+			<div style="float:left">
+				<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $wb['wb']->segment?>"><span style="margin-left:5px"><?php echo $wb['wb']->code?></span>
+				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->initiative?></span></a>/
+			</div>
+			<div style="float:left">
+				<a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb['wb']->initiative_id?>"><span style="margin-left:7px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->title?></span></a>
+			</div>
+			<div style="clear:both"></div>
+		</div>
 	</div><div style="clear:both"></div>
 	<div>
 		<div>

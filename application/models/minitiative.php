@@ -119,7 +119,9 @@ class Minitiative extends CI_Model {
     }
     
     function get_initiative_by_id($id){
-        $this->db->where('id',$id);
+    	$this->db->select('initiative.*, program.title as program, program.code as program_code, program.segment as segment');
+        $this->db->join('program', 'program.id = initiative.program_id');
+        $this->db->where('initiative.id',$id);
         $result = $this->db->get('initiative');
         if($result->num_rows==1){
             return $result->row(0);

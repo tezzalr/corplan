@@ -35,9 +35,17 @@ class Mworkblock extends CI_Model {
         	$arr[$i]['wb']=$wb;
         	$arr[$i]['stat']=$this->get_workblock_status($wb->id);
         	$arr[$i]['ms']=$this->get_all_workblock_milestone($wb->id);
+        	$arr[$i]['date'] = $this->get_milestone_minmax_date($wb->id);
         	$i++;
         }
         return $arr;
+    }
+    
+    function get_milestone_minmax_date($id){
+    	$this->db->select('MAX(end) max_end, MIN(start) min_start');
+    	$this->db->where('workblock_id', $id);
+    	$query = $this->db->get('milestone');
+        return $query->row(0);
     }
     
     function get_all_workblock_milestone($workblock_id){
@@ -48,8 +56,9 @@ class Mworkblock extends CI_Model {
     }
     
     function get_workblock_by_id($id){
-    	$this->db->select('workblock.*,initiative.code as code');
+    	$this->db->select('workblock.*,initiative.code as code, initiative.title as initiative, program.title as program, program.code as program_code, program.segment as segment');
         $this->db->join('initiative', 'initiative.id = workblock.initiative_id');
+        $this->db->join('program', 'program.id = initiative.program_id');
         $this->db->where('workblock.id',$id);
         $result = $this->db->get('workblock');
         if($result->num_rows==1){

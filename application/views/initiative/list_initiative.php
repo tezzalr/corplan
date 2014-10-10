@@ -25,7 +25,7 @@
 		
 		<table class="table table-bordered">
 			<thead>
-				<tr class="headertab"><th style="width:60px">Program</th><th colspan=2>Initiatives</th><th>WB</th><th>PIC</th><th style="width:80px">Start</th><th  style="width:85px">End</th><th>Dependency</th><th>Tier</th></tr>
+				<tr class="headertab"><th style="width:60px">Program</th><th colspan=2>Initiatives</th><th>WB</th><th>PIC</th><th style="width:85px">Start</th><th  style="width:85px">End</th><th>Dependency</th></tr>
 			</thead>
 			<tbody>
 				<?php
@@ -45,7 +45,10 @@
 						$arr_descript = '$int[\'int\']->description'; 
 				?>
 				<?php if(!$statshow || ($statshow && ($statshow == $int['stat']))){if($prog != $int['int']->program){?>
-				<tr style="background-color:#F7F2E0; font-size:16px"><td colspan=9><?php echo $int['int']->progcode." ".$int['int']->program?></td></tr>
+				<tr style="background-color:#F0EBA8; font-size:14px">
+					<td colspan=8><?php echo $int['int']->progcode?><span style="margin-left:10px"><?php echo $int['int']->program?></span>
+					</td>
+				</tr>
 				<?php $prog=$int['int']->program; $np++;}?>
 				<tr id="initia_<?php echo $int['int']->id?>">
 					<?php 
@@ -55,9 +58,13 @@
 						else{$clr="inverse"; $icn="off";}
 					?>
 					<td style="width:40px"><center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center></td>				
-					<td><?php echo $int['int']->code?> <a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></td>
+					<td>
+						<div style="float:left; width:43px; margin-right:5px;"><?php echo $int['int']->code?></div> 
+						<div style="float:left; max-width:490px"><a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></div>
+						<div style="clear:both"></div>
+					</td>
 					<td style="width:40px"><button class="btn btn-default btn-xs" onclick="show_descript(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-comment"></span></button></td>
-					<td style="width:20px"><?php echo $int['wb']?></td>
+					<td style="text-align:right; width:20px"><?php echo $int['wb']?></td>
 					<td><?php $sumpic = count($int['pic']); $i=1;
 						if($int['pic']){
 							foreach($int['pic'] as $pic){
@@ -69,10 +76,9 @@
 							}
 						}?>
 					</td>
-					<td><?php if($int['int']->start){echo date("j M y", strtotime($int['int']->start));}?></td>
-					<td><?php if($int['int']->end){echo date("j M y", strtotime($int['int']->end));}?></td>
+					<td style="text-align:right"><?php if($int['int']->start){echo date("j M y", strtotime($int['int']->start));}?></td>
+					<td style="text-align:right"><?php if($int['int']->end){echo date("j M y", strtotime($int['int']->end));}?></td>
 					<td><?php echo $int['int']->kickoff.' '.$int['int']->completion?></td>
-					<td><?php if($int['int']->tier){echo $int['int']->tier;}?></td>
 					<?php if($user['role']=='admin'){?><td style="width:70px">
 						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_int_<?php echo $int['int']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_initiative(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
