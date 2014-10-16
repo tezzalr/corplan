@@ -1,6 +1,6 @@
 <div id="" class="container no_pad">
 	<div class="no_pad" style="margin-bottom: 50px;">
-		<h2 style=""><?php echo $this->uri->segment(3)?> Initiative</h2>
+		<h2 style=""><?php echo $segment?> Initiative</h2>
 	</div>
 	<div>
 		<?php $roles = explode(',',$user['role']); if(in_array("PMO",$roles) || in_array("admin",$roles)){?><div style="margin-bottom:10px; float:right;">
@@ -60,7 +60,7 @@
 					<td style="width:40px"><center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center></td>				
 					<td>
 						<div style="float:left; width:43px; margin-right:5px;"><?php echo $int['int']->code?></div> 
-						<div style="float:left; max-width:490px"><a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></div>
+						<div style="float:left; max-width:90%"><a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></div>
 						<div style="clear:both"></div>
 					</td>
 					<td style="width:40px"><button class="btn btn-default btn-xs" onclick="show_descript(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-comment"></span></button></td>

@@ -1,13 +1,13 @@
 <div id="" class="container no_pad">
-	<div class="no_pad breadmy" style="margin-bottom: 0px; color:#E0DD24; float:left; margin-top:20px">
+	<div class="no_pad breadmy" style="margin-bottom: 0px; color:grey; float:left; margin-top:20px">
 		<div>
-			<div style="float:left">
-				<a href="<?php echo base_url()?>initiative/list_programs"><span><?php echo $initiative['int']->program_code?></span>
-				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $initiative['int']->program?></span></a>/
+			<div>
+				<a href="<?php echo base_url()?>initiative/list_programs">Program</a> : <span><?php echo $initiative['int']->program_code?></span>
+				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $initiative['int']->program?></span>
 			</div>
-			<div style="float:left">
-				<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $initiative['int']->segment?>"><span style="margin-left:5px"><?php echo $initiative['int']->code?></span>
-				<span style="margin-left:2px; max-width:600px;"><?php echo $initiative['int']->title?></span></a>
+			<div>
+				<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $initiative['int']->segment?>">Initiative</a> : <span style="margin-left:5px"><?php echo $initiative['int']->code?></span>
+				<span style="margin-left:2px; max-width:600px;"><?php echo $initiative['int']->title?></span>
 			</div>
 			<div style="clear:both"></div>
 		</div>
@@ -60,7 +60,7 @@
 		</div>
 		<table class="table table-bordered" style="margin-top:20px">
 			<thead>
-				<tr class="headertab"><th></th><th style="width:90px">Workblock</th><th><a href="#" onclick="show_milestone()" style="color:white">Show Milestone</th><th>Start Date</th><th>End Date</th></tr>
+				<tr class="headertab"><th></th><th style="width:90px">Workblock</th><th><a href="#" onclick="show_milestone()" style="color:white">Show Milestone</th><th style="width:90px">Start Date</th><th style="width:90px">End Date</th></tr>
 			</thead>
 			<tbody>
 				<?php $i=1; foreach($workblocks as $wb){?>
@@ -76,7 +76,7 @@
 					<center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center></td>
 					<td colspan=2>
 						<div style="float:left; width:10px; "><?php echo $i;?>.</div>
-						<div style="margin-left:15px; float:left"><a href="<?php echo base_url()?>workblock/detail_workblock/<?php echo $wb['wb']->id?>"><?php echo $wb['wb']->title?></a></div>
+						<div style="margin-left:15px; float:left; max-width:95%"><a href="<?php echo base_url()?>workblock/detail_workblock/<?php echo $wb['wb']->id?>"><?php echo $wb['wb']->title?></a></div>
 						<div style="clear:both"></div>
 					</td>
 					<td><?php if($wb['date']->min_start){echo date("j M y", strtotime($wb['date']->min_start));}?></td>

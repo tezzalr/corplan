@@ -1,14 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Initiative extends CI_Controller {
+class Agenda extends CI_Controller {
     
     public function __construct() {
         parent::__construct();
-        $this->load->model('minitiative');
-        $this->load->model('mworkblock');
-        $this->load->model('mmilestone');
         $this->load->model('muser');
+        $this->load->model('magenda');
+        $this->load->model('mmilestone');
         
         $session = $this->session->userdata('user');
         
@@ -21,15 +20,86 @@ class Initiative extends CI_Controller {
      */
     public function index()
     {
-		redirect('initiative/list_initiative');
+		$data['title'] = "Agenda";
+		
+		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		
+		$agendas = $this->magenda->get_all_agenda_month(10, 2014);
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['content'] = $this->load->view('agenda/index_agenda',array('agendas' => $agendas),TRUE);
+
+		$this->load->view('front',$data);
+    }
+    
+    public function get_detail(){
+       	$id = $this->input->get('id');
+    	$agenda = $this->magenda->get_agenda_by_id($id); 
+		if($agenda){
+			$json['status'] = 1;
+            $json['message'] = $data['content'] = $this->load->view('agenda/detail_agenda',array('agenda' => $agenda),TRUE);
+            $json['title'] = $agenda->title;
+		}else{
+			$json['status'] = 0;
+		}
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+    
+    public function input_agenda(){
+    	$data['title'] = "Input Agenda";
+		
+		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['content'] = $this->load->view('agenda/input_agenda',array('agenda' => ''),TRUE);
+
+		$this->load->view('front',$data);
+    }
+    
+    public function submit_agenda(){
+      	$id = $this->uri->segment(3);
+      	$user = $this->session->userdata('user');
+      	
+      	$program['title'] = $this->input->post('title');
+        $program['location'] = $this->input->post('location');
+        $program['description'] = $this->input->post('description');
+        $program['maker_id'] = $user['id'];
+        
+        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
+    		$program['start'] = $start->format('Y-m-d')." ".$this->input->post('start_time').":00";
+    	}
+    	
+    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
+    		$program['end'] = $end->format('Y-m-d')." ".$this->input->post('end_time').":00";
+    	}
+        
+        if($id){
+        	if($this->minitiative->update_initiative($program,$id)){redirect('initiative/list_initiative/'.$segment);}
+        	else{redirect('initiative/input_initiative/'.$segment);}
+        }
+        else{
+        	if($this->magenda->insert_agenda($program)){redirect('agenda');}
+        	else{redirect('agenda/input_agenda/');}
+        }
+    }
+    
+    public function delete_agenda(){
+    	$id = $this->uri->segment(3);
+    	if($id){
+        	if($this->magenda->delete_agenda($id)){redirect('agenda/'.$segment);}
+        	//else{redirect('initiative/input_initiative/'.$segment);}
+        }
     }
     
     /*Initiative*/
     public function list_initiative(){
     	$data['title'] = "List All Initiatives";
 		$segment = $this->uri->segment(3);
-		
-		if($segment == "Performance%20Management"){$segment = "Performance Management";}
 		
 		//Header
 		$user = $this->session->userdata('user');
@@ -52,49 +122,6 @@ class Initiative extends CI_Controller {
 		$data['content'] = $this->load->view('initiative/list_initiative',array('ints' => $initiatives,'programs' => $programs, 'form_new' => $form_new),TRUE);
 
 		$this->load->view('front',$data);
-    }
-    
-    public function input_initiative(){
-    	$data['title'] = "Input Initiative";
-		
-		$user = $this->session->userdata('user');
-		
-		$programs = $this->minitiative->get_all_programs();
-		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user),TRUE);	
-		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('initiative/input_initiative',array('programs' => $programs),TRUE);
-
-		$this->load->view('front',$data);
-    }
-    
-    public function submit_initiative(){
-      	$id = $this->uri->segment(3);
-      	$segment = $this->input->post('segment');
-      	$program['title'] = $this->input->post('title');
-        $program['code'] = $this->input->post('code');
-        $program['tier'] = $this->input->post('tier');
-        $program['program_id'] = $this->input->post('program');
-        $program['kickoff'] = $this->input->post('kickoff');
-        $program['completion'] = $this->input->post('completion');
-        $program['description'] = $this->input->post('description');
-        
-        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
-    		$program['start'] = $start->format('Y-m-d');
-    	}
-    	
-    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
-    		$program['end'] = $end->format('Y-m-d');
-    	}
-        
-        if($id){
-        	if($this->minitiative->update_initiative($program,$id)){redirect('initiative/list_initiative/'.$segment);}
-        	else{redirect('initiative/input_initiative/'.$segment);}
-        }
-        else{
-        	if($this->minitiative->insert_initiative($program)){redirect('initiative/list_initiative/'.$segment);}
-        	else{redirect('initiative/input_initiative/'.$segment);}
-        }
     }
     
     public function detail_initiative(){

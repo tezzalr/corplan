@@ -2,18 +2,18 @@
 	$msid = $this->uri->segment(4);
 ?>
 <div id="" class="container no_pad">
-	<div class="no_pad breadmy" style="margin-bottom: 0px; color:#E0DD24; float:left; margin-top:20px">
+	<div class="no_pad breadmy" style="margin-bottom: 0px; color:gray; float:left; margin-top:20px">
 		<div>
-			<div style="float:left">
-				<a href="<?php echo base_url()?>initiative/list_programs"><span><?php echo $wb['wb']->program_code?></span>
-				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->program?></span></a>/
+			<div>
+				<a href="<?php echo base_url()?>initiative/list_programs">Program </a>: <span><?php echo $wb['wb']->program_code?></span>
+				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->program?></span>
 			</div>
-			<div style="float:left">
-				<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $wb['wb']->segment?>"><span style="margin-left:5px"><?php echo $wb['wb']->code?></span>
-				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->initiative?></span></a>/
+			<div>
+				<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $wb['wb']->segment?>">Initiative </a>: <span style="margin-left:5px"><?php echo $wb['wb']->code?></span>
+				<span style="margin-left:2px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->initiative?></span>
 			</div>
-			<div style="float:left">
-				<a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb['wb']->initiative_id?>"><span style="margin-left:7px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->title?></span></a>
+			<div>
+				<a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $wb['wb']->initiative_id?>">Workblock </a>: <span style="margin-left:7px; max-width:600px; margin-right:5px"><?php echo $wb['wb']->title?></span>
 			</div>
 			<div style="clear:both"></div>
 		</div>
