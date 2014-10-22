@@ -36,6 +36,10 @@ class Mmilestone extends CI_Model {
         return $this->db->insert('revised', $milestone);
     }
     
+    function insert_timeline($timeline){
+        return $this->db->insert('timeline', $timeline);
+    }
+    
     //GET FUNCTION
     
     function get_all_workblock_milestone($workblock_id){
@@ -71,6 +75,24 @@ class Mmilestone extends CI_Model {
         }else{
             return false;
         }
+    }
+    
+    function get_milestone_by_id($id){
+        $this->db->where('id',$id);
+        $result = $this->db->get('milestone');
+        if($result->num_rows==1){
+            return $result->row(0);
+        }else{
+            return false;
+        }
+    }
+    
+    function get_timeline_by_ms_id($ms_id){
+    	$this->db->where('milestone_id',$ms_id);
+    	$this->db->join('user', 'user.id = timeline.user_id');
+    	$this->db->order_by('date_created', 'desc');
+    	$result = $this->db->get('timeline');
+    	return $result->result();
     }
     
     function get_initiative_program_by_wb_id($wb_id){

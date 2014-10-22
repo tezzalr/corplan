@@ -25,13 +25,23 @@ class Agenda extends CI_Controller {
 		$user = $this->session->userdata('user');
 		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
-		$agendas = $this->magenda->get_all_agenda_month(10, 2014);
+		if($this->uri->segment(3) && $this->uri->segment(4)){$month = $this->uri->segment(3); $year = $this->uri->segment(4);}
+		else{$month = date('m'); $year = date('Y');}
+		$agendas = $this->magenda->get_all_agenda_month($month, $year);
+		
+		$datereq['month'] = $month; $datereq['year']=$year;
 		
 		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('agenda/index_agenda',array('agendas' => $agendas),TRUE);
+		$data['content'] = $this->load->view('agenda/index_agenda',array('agendas' => $agendas,'datereq'=>$datereq),TRUE);
 
 		$this->load->view('front',$data);
+    }
+    
+    public function change_month(){
+    	$month = $this->input->post('month');
+    	$year = $this->input->post('year');
+    	redirect('agenda/index/'.$month."/".$year);
     }
     
     public function get_detail(){

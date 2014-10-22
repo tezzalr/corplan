@@ -32,13 +32,7 @@
 				<small style="color:grey">*format: mm/dd/YYYY</small>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="" class="col-sm-2 control-label">End</label>
-			<div class="col-sm-9">
-				<input type="date" class="form-control" id="end" name="end" placeholder="mm/dd/YYYY">
-				<small style="color:grey">*format: mm/dd/YYYY</small>
-			</div>
-		</div>
+		
 	</div>
 	<div class="col-sm-6">
 		<div class="form-group">
@@ -57,6 +51,13 @@
 			<label class="col-sm-2 control-label">Completion</label>
 			<div class="col-sm-9">
 				<input type="text" class="form-control" id="depen" name="completion" placeholder="Dependency Completion">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="" class="col-sm-2 control-label">End</label>
+			<div class="col-sm-9">
+				<input type="date" class="form-control" id="end" name="end" placeholder="mm/dd/YYYY">
+				<small style="color:grey">*format: mm/dd/YYYY</small>
 			</div>
 		</div>
 	</div>

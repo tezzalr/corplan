@@ -8,11 +8,11 @@
 		</div>
 		
 		<div style="margin-bottom:10px; float:left">
-			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>" style="color:black">Status:</a>
-			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/nsy" style="color:black"><button class="btn btn-inverse btn-xs"><span style="color:grey" class="glyphicon glyphicon-off"></span></button><span style="margin-right:10px"> Not Started Yet</span></a>
-			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/progress" style="color:black"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-refresh"></span></button><span style="margin-right:10px"> On Progress</span></a>
-			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/completed" style="color:black"><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button><span style="margin-right:10px"> Completed</span></a>
-			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/delay" style="color:black"><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button><span> Delay</span></a>
+			<a href="<?php echo base_url()?>initiative/list_programs" style="color:black">Status:</a>
+			<a href="<?php echo base_url()?>initiative/list_programs/nsy" style="color:black"><button class="btn btn-inverse btn-xs"><span style="color:grey" class="glyphicon glyphicon-off"></span></button><span style="margin-right:10px"> Not Started Yet</span></a>
+			<a href="<?php echo base_url()?>initiative/list_programs/progress" style="color:black"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-refresh"></span></button><span style="margin-right:10px"> On Progress</span></a>
+			<a href="<?php echo base_url()?>initiative/list_programs/completed" style="color:black"><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button><span style="margin-right:10px"> Completed</span></a>
+			<a href="<?php echo base_url()?>initiative/list_programs/delay" style="color:black"><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button><span> Delay</span></a>
 		</div>
 		<div style="clear:both">
 		
@@ -26,8 +26,17 @@
 						return $a['code'] - $b['code'];
 					});
 				?>
-				<?php $segment=""; $i=1; $segnum=1; foreach($programs as $prog){?>
-				<?php if($segment != $prog['prog']->segment){?>
+				<?php 
+				$segment=""; $i=1; $segnum=1;
+				$statshow=$this->uri->segment(3); 
+				if($statshow){
+					if($statshow == "progress"){$statshow = "In Progress";}
+					elseif($statshow == "completed"){$statshow = "Completed";}
+					elseif($statshow == "delay"){$statshow = "Delay";}
+					else{$statshow = "Not Started Yet";}
+				}
+				foreach($programs as $prog){?>
+				<?php if(!$statshow || ($statshow && ($statshow == $prog['status']))){if($segment != $prog['prog']->segment){?>
 					<tr style="background-color:#F0EBA8; font-size:16px"><td colspan=5>
 						<?php echo $segnum.'. ';?><a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $prog['prog']->segment?>"><?php echo $prog['prog']->segment?></a>
 					</td></tr>
@@ -46,7 +55,7 @@
 						<div style="float:left; max-width:520px"><?php echo $prog['prog']->title?></div>
 						<div style="clear:both"></div>
 					</td>
-					<td style="width:40px"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-comment"></span></button></td>
+					<td style="width:40px"><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-list"></span></button></td>
 					<td colspan=2 style="width:400px">
 						<?php if($prog['date']->min_start && $prog['date']->max_end){?>
 						<?php
@@ -74,11 +83,42 @@
 						<?php }?>
 					</td>
 					<?php if($user['role']=='admin'){?><td style="width:70px">
-						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_int_<?php echo $prog['prog']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_prog_<?php echo $prog['prog']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_program(<?php echo $prog['prog']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 					</td><?php }?>
 				</tr>
-				<?php $i++;}?>
+				<tr id="edit_prog_<?php echo $prog['prog']->id?>" style="display:none"><td></td>
+					<div>
+					<td colspan=7>
+						<form class="form-horizontal" action="<?php echo base_url();?>initiative/submit_initiative/<?php echo $prog['prog']->id?>" method ="post" id="formsignup" role="form">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Program</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" id="title" name="title" placeholder="Initiative" value="<?php echo $prog['prog']->title?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Id</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" name="code" id="code" placeholder="Id" value="<?php echo $prog['prog']->code?>">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Description</label>
+								<div class="col-sm-8">
+									<textarea type="text" class="form-control" id="description<?php echo $prog['prog']->id?>" name="description"><?php echo $prog['prog']->description?></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-sm-2 control-label"></label>
+								<div class="col-sm-4"><input type="submit" class="btn btn-success"></div></div>
+						</form>
+						<script>
+							CKEDITOR.replace('description'+<?php echo $prog['prog']->id?>);
+						</script>
+					</div>
+				</tr>
+				<?php $i++;}}?>
 			</tbody>
 		</table>
 	</div><div style="clear:both"></div><br>

@@ -100,6 +100,23 @@ class Milestone extends CI_Controller {
     	}
     }
     
+    public function submit_timeline(){
+    	$id = $this->uri->segment(3);
+    	$user = $this->session->userdata('user');
+    	$program['milestone_id'] = $id;
+    	$program['content'] = $this->input->post('content');
+    	$program['user_id'] = $user['id'];
+    	$program['date_created'] = date('Y-m-d h:i:s');
+        if($this->mmilestone->insert_timeline($program)){
+			$json['status'] = 1;
+			$tl = $this->mmilestone->get_timeline_by_ms_id($id);
+    		$content = $this->load->view('milestone/content_timeline',array('tl'=>$tl),TRUE);
+            $json['html'] = $content;
+		}else{$json['status'] = 0;}
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+    }
+    
     public function delete_milestone(){
         if($this->mmilestone->delete_milestone()){
     		$json['status'] = 1;
@@ -108,6 +125,22 @@ class Milestone extends CI_Controller {
     		$json['status'] = 0;
     	}
     	$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+	
+	public function get_description(){
+       	$id = $this->input->get('id');
+    	$ms = $this->mmilestone->get_milestone_by_id($id); 
+    	$tl = $this->mmilestone->get_timeline_by_ms_id($id);
+    	$content = $this->load->view('milestone/content_timeline',array('tl'=>$tl),TRUE);
+		if($ms){
+			$json['status'] = 1;
+            $json['html'] = $this->load->view('milestone/timeline',array('ms'=>$ms, 'cnt'=>$content),TRUE);
+            $json['title'] = $ms->title;
+		}else{
+			$json['status'] = 0;
+		}
+		$this->output->set_content_type('application/json')
                      ->set_output(json_encode($json));
 	}
 }
