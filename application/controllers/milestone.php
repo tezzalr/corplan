@@ -57,6 +57,7 @@ class Milestone extends CI_Controller {
     public function submit_revised(){
     	$id = $this->uri->segment(3);
     	$wb = $this->uri->segment(4);
+    	$revid = $this->input->post('rev_id');
     	$program['milestone_id'] = $id;
     	$program['reason'] = $this->input->post('reason');
     	$program['action'] = $this->input->post('action');
@@ -64,9 +65,19 @@ class Milestone extends CI_Controller {
     		$revised = DateTime::createFromFormat('m/d/Y', $this->input->post('revised'));
     		$program['revised_date'] = $revised->format('Y-m-d');
         }
-        if($this->mmilestone->insert_revised($program,$wb)){
-			redirect("workblock/detail_workblock/".$wb);
-		}else{redirect("workblock/detail_workblock/".$wb);}
+        if(!$revid){
+			if($this->mmilestone->insert_revised($program,$wb)){
+				redirect("workblock/detail_workblock/".$wb);
+			}else{redirect("workblock/detail_workblock/".$wb);}
+		}
+		else{
+			$program['date_update']=date('Y-m-d h:i:s');
+			$program['desc_GH']="";
+			$program['aprv_GH']=null;
+			if($this->mmilestone->update_revised($program,$revid)){
+				redirect("workblock/detail_workblock/".$wb);
+			}else{redirect("workblock/detail_workblock/".$wb);}
+		}
     }
     
     public function aprove_revised(){
@@ -81,7 +92,7 @@ class Milestone extends CI_Controller {
 		}
 		$revised[$aut.'_cmnt']=$this->input->post('cmnt_'.$aut);
 		$revised['aprv_'.$aut]=date('Y-m-d');
-		if($this->mmilestone->update_revised($revised,$id)){
+		if($this->mmilestone->update_revised_and_end_date($revised,$id, $revised['desc_'.$aut])){
 			redirect("workblock/detail_workblock/".$wb);
 		}else{redirect("workblock/detail_workblock/".$wb);}
     } 
@@ -136,6 +147,21 @@ class Milestone extends CI_Controller {
 		if($ms){
 			$json['status'] = 1;
             $json['html'] = $this->load->view('milestone/timeline',array('ms'=>$ms, 'cnt'=>$content),TRUE);
+            $json['title'] = $ms->title;
+		}else{
+			$json['status'] = 0;
+		}
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+	
+	public function get_notes_delay(){
+		$id = $this->input->get('id');
+    	$ms = $this->mmilestone->get_milestone_by_id($id); 
+    	$aprv = $this->mmilestone->get_milestone_approved($id);
+		if($ms){
+			$json['status'] = 1;
+            $json['message'] = $this->load->view('milestone/notes_delay',array('aprv'=>$aprv),TRUE);
             $json['title'] = $ms->title;
 		}else{
 			$json['status'] = 0;

@@ -50,6 +50,7 @@ class Mmilestone extends CI_Model {
         foreach($res as $re){
         	$arr[$i]['ms'] = $re;
         	$arr[$i]['revise'] = $this->get_milestone_revise($re->id);
+        	$arr[$i]['delay'] = $this->get_milestone_approved($re->id);
         	$i++;
         }
         return $arr;
@@ -57,14 +58,23 @@ class Mmilestone extends CI_Model {
     
     function get_milestone_revise($id){
     	$this->db->join('user as usergh', 'usergh.id = revised.GH_id');
-    	$this->db->join('user as userpmo', 'userpmo.segment = revised.PMO_id');
-    	$this->db->select('revised.*, usergh.name as GH, userpmo.name as PMO, userpmo.id as PMOid');
+    	$this->db->select('revised.*, usergh.name as GH');
     	$this->db->where('milestone_id', $id);
-    	$this->db->where("(desc_PMO != 'Approved' OR desc_GH != 'Approved')");
+    	$this->db->where("desc_GH IS NULL OR desc_GH != 'Approved'");
     	$this->db->order_by('revised.id', 'desc');
     	$this->db->limit(1);
     	$query = $this->db->get('revised');
     	return $query->row(0);
+    }
+    
+    function get_milestone_approved($id){
+    	$this->db->join('user as usergh', 'usergh.id = revised.GH_id');
+    	$this->db->select('revised.*, usergh.name as GH');
+    	$this->db->where('milestone_id', $id);
+    	$this->db->where("desc_GH = 'Approved'");
+    	$this->db->order_by('revised.id', 'desc');
+    	$query = $this->db->get('revised');
+    	return $query->result();
     }
     
     function get_workblock_by_id($id){
@@ -80,6 +90,16 @@ class Mmilestone extends CI_Model {
     function get_milestone_by_id($id){
         $this->db->where('id',$id);
         $result = $this->db->get('milestone');
+        if($result->num_rows==1){
+            return $result->row(0);
+        }else{
+            return false;
+        }
+    }
+    
+    function get_revised_by_id($id){
+        $this->db->where('id',$id);
+        $result = $this->db->get('revised');
         if($result->num_rows==1){
             return $result->row(0);
         }else{
@@ -131,7 +151,7 @@ class Mmilestone extends CI_Model {
     	$this->db->join('initiative', 'initiative.id = workblock.initiative_id');
 
     	$this->db->where($aut.'_id',$id);
-    	$this->db->where('desc_'.$aut,'Not Yet');
+    	$this->db->where("desc_".$aut." IS NULL OR desc_GH != 'Approved'");
     	$query = $this->db->get('revised');
     	
     	return $query->result();
@@ -146,6 +166,22 @@ class Mmilestone extends CI_Model {
     function update_revised($ms, $id){
         $this->db->where('id',$id);
         return $this->db->update('revised', $ms);
+    }
+    
+    function update_revised_and_end_date($revised,$id,$desc){
+    	$this->db->where('id',$id);
+        if($this->db->update('revised', $revised)){
+        	if($desc == "Approved"){
+        		$rev = $this->get_revised_by_id($id);
+        		$ms_old = $this->get_milestone_by_id($rev->milestone_id);
+        		$ms['end'] = $rev->revised_date;
+        		if($ms_old->last_status){
+        			$ms['status'] = $ms_old->last_status;
+        		}else{$ms['status'] = "In Progress";}
+        		return $this->update_milestone($ms,$rev->milestone_id);
+        	}
+        	else{return 1;}
+        }
     }
     
     //DELETE FUNCTION

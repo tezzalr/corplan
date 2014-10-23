@@ -77,6 +77,23 @@
     		},
 		});
 	}
+	function show_notes_delay(id){
+		$.ajax({
+			type: "GET",
+			url: config.base+"milestone/get_notes_delay",
+			data: {id: id},
+			dataType: 'json',
+			cache: false,
+			success: function(resp){
+				if(resp.status==1){
+					bootbox.dialog({
+						title: resp.title,
+						message: resp.message
+					});
+				}else{}
+			}
+		});
+	}
 </script>
 <?php 
 	$msid = $this->uri->segment(4);
@@ -163,9 +180,9 @@
 			</div>
 			<table class="table table-bordered" style="margin-top:20px">
 				<thead>
-					<tr class="headertab"><th></th><th colspan=2>Milestone</th><th style="width:110px">Start Date</th><th style="width:110px">End Date</th>
+					<tr class="headertab"><th></th><th colspan=2>Milestone</th><th style="width:90px">Start Date</th><th style="width:90px">End Date</th>
 					<!--<th style="width:110px">Revised Date</th>-->
-					<th>Reason Delay</th><th>Action Plan</th>
+					<th style="width:100px">Notes Delay</th>
 					<th style="width:55px"></th></tr>
 				</thead>
 				<tbody>
@@ -184,8 +201,9 @@
 						<td><?php if($each['ms']->start){echo date("j M y", strtotime($each['ms']->start));}?></td>
 						<td><?php if($each['ms']->end){echo date("j M y", strtotime($each['ms']->end));}?></td>
 						<!--<td></td>-->
-						<td></td>
-						<td></td>
+						<td><?php if($each['delay']){?>
+							<button class="btn btn-default btn-xs" onclick="show_notes_delay(<?php echo $each['ms']->id ?>)">Notes Delay</button>
+						<?php }?></td>
 						<td>
 							<?php if($each['ms']->status == "Not Started Yet"){?>
 							<form method="post" action="<?php echo base_url();?>milestone/change_status/start/<?php echo $each['ms']->id?>/<?php echo $each['ms']->workblock_id?>"><button type="submit" class="btn btn-warning btn-xs">Start</button></form>
@@ -247,13 +265,14 @@
 								</form>
 							</td>
 						</tr>
+					
 					<tr id="revise_ms_<?php echo $each['ms']->id?>" style="<?php if($msid!=$each['ms']->id){echo "display:none";}?>">
 						<td colspan=8>
 							<div style="width:45%; float:left;">
 								<form class="form-horizontal" method="post" action="<?php echo base_url();?>milestone/submit_revised/<?php echo $each['ms']->id."/".$wb['wb']->id?>">
 									<?php $statform = "";
 										if($each['revise']){
-											if($each['revise']->user_id!= $user['id'] || ($each['revise'] && (!($each['revise']->desc_GH=="Rejected")&&!($each['revise']->desc_PMO=="Rejected")))){
+											if($each['revise']->user_id!= $user['id'] || ($each['revise'] && (!($each['revise']->desc_GH=="Rejected")))){
 												$statform = "disabled";
 											}
 										}
@@ -288,6 +307,7 @@
 											<textarea class="form-control" placeholder="Action Plan" name="action" style="height:80px" <?php echo $statform?>><?php if($each['revise']){echo $each['revise']->action;}?></textarea>
 										</div>
 									</div>
+									<input type="hidden" name="rev_id" value="<?php if($each['revise']){echo $each['revise']->id;}?>">
 									<?php if(!$statform){?><div class="form-group">
 										<label class="col-sm-4 control-label"></label><div class="col-sm-6"><input type="submit" class="btn btn-success" value="Submit"></div>
 									</div><?php }?>
@@ -331,20 +351,7 @@
 											</form>
 										</div>
 									<?php }?>
-								</div><hr>
-								<div>
-									<label>PMO</label><br>
-									<?php 
-										if($each['revise']->desc_PMO=="Approved"){$psts="danger";}
-										elseif($each['revise']->desc_PMO=="Rejected"){$psts="success";}
-										else{$psts="inverse";}
-									?>
-									<button style="margin-top:-5px" class="btn btn-<?php echo $psts?> btn-sm" disabled></button>
-									<span style="margin-left:10px">
-										<?php echo $each['revise']->PMO?>
-									</span>
-								</div>
-							</div><div style="clear:both"></div>
+								</div><div style="clear:both"></div>
 							<?php }?>
 						</td>
 					</tr>

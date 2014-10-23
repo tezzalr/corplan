@@ -202,11 +202,19 @@ class Minitiative extends CI_Model {
     	$initiatives = $this->get_all_initiatives("",'all');
     	foreach($initiatives as $int){
     		foreach($int['wbs'] as $wb){
-    			$ms['status'] = "Delay";
     			$this->db->where('workblock_id', $wb->id);
     			$this->db->where('end <', $datenow);
     			$this->db->where('status !=', 'Completed');
-    			$this->db->update('milestone', $ms);
+    			$this->db->where('status !=', 'Delay');
+    			$mss = $this->db->get('milestone');
+    			$mss = $mss->result();
+    			foreach($mss as $ms){
+    				$ms_upd['status'] = "Delay";
+    				$ms_upd['last_status'] = $ms->status;
+    				
+    				$this->db->where('id',$ms->id);
+    				$this->db->update('milestone', $ms_upd);	
+    			}
     		}
     	}
     }

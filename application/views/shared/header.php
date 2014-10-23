@@ -34,10 +34,10 @@
 	<div class="<?php if($now2 == "overview"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>general/overview">Overview</a></div>
 	<div class="<?php if($now2=="list_programs"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>initiative/list_programs">Programs</a></div>
 	<div class="<?php if(($now1=="initiative" && $now2 !="list_programs")||$now1=="workblock"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>initiative/list_initiative/Wholesale">Initiatives</a></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">Outlook</a></div>
+	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>assets/other/Industri Rating Update 2014 - Urutan Summary.pdf">Outlook</a></div>
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">Log</a></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">PIC</a></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">MoM</a></div>
+	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>assets/other/Daftar PIC Wholesale Initiative.pdf">PIC</a></div>
+	<div class="<?php if($now2 =="mom"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>general/mom">MoM</a></div>
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">Print</a></div>
 	<div class="header_top" style="float:right; margin-right:20px; padding-top:5px;"><?php echo date("d/M/y", strtotime(date('Y-m-d')));?></div>
 	<div class="header_top" style="float:right; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>user/logout">Logout</a></div>

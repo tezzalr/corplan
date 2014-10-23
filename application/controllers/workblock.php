@@ -7,6 +7,7 @@ class Workblock extends CI_Controller {
         parent::__construct();
         $this->load->model('mworkblock');
         $this->load->model('mmilestone');
+        $this->load->model('minitiative');
         
         $session = $this->session->userdata('user');
         
@@ -27,6 +28,8 @@ class Workblock extends CI_Controller {
     	$workblock['wb'] = $this->mworkblock->get_workblock_by_id($id);
     	$workblock['stat'] = $this->mworkblock->get_workblock_status($id);
 		$milestones = $this->mmilestone->get_all_workblock_milestone($id);
+    	
+    	$this->minitiative->check_initiative_status();
     	
     	$user = $this->session->userdata('user');
     	$roles = explode(',',$user['role']);
