@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 27, 2014 at 06:54 AM
+-- Generation Time: Oct 29, 2014 at 07:06 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -383,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `milestone` (
   `revised` date DEFAULT NULL,
   `reason` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=179 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=199 ;
 
 --
 -- Dumping data for table `milestone`
@@ -422,7 +422,7 @@ INSERT INTO `milestone` (`id`, `title`, `start`, `end`, `status`, `last_status`,
 (61, 'RFP response 	', NULL, '2014-09-29', 'Completed', '', 28, NULL, '0'),
 (62, 'Proof of Concept 	', NULL, '2014-09-29', 'Completed', '', 28, NULL, ''),
 (63, 'Assessment result	', NULL, '2014-09-29', 'Completed', '', 28, NULL, ''),
-(64, 'Vendor selected/contract sign off	', NULL, '2014-10-24', 'In Progress', '', 28, NULL, ''),
+(64, 'Vendor selected/contract sign off	', NULL, '2014-10-24', 'Delay', 'In Progress', 28, NULL, ''),
 (65, 'Functional Specification Document', NULL, '2014-12-05', 'In Progress', '', 29, NULL, ''),
 (66, 'Technical Specification Document	', NULL, '2014-12-05', 'In Progress', '', 29, NULL, ''),
 (67, 'Supporting documents	', NULL, '2015-07-31', 'In Progress', '', 30, NULL, ''),
@@ -467,7 +467,7 @@ INSERT INTO `milestone` (`id`, `title`, `start`, `end`, `status`, `last_status`,
 (112, 'Implement e-payment for Container Service', NULL, '2014-04-15', 'Completed', '', 63, NULL, ''),
 (113, 'Implement e-payment for Vessel Service	', NULL, '2014-03-28', 'Completed', '', 63, NULL, ''),
 (114, 'Eksplore & Strengthening relationship with Industry Association (APJP, ALFI, INSA) 	', NULL, '2014-06-04', 'Completed', '', 64, NULL, ''),
-(115, 'Offer financing for consignee/ forwarders	', NULL, '2014-10-24', 'In Progress', '', 64, NULL, ''),
+(115, 'Offer financing for consignee/ forwarders	', NULL, '2014-10-24', 'Delay', 'In Progress', 64, NULL, ''),
 (116, 'Implement solutions for Shipping lines container repo', NULL, '2014-06-22', 'Completed', '', 64, NULL, '0'),
 (117, 'Adjust our current pitchbook for Port Entities	', NULL, '2014-10-31', 'In Progress', '', 65, NULL, ''),
 (118, 'Deliver new sector cook book	', NULL, '2014-10-31', 'In Progress', '', 65, NULL, ''),
@@ -517,7 +517,27 @@ INSERT INTO `milestone` (`id`, `title`, `start`, `end`, `status`, `last_status`,
 (175, 'CB Sector-sharpened coverage in place', NULL, NULL, 'Not Started Yet', '', 78, NULL, ''),
 (176, 'Expertise-led sector coverage (pilot) supported by industry & product speciialist', NULL, NULL, 'Not Started Yet', '', 78, NULL, ''),
 (177, 'Tiered-based coverage model an mapped clients presented and agreed by Wholesale and Retail Committee', NULL, NULL, 'Not Started Yet', '', 79, NULL, ''),
-(178, 'New Coverage model implemented (pilot) –dependency : organization, HC, resources, core competency, assessment, training & development program, KPI/targets, credit analyst', NULL, NULL, 'Not Started Yet', '', 80, NULL, '');
+(178, 'New Coverage model implemented (pilot) –dependency : organization, HC, resources, core competency, assessment, training & development program, KPI/targets, credit analyst', NULL, NULL, 'Not Started Yet', '', 80, NULL, ''),
+(179, 'Establish unique IDs across the bank', '2014-07-01', '2018-03-01', 'Not Started Yet', '', 82, NULL, '0'),
+(180, 'Identify required platform enhancements, investment levels and time to deliver to support greater data capture', '2015-07-01', '2018-01-01', 'Not Started Yet', '', 83, NULL, '0'),
+(181, 'Enhance real-time capabilities of existing data feeds and multi-channel access for RMs', '2015-07-01', '2018-01-01', 'Not Started Yet', '', 83, NULL, '0'),
+(182, 'Identify quick wins to Improve RM access to existing data e.g. through SharePoint file', '2015-07-01', '2018-01-01', 'Not Started Yet', '', 83, NULL, '0'),
+(183, 'Integrate data source to create 360-degree customer view', '2016-01-01', '2019-07-01', 'Not Started Yet', '', 84, NULL, '0'),
+(184, 'Create simple templates for key CRM processes to support greater data capture', '2018-01-01', '2020-12-01', 'Not Started Yet', '', 85, NULL, '0'),
+(185, 'Improve front-end system, i.e., drop-downs, pre-population, etc. and investment and timing to deliver', '2018-01-01', '2020-12-01', 'Not Started Yet', '', 85, NULL, '0'),
+(186, 'Enhanced customization and automation of CRM functions and services', '2018-01-01', '2020-12-01', 'Not Started Yet', '', 85, NULL, '0'),
+(187, 'Provide single data interface providing a single source of truth for information across the bank', '2017-01-01', '2018-01-01', 'Not Started Yet', '', 86, NULL, '0'),
+(188, 'Identify potential solutions to deliver pricing intelligence to RMs and management, i.e., tools, new function, etc.', '2017-01-01', '2018-01-01', 'Not Started Yet', '', 87, NULL, '0'),
+(189, 'For tools, determine investment requirements, prioritize functions and move to development', '2017-01-01', '2018-01-01', 'Not Started Yet', '', 87, NULL, '0'),
+(190, 'Develop tracking tools to monitor RM pricing versus policy', '2016-01-01', '2017-01-01', 'Not Started Yet', '', 88, NULL, '0'),
+(191, 'Conduct TAT Survey', NULL, '2014-09-19', 'Completed', '', 89, NULL, ''),
+(192, 'Identify Problems and Solutions', NULL, '2014-11-30', 'Not Started Yet', '', 89, NULL, ''),
+(193, 'Conduct Customer Satisfaction Survey', NULL, '2015-02-28', 'Not Started Yet', '', 89, NULL, ''),
+(194, 'Conduct Market Intelligence', NULL, '2015-03-31', 'Not Started Yet', '', 89, NULL, ''),
+(195, 'Setup Target Level of Service', NULL, '2015-09-30', 'Not Started Yet', '', 89, NULL, ''),
+(196, 'Implement plans for target state', NULL, '2015-11-30', 'Not Started Yet', '', 89, NULL, ''),
+(197, 'Define user requirements for pricing tools and assess versus current tools to identify issues/opportunities', NULL, NULL, 'Not Started Yet', '', 90, NULL, ''),
+(198, 'Work with RMs to prioritize functionality to be develop, i.e., scenario analysis, dashboards, etc.', NULL, NULL, 'Not Started Yet', '', 90, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -689,7 +709,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `jabatan` varchar(600) DEFAULT NULL,
   `initiative` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `user`
@@ -716,16 +736,17 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 (26, 'prita', '5f4dcc3b5aa765d61d8327deb882cf99', 'Prita', 'PIC', NULL, 'DH', '1.4.B'),
 (27, 'rustam', '5f4dcc3b5aa765d61d8327deb882cf99', 'Rustam', 'PIC', NULL, 'GH', '1.2.C'),
 (28, 'tongki', '5f4dcc3b5aa765d61d8327deb882cf99', 'Tongki Lentari', 'PIC', NULL, 'DH', '1.2.C'),
-(29, 'didiek', '5f4dcc3b5aa765d61d8327deb882cf99', 'Didiek H', 'PIC', NULL, 'GH', '1.4.D'),
+(29, 'didiek', '5f4dcc3b5aa765d61d8327deb882cf99', 'Didiek Hartantyo', 'PIC', '', 'GH', '1.4.D'),
 (30, 'oktav', '5f4dcc3b5aa765d61d8327deb882cf99', 'Oktav', 'PIC', NULL, 'DH', '1.4.D'),
 (31, 'yoyok', '804da344974611d34d496565f15376f4', 'Hermawan Soebagio', 'admin', NULL, '', ''),
-(32, '1084353929', 'cfdeb44dfa760c6dca6f3296867d1833', 'Andi Widyo Cahyono', 'PMO', 'Wholesale', 'GH', ''),
+(32, '1084353929', 'cfdeb44dfa760c6dca6f3296867d1833', 'Andi Widyo Cahyono', 'PMO', 'Wholesale', '', ''),
 (33, 'cmt', '5f4dcc3b5aa765d61d8327deb882cf99', 'CMTers', 'admin', '', 'GH', ''),
 (34, '0675289276', '140d3ea2b0c7a720b8fcc236deedd04f', 'Nyoman Bagus Nugraha', 'PMO', '', 'DH', ''),
 (35, 'anton', '5f4dcc3b5aa765d61d8327deb882cf99', 'Anton Zulkarnain', 'PIC', '', 'GH', '1.2.B'),
 (36, 'indarto', '5f4dcc3b5aa765d61d8327deb882cf99', 'Indarto Pamoengkas', 'PIC', '', 'GH', '1.2.B'),
 (37, 'dyah', '5f4dcc3b5aa765d61d8327deb882cf99', 'Dyah Eti Irawati', 'PIC', '', 'DH', '1.2.B'),
-(38, 'ikhwan', '5f4dcc3b5aa765d61d8327deb882cf99', 'Ikhwam Muhammad', 'PIC', '', 'DH', '1.2.B');
+(38, 'ikhwan', '5f4dcc3b5aa765d61d8327deb882cf99', 'Ikhwam Muhammad', 'PIC', '', 'DH', '1.2.B'),
+(39, '0077152627', 'cc992bb9f221bcc7c0143e4d25ad43d6', 'Setyo Wibowo', 'PMO', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -736,75 +757,82 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 CREATE TABLE IF NOT EXISTS `workblock` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(600) NOT NULL,
-  `start` date DEFAULT NULL,
-  `end` date DEFAULT NULL,
   `objective` text,
   `initiative_id` int(11) NOT NULL,
   `pic` varchar(600) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=82 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=91 ;
 
 --
 -- Dumping data for table `workblock`
 --
 
-INSERT INTO `workblock` (`id`, `title`, `start`, `end`, `objective`, `initiative_id`, `pic`) VALUES
-(17, 'Define the nature of the credit analyst', NULL, NULL, '', 12, ''),
-(18, 'Develop staffing / recruiting model', NULL, NULL, '', 12, ''),
-(19, 'Develop “migration” strategy', NULL, NULL, '', 12, ''),
-(20, 'Determine product proposition', NULL, NULL, '', 23, ''),
-(21, 'Business requirements including licensing and platforms', NULL, NULL, '', 23, ''),
-(23, 'Investment requirements', NULL, NULL, '', 23, ''),
-(24, 'Strategic planning (build strategy)', NULL, NULL, '', 23, ''),
-(25, 'Business build', NULL, NULL, '', 23, ''),
-(26, 'Peningkatan ijin Usaha Mandiri Sekuritas Singapore', NULL, NULL, '', 5, ''),
-(27, 'Develop RFP', NULL, NULL, '', 6, ''),
-(28, 'Vendor Selection', NULL, NULL, '', 6, ''),
-(29, 'Business Requirement Design', NULL, NULL, '', 6, ''),
-(30, 'System Development', NULL, NULL, '', 6, ''),
-(31, 'Platform Migration (Phase 1)', NULL, NULL, '', 6, ''),
-(32, 'SWOT analysis', NULL, NULL, '', 4, ''),
-(33, ' Consumers Insight analysis', NULL, NULL, '', 4, ''),
-(34, 'Bundling Build Branding strategy', NULL, NULL, '', 4, ''),
-(35, 'Post Survey Branding Analysis and Review', NULL, NULL, '', 4, ''),
-(36, 'Socialization New Branding', NULL, NULL, '', 4, ''),
-(37, 'Upgrade MCM', NULL, NULL, '', 20, ''),
-(38, 'Quick Fix MCM', NULL, NULL, 'Improving the reliability & performance of MCM', 25, ''),
-(39, 'Implementation of pilot program for BPJS Kesehatan, In Health & Providers -Hospitals', NULL, NULL, '', 16, ''),
-(40, 'Opportunity Assessment  for COB Model, Accelerate Claims & Pharmaceuticals Chain', NULL, NULL, 'Provide healthcare solutions for claim collection, registration portal for COB Model, integrated services beetween providers & Pharmacy', 16, ''),
-(41, 'Update Bank Mandiri Healthcare Sector Pitchbook	', NULL, NULL, 'Adjust our current Pitchbook for Healthcare Entities', 16, ''),
-(42, 'Develop Client List and finalize roll out plans', NULL, NULL, 'Distribution of lists to the relevant Business Unit', 16, ''),
-(43, 'Track and facilitate on going outreach process', NULL, NULL, 'Monitor solutions implementation	', 16, ''),
-(44, 'Developing Custodian Supporting Application (CSA)', NULL, NULL, '', 24, ''),
-(45, 'Enhancing Custody System', NULL, NULL, '', 24, ''),
-(46, 'Packaging Bank Mandiri Trade Services System as other bank’s back office', NULL, NULL, '', 24, ''),
-(47, 'Export Bill Collection Services', NULL, NULL, '', 24, ''),
-(55, 'Next Level Sector Analysis', NULL, NULL, 'More granular assessment across key players, document & transaction flows and access points to support sector proposition development for remaining priority sub sectors', 17, ''),
-(56, 'Design sector proposition', NULL, NULL, 'Deseign list of offerings for each remaining priority sub sector and access key points, overall proposition for remaining priority sector', 17, ''),
-(57, 'Add Peripheral products to proposition', NULL, NULL, 'Identify opportunities with respect to peripheral products (e.g. retail packaged solutions, payroll etc), for the ecosystem', 17, ''),
-(58, 'Develop business case', NULL, NULL, 'Detailed business care development including mapping of detailed ecosystem flows, product/solution design and in depth revenue estimation', 17, ''),
-(59, 'Finalize pilot clients list', NULL, NULL, 'Develop list of 3 to 5 key clients for each sub-sector to target for piloting the proposition', 17, ''),
-(60, 'Develop sector pilot plan and supporting material', NULL, NULL, 'Create an announce plan for pilot including clear ownership and timelines; Develop pilot roll out plan', 17, ''),
-(61, 'Run pilot and refine proposition', NULL, NULL, 'Approach and onboard pilot clients as proof of concept.  Refine proposition as per feedback from pilot', 17, ''),
-(62, 'Develop mass roll out plan', NULL, NULL, 'Develop plan for mass roll-out to clients and refine sector proposition if necessary', 17, ''),
-(63, 'Management and tracking of pilot program for Pelindo		', NULL, NULL, 'Implement e-payment system for container and vessel service in Pelindo', 16, ''),
-(64, 'Opportunity Assessment', NULL, NULL, 'Implement port solutions for other port entities (Freight Forwarders, Shipping Lines and Consignee)', 16, ''),
-(65, '"Update Bank Mandiri “sector cook book” "		', NULL, NULL, 'Adjust our current pitchbook for Port Entities', 16, ''),
-(66, 'Develop client list and finalize roll-out plans', NULL, NULL, 'Segregate client lists per entity & distribute to the relevant Business Units', 16, ''),
-(67, 'Track and facilitate on-going outreach process', NULL, NULL, 'Monitoring & tracking for ports solutions', 16, ''),
-(68, 'Review wholesale client  new segmentation policy and mapped existing clients (dependent on the new segmentation delivery by OW).', '2014-11-01', '2014-12-01', '', 2, 'Gaby/Putu'),
-(69, 'Develop wholesale client tiering proposal and communicate to/obtain inputs from business and product segments for a)coverage, and b)service propositions', '2014-11-01', '2014-12-01', '', 2, 'Gaby/Putu'),
-(70, 'Communicate the approved new tiering policy to relevant segments and map clients accordingly –work with each segment’s DSD', '2014-11-01', '2014-12-01', '', 2, 'Gaby/Putu'),
-(71, 'Map end-to-end customer service touch points/channels and current service standards/practices', '2015-03-01', NULL, '', 3, 'Gaby/Putu'),
-(72, 'Define expected service levels/SLAs by service points and client tier dependent on the new tiering framework', '2015-04-01', NULL, '', 3, 'Gaby/Putu'),
-(73, 'Identify quick-win SLAs and facilitate implementation', '2015-05-01', NULL, '', 3, 'Gaby/Putu'),
-(75, 'Define and implement sector-based coverage model', NULL, NULL, '', 0, 'Gaby/Putu'),
-(76, 'Defie client coverage model based on the new prioritization framewrok & map clients accordingly', NULL, NULL, '', 0, 'Gaby/Putu'),
-(77, 'Implement the priority client service model', NULL, NULL, '', 0, 'Gaby/Putu'),
-(78, 'Define and implement sector-based coverage model', NULL, NULL, '', 11, 'Gaby/Putu'),
-(79, 'Define client coverage model based on the new prioritization framework & map clients accordingly', NULL, NULL, '', 11, 'Gaby/Putu'),
-(80, 'Implement the priority client service model', NULL, NULL, '', 11, 'Gaby/Putu'),
-(81, 'Liaise with all relevant business segments and HC to developimplementation plan of the new coverage and service propositionscovering: existing resources, gap analysis, staged execution planincluding recruitment, training and development, talent management, etc.', NULL, NULL, '', 2, 'GAby/Putu');
+INSERT INTO `workblock` (`id`, `title`, `objective`, `initiative_id`, `pic`) VALUES
+(17, 'Define the nature of the credit analyst', '', 12, ''),
+(18, 'Develop staffing / recruiting model', '', 12, ''),
+(19, 'Develop “migration” strategy', '', 12, ''),
+(20, 'Determine product proposition', '', 23, ''),
+(21, 'Business requirements including licensing and platforms', '', 23, ''),
+(23, 'Investment requirements', '', 23, ''),
+(24, 'Strategic planning (build strategy)', '', 23, ''),
+(25, 'Business build', '', 23, ''),
+(26, 'Peningkatan ijin Usaha Mandiri Sekuritas Singapore', '', 5, ''),
+(27, 'Develop RFP', '', 6, ''),
+(28, 'Vendor Selection', '', 6, ''),
+(29, 'Business Requirement Design', '', 6, ''),
+(30, 'System Development', '', 6, ''),
+(31, 'Platform Migration (Phase 1)', '', 6, ''),
+(32, 'SWOT analysis', '', 4, ''),
+(33, ' Consumers Insight analysis', '', 4, ''),
+(34, 'Bundling Build Branding strategy', '', 4, ''),
+(35, 'Post Survey Branding Analysis and Review', '', 4, ''),
+(36, 'Socialization New Branding', '', 4, ''),
+(37, 'Upgrade MCM', '', 20, ''),
+(38, 'Quick Fix MCM', 'Improving the reliability & performance of MCM', 25, ''),
+(39, 'Implementation of pilot program for BPJS Kesehatan, In Health & Providers -Hospitals', '', 16, ''),
+(40, 'Opportunity Assessment  for COB Model, Accelerate Claims & Pharmaceuticals Chain', 'Provide healthcare solutions for claim collection, registration portal for COB Model, integrated services beetween providers & Pharmacy', 16, ''),
+(41, 'Update Bank Mandiri Healthcare Sector Pitchbook	', 'Adjust our current Pitchbook for Healthcare Entities', 16, ''),
+(42, 'Develop Client List and finalize roll out plans', 'Distribution of lists to the relevant Business Unit', 16, ''),
+(43, 'Track and facilitate on going outreach process', 'Monitor solutions implementation	', 16, ''),
+(44, 'Developing Custodian Supporting Application (CSA)', '', 24, ''),
+(45, 'Enhancing Custody System', '', 24, ''),
+(46, 'Packaging Bank Mandiri Trade Services System as other bank’s back office', '', 24, ''),
+(47, 'Export Bill Collection Services', '', 24, ''),
+(55, 'Next Level Sector Analysis', 'More granular assessment across key players, document & transaction flows and access points to support sector proposition development for remaining priority sub sectors', 17, ''),
+(56, 'Design sector proposition', 'Deseign list of offerings for each remaining priority sub sector and access key points, overall proposition for remaining priority sector', 17, ''),
+(57, 'Add Peripheral products to proposition', 'Identify opportunities with respect to peripheral products (e.g. retail packaged solutions, payroll etc), for the ecosystem', 17, ''),
+(58, 'Develop business case', 'Detailed business care development including mapping of detailed ecosystem flows, product/solution design and in depth revenue estimation', 17, ''),
+(59, 'Finalize pilot clients list', 'Develop list of 3 to 5 key clients for each sub-sector to target for piloting the proposition', 17, ''),
+(60, 'Develop sector pilot plan and supporting material', 'Create an announce plan for pilot including clear ownership and timelines; Develop pilot roll out plan', 17, ''),
+(61, 'Run pilot and refine proposition', 'Approach and onboard pilot clients as proof of concept.  Refine proposition as per feedback from pilot', 17, ''),
+(62, 'Develop mass roll out plan', 'Develop plan for mass roll-out to clients and refine sector proposition if necessary', 17, ''),
+(63, 'Management and tracking of pilot program for Pelindo		', 'Implement e-payment system for container and vessel service in Pelindo', 16, ''),
+(64, 'Opportunity Assessment', 'Implement port solutions for other port entities (Freight Forwarders, Shipping Lines and Consignee)', 16, ''),
+(65, '"Update Bank Mandiri “sector cook book” "		', 'Adjust our current pitchbook for Port Entities', 16, ''),
+(66, 'Develop client list and finalize roll-out plans', 'Segregate client lists per entity & distribute to the relevant Business Units', 16, ''),
+(67, 'Track and facilitate on-going outreach process', 'Monitoring & tracking for ports solutions', 16, ''),
+(68, 'Review wholesale client  new segmentation policy and mapped existing clients (dependent on the new segmentation delivery by OW).', '', 2, 'Gaby/Putu'),
+(69, 'Develop wholesale client tiering proposal and communicate to/obtain inputs from business and product segments for a)coverage, and b)service propositions', '', 2, 'Gaby/Putu'),
+(70, 'Communicate the approved new tiering policy to relevant segments and map clients accordingly –work with each segment’s DSD', '', 2, 'Gaby/Putu'),
+(71, 'Map end-to-end customer service touch points/channels and current service standards/practices', '', 3, 'Gaby/Putu'),
+(72, 'Define expected service levels/SLAs by service points and client tier dependent on the new tiering framework', '', 3, 'Gaby/Putu'),
+(73, 'Identify quick-win SLAs and facilitate implementation', '', 3, 'Gaby/Putu'),
+(75, 'Define and implement sector-based coverage model', '', 0, 'Gaby/Putu'),
+(76, 'Defie client coverage model based on the new prioritization framewrok & map clients accordingly', '', 0, 'Gaby/Putu'),
+(77, 'Implement the priority client service model', '', 0, 'Gaby/Putu'),
+(78, 'Define and implement sector-based coverage model', '', 11, 'Gaby/Putu'),
+(79, 'Define client coverage model based on the new prioritization framework & map clients accordingly', '', 11, 'Gaby/Putu'),
+(80, 'Implement the priority client service model', '', 11, 'Gaby/Putu'),
+(81, 'Liaise with all relevant business segments and HC to developimplementation plan of the new coverage and service propositionscovering: existing resources, gap analysis, staged execution planincluding recruitment, training and development, talent management, etc.', '', 2, 'GAby/Putu'),
+(82, 'Consolidate CIF file', '', 27, ''),
+(83, 'Improve Data Model', '', 27, ''),
+(84, 'Create Dynamic Customer Layer', '', 13, ''),
+(85, 'Implement CRM', '', 13, ''),
+(86, 'Datawarehouse', '', 28, ''),
+(87, 'Implement web crawler to gather available pricing information from public data', '', 30, ''),
+(88, 'Implement pricing engine with Pricing rules engine and Audit log', '', 29, ''),
+(89, 'Upgrade Trade Finance', '', 21, ''),
+(90, 'Depend on 1.6.A and 1.6.B', '', 31, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

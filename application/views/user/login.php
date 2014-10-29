@@ -1,5 +1,4 @@
 <link href="<?php echo base_url();?>assets/css/user.css" rel="stylesheet"/>
-0077152627
 <script>
 $(document).ready(function(){
 	if($('#type_login').val()=='failed'){

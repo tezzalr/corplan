@@ -1,100 +1,3 @@
-<script>
-    function is_delay_or_not(){
-    	var stat = $("#status").val();
-    	if(stat == 'Delay'){
-    		$("#fordelay").css("display","block");
-    	}
-    	else{
-    		$("#fordelay").css("display","none");
-    	}
-    }
-    
-    function edit_ms(id){
-    	toggle_visibility('edit_ms_'+id);
-    }
-    
-    function revise_ms(id){
-    	toggle_visibility('revise_ms_'+id);
-    }
-    
-    function timeline_ms(id){
-    	toggle_visibility('timeline_ms_'+id);
-    	$.ajax({
-			type: "GET",
-			url: config.base+"milestone/get_description",
-			data: {id: id},
-			dataType: 'json',
-			cache: false,
-			success: function(resp){
-				if(resp.status==1){
-					$("#timeline_ms_"+id).html(resp.html);
-				}else{}
-			}
-		});
-    }
-    
-    $('#start').datepicker({
-		autoclose: true,
-		todayHighlight: true
-	});
-	$('#end').datepicker({
-		autoclose: true,
-		todayHighlight: true
-	});
-	$('#revised').datepicker({
-		autoclose: true,
-		todayHighlight: true
-	});
-	
-	function delete_milestone(id, event){
-		bootbox.confirm("Apa anda yakin?", function(confirmed) {
-			if(confirmed===true){
-				$.ajax({
-					url: config.base+"milestone/delete_milestone",
-					data: {id: id},
-					dataType: 'json',
-					type: "POST",
-					success: function (resp) {
-						if(resp.status == 1){
-							$('#msdtl_'+id).animate({'opacity':'toggle'});
-							succeedMessage('Milestone berhasil dihapus');
-						}
-					}
-				});
-			}
-		});
-	}
-	
-	function submit_timeline(id){
-		$("#formtimeline_"+id).ajaxForm({	
-    		dataType: 'json',
-    		success: function(resp) 
-    		{
-        		if(resp.status==1){
-					$("#content_tl_"+id).html(resp.html);
-					toggle_visibility('ipt_tl_'+id);
-				}else{}
-    		},
-		});
-	}
-	function show_notes_delay(id){
-		$.ajax({
-			type: "GET",
-			url: config.base+"milestone/get_notes_delay",
-			data: {id: id},
-			dataType: 'json',
-			cache: false,
-			success: function(resp){
-				if(resp.status==1){
-					bootbox.dialog({
-						title: resp.title,
-						message: resp.message
-					});
-				}else{}
-			}
-		});
-	}
-</script>
 <?php 
 	$msid = $this->uri->segment(4);
 ?>
@@ -148,13 +51,13 @@
 					<div class="form-group">
 						<label class="col-sm-2 control-label">Start Date</label>
 						<div class="col-sm-4">
-						  <input type="text" class="form-control" placeholder="mm-dd-yy" name="start" id="start">
+						  <input type="text" class="form-control" placeholder="mm/dd/yy" name="start" id="start">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-2 control-label">End Date</label>
 						<div class="col-sm-4">
-						  <input type="text" class="form-control" placeholder="mm-dd-yy" name="end" id="end">
+						  <input type="text" class="form-control" placeholder="mm/dd/yy" name="end" id="end">
 						</div>
 					</div>
 				
@@ -196,7 +99,11 @@
 						?>
 						<td style="width:40px"><center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center></td>	
 						
-						<td style="min-width:500px"><?php echo $i?>. <?php echo $each['ms']->title?></td>
+						<td style="min-width:500px">
+							<div style="float:left; width:10px; "><?php echo $i;?>.</div>
+							<div style="margin-left:15px; float:left; max-width:95%"><?php echo $each['ms']->title?></div>
+							<div style="clear:both"></div>
+						</td>
 						<td style="width:40px"><button class="btn btn-default btn-xs" onclick="timeline_ms(<?php echo $each['ms']->id?>)"><span class="glyphicon glyphicon-comment"></span></button></td>
 						<td><?php if($each['ms']->start){echo date("j M y", strtotime($each['ms']->start));}?></td>
 						<td><?php if($each['ms']->end){echo date("j M y", strtotime($each['ms']->end));}?></td>
@@ -361,3 +268,100 @@
 		</div>
 	</div><div style="clear:both"></div><br>
 </div>
+<script>
+    function is_delay_or_not(){
+    	var stat = $("#status").val();
+    	if(stat == 'Delay'){
+    		$("#fordelay").css("display","block");
+    	}
+    	else{
+    		$("#fordelay").css("display","none");
+    	}
+    }
+    
+    function edit_ms(id){
+    	toggle_visibility('edit_ms_'+id);
+    }
+    
+    function revise_ms(id){
+    	toggle_visibility('revise_ms_'+id);
+    }
+    
+    function timeline_ms(id){
+    	toggle_visibility('timeline_ms_'+id);
+    	$.ajax({
+			type: "GET",
+			url: config.base+"milestone/get_description",
+			data: {id: id},
+			dataType: 'json',
+			cache: false,
+			success: function(resp){
+				if(resp.status==1){
+					$("#timeline_ms_"+id).html(resp.html);
+				}else{}
+			}
+		});
+    }
+    
+    $('#start').datepicker({
+		autoclose: true,
+		todayHighlight: true
+	});
+	$('#end').datepicker({
+		autoclose: true,
+		todayHighlight: true
+	});
+	$('#revised').datepicker({
+		autoclose: true,
+		todayHighlight: true
+	});
+	
+	function delete_milestone(id, event){
+		bootbox.confirm("Apa anda yakin?", function(confirmed) {
+			if(confirmed===true){
+				$.ajax({
+					url: config.base+"milestone/delete_milestone",
+					data: {id: id},
+					dataType: 'json',
+					type: "POST",
+					success: function (resp) {
+						if(resp.status == 1){
+							$('#msdtl_'+id).animate({'opacity':'toggle'});
+							succeedMessage('Milestone berhasil dihapus');
+						}
+					}
+				});
+			}
+		});
+	}
+	
+	function submit_timeline(id){
+		$("#formtimeline_"+id).ajaxForm({	
+    		dataType: 'json',
+    		success: function(resp) 
+    		{
+        		if(resp.status==1){
+					$("#content_tl_"+id).html(resp.html);
+					toggle_visibility('ipt_tl_'+id);
+				}else{}
+    		},
+		});
+	}
+	function show_notes_delay(id){
+		$.ajax({
+			type: "GET",
+			url: config.base+"milestone/get_notes_delay",
+			data: {id: id},
+			dataType: 'json',
+			cache: false,
+			success: function(resp){
+				if(resp.status==1){
+					bootbox.dialog({
+						title: resp.title,
+						message: resp.message
+					});
+				}else{}
+			}
+		});
+	}
+</script>

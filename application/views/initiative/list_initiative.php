@@ -81,7 +81,8 @@
 							$stdate = strtotime($int['int']->start);
 							$eddate = strtotime($int['int']->end);
 							$crdate = strtotime(date('Y-m-d'));
-							$pcttgl = ($crdate-$stdate)/($eddate-$stdate)*100;
+							$selisih_edst = $eddate-$stdate; if(!$selisih_edst){$selisih_edst = 1;}
+							$pcttgl = ($crdate-$stdate)/($selisih_edst)*100;
 							if($pcttgl<1){$pcttgl = 0;}
 							if($pcttgl>100){$pcttgl = 100;}
 						?>

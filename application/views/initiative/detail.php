@@ -37,18 +37,6 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label">Start Date</label>
-					<div class="col-sm-4">
-					  <input type="text" class="form-control" placeholder="mm-dd-yy" name="start" id="start">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">End Date</label>
-					<div class="col-sm-4">
-					  <input type="text" class="form-control" placeholder="mm-dd-yy" name="end" id="end">
-					</div>
-				</div>
-				<div class="form-group">
 					<label class="col-sm-2 control-label">Objective</label>
 					<div class="col-sm-4">
 					  <textarea class="form-control" placeholder="Objectives" style="height:90px" name="objective"></textarea>
@@ -101,20 +89,6 @@
 								<label class="col-sm-2 control-label">PIC</label>
 								<div class="col-sm-4">
 								  <input type="text" class="form-control" placeholder="PIC" name="pic" value="<?php echo $wb['wb']->pic?>">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Start Date</label>
-								<div class="col-sm-4">
-								 	<?php $start=""; if($wb['wb']->start){$start = date("m/d/Y", strtotime($wb['wb']->start));}?>
-									<input type="text" class="form-control" placeholder="dd-mm-yy" name="start" value="<?php echo $start?>">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">End Date</label>
-								<div class="col-sm-4">
-									<?php $end=""; if($wb['wb']->end){$end = date("m/d/Y", strtotime($wb['wb']->end));}?>
-									<input type="text" class="form-control" placeholder="dd-mm-yy" name="end" value="<?php echo $end?>">
 								</div>
 							</div>
 							<div class="form-group">
