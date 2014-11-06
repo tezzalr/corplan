@@ -25,7 +25,7 @@
 		
 		<table class="table table-bordered">
 			<thead>
-				<tr class="headertab"><th style="width:60px">Program</th><th colspan=2>Initiatives</th><th>WB</th><th>PIC</th><th>Dependency</th><th style="width:200px">Date</th></tr>
+				<tr class="headertab"><th style="width:60px">Program</th><th colspan=3>Initiatives</th><th>WB</th><th>PIC</th><th style="width:24%">Date</th></tr>
 			</thead>
 			<tbody>
 				<?php
@@ -44,7 +44,7 @@
 					foreach($ints as $int){  ?>
 				<?php if(!$statshow || ($statshow && ($statshow == $int['stat']))){if($prog != $int['int']->program){?>
 				<tr style="background-color:#F0EBA8; font-size:14px">
-					<td colspan=8><?php echo $int['int']->progcode?><span style="margin-left:10px"><?php echo $int['int']->program?></span>
+					<td colspan=7><?php echo $int['int']->progcode?><span style="margin-left:10px"><?php echo $int['int']->program?></span>
 					</td>
 				</tr>
 				<?php $prog=$int['int']->program; $np++;}?>
@@ -55,16 +55,26 @@
 						elseif($int['stat']=="Completed"){$clr="success"; $icn="ok";}
 						else{$clr="inverse"; $icn="off";}
 					?>
-					<td style="width:40px"><center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center></td>				
-					<td style="width:50%">
-						<div style="float:left; width:8%; margin-right:5px;"><?php echo $int['int']->code?></div> 
-						<div style="float:left; max-width:90%"><a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></div>
+					<?php if(!$int['child'] && $int['int']->parent_code){?>
+					<td style="width:40px"></td><td style="width:40px">
+						<center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center>
+					</td>				
+					<?php }else{?>
+					<td style="width:40px">
+						<center><button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button></center>
+					</td>
+					<?php }?>
+				
+					<?php if($int['int']->parent_code){ $codewdth = 9; ?><td style="width:45%"><?php }else{ $codewdth = 7; ?><td style="width:45%" colspan=2><?php }?>
+						<div style="float:left; width:<?php echo $codewdth?>%; margin-right:5px;"><?php echo $int['int']->code?></div> 
+						<div style="float:left; max-width:88%"><a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></div>
 						<div style="clear:both"></div>
 					</td>
-					<td style="width:40px"><button class="btn btn-default btn-xs" onclick="show_descript(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-list"></span></button></td>
+					<td style="width:40px"><button class="btn btn-default btn-xs" onclick="show_descript(<?php echo $int['int']->id?>,'<?php echo $segment?>')"><span class="glyphicon glyphicon-list"></span></button></td>
 					<td style="text-align:right; width:20px"><?php echo $int['wb']?></td>
-					<td><?php $sumpic = count($int['pic']); $i=1;
-						if($int['pic']){
+					<td>
+					<?php $sumpic = count($int['pic']); $i=1;
+						if($int['pic'] && !$int['child']){
 							foreach($int['pic'] as $pic){
 								$namaar = explode(' ',$pic->name);
 								echo $namaar[0];
@@ -74,7 +84,6 @@
 							}
 						}?>
 					</td>
-					<td><?php echo $int['int']->kickoff.' '.$int['int']->completion?></td>
 					<td>
 						<?php if($int['int']->start && $int['int']->end){?>
 						<?php
@@ -83,7 +92,7 @@
 							$crdate = strtotime(date('Y-m-d'));
 							$selisih_edst = $eddate-$stdate; if(!$selisih_edst){$selisih_edst = 1;}
 							$pcttgl = ($crdate-$stdate)/($selisih_edst)*100;
-							if($pcttgl<1){$pcttgl = 0;}
+							if($pcttgl<0){$pcttgl = 0;}
 							if($pcttgl>100){$pcttgl = 100;}
 						?>
 						<div style="font-size:12px">
@@ -103,96 +112,15 @@
 						<?php }?>
 					</td>
 					<?php if($user['role']=='admin'){?><td style="width:80px">
-						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_int_<?php echo $int['int']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button class="btn btn-warning  btn-xs" onclick="edit_init(<?php echo $int['int']->id?>,'<?php echo $segment?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_initiative(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 					</td><?php }?>
 				</tr>
-				<tr id="edit_int_<?php echo $int['int']->id?>" style="display:none"><td></td>
-					<div>
-					<td colspan=7>
-						<form class="form-horizontal" action="<?php echo base_url();?>initiative/submit_initiative/<?php echo $int['int']->id?>" method ="post" id="formsignup" role="form">
-							<div class="form-group">
-								<label class="col-sm-2 control-label" for="">Program</label>
-								<input type="hidden" value="<?php echo $this->uri->segment(3)?>" name="segment">
-								<div class="col-sm-4">
-									<select class="form-control" name="program">
-										<?php foreach($programs as $prg){?>
-										<option value="<?php echo $prg->id?>" <?php if($int['int']->program == $prg->title){echo "selected";}?>><?php echo $prg->title?></option>
-										<?php }?>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Initiative</label>
-								<div class="col-sm-4">
-									<input type="text" class="form-control" id="title" name="title" placeholder="Initiative" value="<?php echo $int['int']->title?>">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Id</label>
-								<div class="col-sm-4">
-									<input type="text" class="form-control" name="code" id="code" placeholder="Id" value="<?php echo $int['int']->code?>">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Tier</label>
-								<div class="col-sm-4">
-									<input type="text" class="form-control" name="tier" id="tier" placeholder="Tier" value="<?php echo $int['int']->tier?>">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="" class="col-sm-2 control-label">Start</label>
-								<div class="col-sm-4">
-									<?php $start=""; if($int['int']->start){$start = date("m/d/Y", strtotime($int['int']->start));}?>
-									<input type="date" class="form-control" id="start<?php echo $int['int']->id?>" name="start" placeholder="mm/dd/YYYY" value="<?php echo $start?>">
-									<small style="color:grey">*format: mm/dd/YYYY</small>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="" class="col-sm-2 control-label">End</label>
-								<div class="col-sm-4">
-									<?php $end=""; if($int['int']->end){$end = date("m/d/Y", strtotime($int['int']->end));}?>
-									<input type="date" class="form-control" id="end<?php echo $int['int']->id?>" name="end" placeholder="mm/dd/YYYY" value="<?php echo $end?>">
-									<small style="color:grey">*format: mm/dd/YYYY</small>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Kick-off</label>
-								<div class="col-sm-4">
-									<input type="text" class="form-control" id="kickoff" name="kickoff" placeholder="Dependecies Kick-off" value="<?php if($int['int']->kickoff){echo $int['int']->kickoff;}?>">
-									<small style="color:grey">jika lebih dari satu pisahkan dengan ","</small>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Completion</label>
-								<div class="col-sm-4">
-									<input type="text" class="form-control" id="completion" name="completion" placeholder="Dependecies Completion" value="<?php if($int['int']->completion){echo $int['int']->completion;}?>">
-									<small style="color:grey">jika lebih dari satu pisahkan dengan ","</small>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Description</label>
-								<div class="col-sm-8">
-									<textarea type="text" class="form-control" id="description<?php echo $int['int']->id?>" name="description"><?php echo $int['int']->description?></textarea>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="" class="col-sm-2 control-label"></label>
-								<div class="col-sm-4"><input type="submit" class="btn btn-success"></div></div>
-						</form>
-						<script>
-							 $('#start'+<?php echo $int['int']->id?>).datepicker({
-								autoclose: true,
-								todayHighlight: true
-							});
-							$('#end'+<?php echo $int['int']->id?>).datepicker({
-								autoclose: true,
-								todayHighlight: true
-							});
-							CKEDITOR.replace('description'+<?php echo $int['int']->id?>);
-						</script>
-					</div>
-				</tr>
+				
+				<!--FORM EDIT BOS -->
+				<tr id="edit_int_<?php echo $int['int']->id?>" style="display:none"><td></td></tr>
+				
+				
 				<?php }}?>
 			</tbody>
 		</table>
@@ -226,11 +154,11 @@
 			}
 		});
 	}
-	function show_descript(id){
+	function show_descript(id,segment){
 		$.ajax({
 			type: "GET",
 			url: config.base+"initiative/get_description",
-			data: {id: id},
+			data: {id: id,segment:segment},
 			dataType: 'json',
 			cache: false,
 			success: function(resp){
@@ -243,4 +171,19 @@
 			}
 		});
 	}
+	function edit_init(id,segment){
+    	toggle_visibility('edit_int_'+id);
+    	$.ajax({
+			type: "GET",
+			url: config.base+"initiative/edit_initiative",
+			data: {id: id,segment: segment},
+			dataType: 'json',
+			cache: false,
+			success: function(resp){
+				if(resp.status==1){
+					$("#edit_int_"+id).html(resp.html);
+				}else{}
+			}
+		});
+    }
 </script>

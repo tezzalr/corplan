@@ -143,6 +143,30 @@ class Muser extends CI_Model {
         }
     }
     
+    function get_pic_token(){
+        $q=$this->input->get('q');
+        $like = "(name LIKE '%".$q."%')";
+        //$this->db->like('name', $q);
+        //$this->db->or_like('abbreviation',$q);
+        $this->db->where($like);
+        $result = $this->db->get('user');
+        if($result->num_rows>0){
+            return $result->result_array();
+        }else{
+            return false;
+        }   
+    }
+    
+    function get_existing_pic_token($user_id){
+        $this->db->where('id',$user_id);
+        $result = $this->db->get('user');
+        if($result->num_rows>0){
+            return $result->result_array();
+        }else{
+            return false;
+        }
+    }
+    
     //UPDATE FUNCTION
     function update_user($user,$id){
         $this->db->where('id',$id);

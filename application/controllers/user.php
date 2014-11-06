@@ -123,6 +123,7 @@ class User extends CI_Controller {
         $user['name'] = $this->input->post('name');
         $user['role'] = $this->input->post('role');
         $user['jabatan'] = $this->input->post('jabatan');
+        $user['unitkerja'] = $this->input->post('unitkerja');
         $user['initiative'] = $this->input->post('initiative');
         $user['segment'] = $this->input->post('segment');
         

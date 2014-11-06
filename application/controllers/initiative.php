@@ -68,16 +68,33 @@ class Initiative extends CI_Controller {
 		$this->load->view('front',$data);
     }
     
+    public function edit_initiative(){
+    	$id = $this->input->get('id');
+    	$segment = $this->input->get('segment');
+    	$programs = $this->minitiative->get_all_programs_with_segment($segment);
+    	$init = $this->minitiative->get_initiative_by_id($id);
+    	$pic = $this->get_existing_pic_token($init->GH_PIC);
+		if($init){
+			$json['status'] = 1;
+            $json['html'] = $this->load->view('initiative/_edit_initiative',array('programs' => $programs, 'init'=>$init, 'pic'=>$pic, 'segment' => $segment),TRUE);
+		}else{
+			$json['status'] = 0;
+		}
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+    }
+    
     public function submit_initiative(){
       	$id = $this->uri->segment(3);
       	$segment = $this->input->post('segment');
       	$program['title'] = $this->input->post('title');
         $program['code'] = $this->input->post('code');
-        $program['tier'] = $this->input->post('tier');
+        $program['parent_code'] = $this->input->post('parent');
         $program['program_id'] = $this->input->post('program');
         $program['kickoff'] = $this->input->post('kickoff');
         $program['completion'] = $this->input->post('completion');
         $program['description'] = $this->input->post('description');
+        $program['GH_PIC'] = $this->input->post('GH_PIC');
         
         if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
     		$program['start'] = $start->format('Y-m-d');
@@ -120,6 +137,34 @@ class Initiative extends CI_Controller {
 
 			$this->load->view('front',$data);
 		}
+    }
+    
+    public function get_pic_token(){
+        $arr = array();
+        $arr = $this->muser->get_pic_token();
+    
+        # JSON-encode the response
+        $json_response = json_encode($arr);
+        
+        # Return the response
+        echo $json_response;
+    }
+    
+    public function get_existing_pic_token($user_id){
+        $arr = array();
+        $arr = $this->muser->get_existing_pic_token($user_id);
+        # Collect the results
+        
+        # JSON-encode the response
+        $json_response = json_encode($arr);
+        
+        # Optionally: Wrap the response in a callback function for JSONP cross-domain support
+        /*if($_GET["callback"]) {
+         $json_response = $_GET["callback"] . "(" . $json_response . ")";
+         }*/
+        
+        # Return the response
+        return $json_response;
     }
     
     /*Program*/
@@ -185,16 +230,32 @@ class Initiative extends CI_Controller {
 	
 	public function get_description(){
        	$id = $this->input->get('id');
-    	$descrp = $this->minitiative->get_initiative_by_id($id); 
-		if($descrp){
+    	$int = $this->minitiative->get_info_initiative_by_id($id); 
+		if($int){
+			$view = $this->load->view('initiative/_descrp_initiative',array('int' => $int),TRUE);
+			
 			$json['status'] = 1;
-            $json['message'] = $descrp->description;
-            $json['title'] = $descrp->title;
+            $json['message'] = $view;
+            $json['title'] = $int['init']->title;
 		}else{
 			$json['status'] = 0;
 		}
 		$this->output->set_content_type('application/json')
                      ->set_output(json_encode($json));
 	}
+	
+	public function mind_map(){
+		$allthing = $this->minitiative->get_all('Wholesale');
+		$data['title'] = "List All Initiatives";
+		
+		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['content'] = $this->load->view('initiative/mind_map',array('all'=>$allthing),TRUE);
+
+		$this->load->view('front',$data);
+	} 
     
 }

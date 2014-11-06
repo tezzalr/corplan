@@ -26,31 +26,27 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label class="col-sm-2 control-label">Parent</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" name="parent" id="parent" placeholder="Parent">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Dependency</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="depen" name="kickoff" placeholder="Kickoff">
+			</div>
+			<div class="col-sm-5">
+				<input type="text" class="form-control" id="depen" name="completion" placeholder="Completion">
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="form-group">
 			<label for="" class="col-sm-2 control-label">Start</label>
 			<div class="col-sm-9">
 				<input type="date" class="form-control" id="start" name="start" placeholder="mm/dd/YYYY">
 				<small style="color:grey">*format: mm/dd/YYYY</small>
-			</div>
-		</div>
-		
-	</div>
-	<div class="col-sm-6">
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Tier</label>
-			<div class="col-sm-9">
-				<input type="text" class="form-control" name="tier" id="tier" placeholder="Tier">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Kick Off</label>
-			<div class="col-sm-9">
-				<input type="text" class="form-control" id="depen" name="kickoff" placeholder="Dependency Kickoff">
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-2 control-label">Completion</label>
-			<div class="col-sm-9">
-				<input type="text" class="form-control" id="depen" name="completion" placeholder="Dependency Completion">
 			</div>
 		</div>
 		<div class="form-group">
@@ -70,7 +66,7 @@
 		</div>
 	</div>
 	<div style="clear:both"></div>
-	<input type="submit" class="btn btn-success" >
+	<input type="submit" class="btn btn-success" value="Submit">
 </form>
 <hr>
 

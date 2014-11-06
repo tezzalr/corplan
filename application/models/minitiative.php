@@ -90,14 +90,23 @@ class Minitiative extends CI_Model {
         foreach($res as $int){
         	$arr[$i]['int']=$int;
         	$code = explode('.',$int->code);
-        	$arr[$i]['code'] = ($code[0]*10000)+$code[1]*100+(ord($code[2])-96);
+        	if(count($code)>3){$code3 = $code[3];}else{$code3 = 0;}
+        	$arr[$i]['code'] = ($code[0]*1000000)+$code[1]*10000+(ord($code[2])-96)*100+$code3;
         	$arr[$i]['stat']=$this->get_initiative_status($int->id)['status'];
         	$arr[$i]['wb']=$this->get_initiative_status($int->id)['sumwb'];
         	$arr[$i]['wbs']=$this->get_initiative_status($int->id)['wb'];
         	$arr[$i]['pic']=$this->get_initiative_pic($int->code);
+        	$arr[$i]['child']=$this->get_initiative_child($int->code);
         	$i++;
         }
         return $arr;
+    }
+    
+    function get_initiative_child($code){
+    	$this->db->where('parent_code', $code);
+    	$query = $this->db->get('initiative');
+        $res = $query->result();
+        return $res;
     }
     
     function get_all_just_initiatives(){
@@ -156,6 +165,29 @@ class Minitiative extends CI_Model {
         return $arr;
     }
     
+    function get_info_initiative_by_id($id){
+    	$arr = array();
+    	$arr['init'] = $this->get_initiative_by_id($id);
+    	$arr['ko'] = $this->get_initiative_depen($arr['init']->kickoff);
+    	$arr['cp'] = $this->get_initiative_depen($arr['init']->completion);
+    	return $arr;
+    }
+    
+    function get_initiative_depen($depens){
+    	$depen = explode(',',$depens);
+    	$this->db->where_in('code',$depen);
+    	$query = $this->db->get('initiative');
+        $result = $query->result();
+        $arr = array(); $i=0;
+        
+        foreach($result as $res){
+        	$arr[$i]['init'] = $res;
+        	$arr[$i]['stat'] = $this->get_initiative_status($res->id)['status'];
+        	$i++;
+        }
+        return $arr;
+    }
+    
     function get_initiative_pic($code){
     	$this->db->like('initiative',$code);
     	$this->db->order_by('jabatan', 'desc');
@@ -189,6 +221,20 @@ class Minitiative extends CI_Model {
     	$this->db->where('program_id', $id);
     	$query = $this->db->get('initiative');
         return $query->row(0);
+    }
+    
+    function get_all($segment){
+    	$this->db->select('program.title as program, initiative.title as initiative, workblock.title as workblock, milestone.title as milestone');
+    	$this->db->where('segment', $segment);
+    	$this->db->join('initiative', 'program.id = initiative.program_id');
+    	$this->db->join('workblock', 'initiative.id = workblock.initiative_id');
+    	$this->db->join('milestone', 'workblock.id = milestone.workblock_id');
+    	$this->db->order_by('program.code', 'asc');
+    	$this->db->order_by('initiative.code', 'asc');
+    	$this->db->order_by('workblock.id', 'asc');
+    	$this->db->order_by('milestone.id', 'asc');
+    	$query = $this->db->get('program');
+        return $query->result();
     }
     
     //UPDATE FUNCTION

@@ -63,7 +63,7 @@
 							$eddate = strtotime($prog['date']->max_end);
 							$crdate = strtotime(date('Y-m-d'));
 							$pcttgl = ($crdate-$stdate)/($eddate-$stdate)*100;
-							if($pcttgl<1){$pcttgl = 0;}
+							if($pcttgl<0){$pcttgl = 0;}
 							if($pcttgl>100){$pcttgl = 100;}
 						?>
 						<div style="font-size:12px">

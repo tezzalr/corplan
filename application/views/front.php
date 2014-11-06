@@ -7,7 +7,7 @@
         
         <link href="<?php echo base_url();?>assets/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="<?php echo base_url();?>assets/css/datepicker.css" rel="stylesheet"/>
-        
+        <link href="<?php echo base_url();?>assets/css/token-input.css" rel="stylesheet" />
         <script>
 			var config = {
 				 base: "<?php echo base_url(); ?>"

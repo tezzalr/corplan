@@ -88,12 +88,13 @@ $(document).ready(function(){
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Jabatan</label>
 				<div class="col-sm-9">
-					<select id="" class="form-control" name="jabatan">
-						<option value="GH" <?php if($info){if($info->jabatan=="GH"){echo "selected";}}?>>GH</option>
-						<option value="DH" <?php if($info){if($info->jabatan=="DH"){echo "selected";}}?>>DH</option>
-						<option value="Allother" <?php if($info){if($info->jabatan=="Allother"){echo "selected";}}?>>Other</option>
-						<option value="" <?php if($info){if($info->jabatan==""){echo "selected";}}?>>-none-</option>
-					</select>
+					<input type="text" class="form-control" id="jabatan" name="jabatan" placeholder="Jabatan" value="<?php if($info){echo $info->jabatan;}?>">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Unit Kerja</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="unitkerja" name="unitkerja" placeholder="Unit Kerja" value="<?php if($info){echo $info->unitkerja;}?>">
 				</div>
 			</div>
 			<div class="form-group">
