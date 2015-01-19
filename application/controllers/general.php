@@ -48,4 +48,17 @@ class General extends CI_Controller {
 		$this->load->view('front',$data);
     }
     
+    public function outlook(){
+    	$data['title'] = 'Outlook 7 Sectors';
+    	
+    	$user = $this->session->userdata('user');
+    	$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['content'] = $this->load->view('general/outlook',array(),TRUE);
+
+		$this->load->view('front',$data);
+    }
+    
 }

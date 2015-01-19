@@ -54,6 +54,8 @@ class Milestone extends CI_Controller {
 		}
     }
     
+    
+    
     public function submit_revised(){
     	$id = $this->uri->segment(3);
     	$wb = $this->uri->segment(4);
@@ -122,6 +124,23 @@ class Milestone extends CI_Controller {
 			$json['status'] = 1;
 			$tl = $this->mmilestone->get_timeline_by_ms_id($id);
     		$content = $this->load->view('milestone/content_timeline',array('tl'=>$tl),TRUE);
+            $json['html'] = $content;
+		}else{$json['status'] = 0;}
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+    }
+    
+    public function submit_update_issue(){
+    	$id = $this->uri->segment(3);
+    	$user = $this->session->userdata('user');
+    	$program['milestone_id'] = $id;
+    	$program['issue'] = $this->input->post('content');
+    	$program['user_id'] = $user['id'];
+    	$program['date_created'] = date('Y-m-d h:i:s');
+        if($this->mmilestone->insert_update_issue($program)){
+			$json['status'] = 1;
+			$ui = $this->mmilestone->get_update_issue_by_ms_id($id);
+    		$content = $this->load->view('milestone/content_update_issue',array('ui'=>$ui),TRUE);
             $json['html'] = $content;
 		}else{$json['status'] = 0;}
 		$this->output->set_content_type('application/json')

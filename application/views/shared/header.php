@@ -3,6 +3,7 @@
 	.header_top{
 		height:38px;
 		padding:5px;
+		padding-top:8px;
 	}
 	.header_top a{
 		color:white;
@@ -24,27 +25,28 @@
 		background-color:white;
 		height:38px;
 		padding:5px;
+		padding-top:8px;
 	}
 	.header_active a{
 		color:black;
 	}
 </style>
 <div style="width:100%; background-color:black; color:white; padding-left:60px; ">
-	<div class="header_top" style="float:left; margin-right:20px;"><img src="<?php echo base_url()?>assets/img/general/mandiri.png" style="width:70px"></div>
-	<div class="<?php if($now2 == "overview"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>general/overview">Overview</a></div>
-	<div class="<?php if($now2=="list_programs"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>initiative/list_programs">Programs</a></div>
-	<div class="<?php if(($now1=="initiative" && $now2 !="list_programs")||$now1=="workblock"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>initiative/list_initiative/Wholesale">Initiatives</a></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>assets/other/Industri Rating Update 2014 - Urutan Summary.pdf">Outlook</a></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">Log</a></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>assets/other/Daftar PIC Wholesale Initiative.pdf">PIC</a></div>
-	<div class="<?php if($now2 =="mom"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>general/mom">MoM</a></div>
-	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail">Print</a></div>
-	<div class="header_top" style="float:right; margin-right:20px; padding-top:5px;"><?php echo date("d/M/y", strtotime(date('Y-m-d')));?></div>
-	<div class="header_top" style="float:right; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>user/logout">Logout</a></div>
-	<div class="header_top" style="float:right; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>workblock/detail"><?php echo $user['name']?></a></div>
+	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><img src="<?php echo base_url()?>assets/img/general/mandiri.png" style="width:70px"></div>
+	<div class="<?php if($now2 == "overview"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>general/overview">Overview</a></div>
+	<div class="<?php if($now2=="list_programs"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>initiative/list_programs">Programs</a></div>
+	<div class="<?php if(($now1=="initiative" && $now2 !="list_programs")||$now1=="workblock"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>initiative/list_initiative/Wholesale">Initiatives</a></div>
+	<div class="<?php if($now2 =="outlook"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>general/outlook">Outlook</a></div>
+	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail">Log</a></div>
+	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>assets/other/Daftar PIC Wholesale Initiative.pdf">PIC</a></div>
+	<div class="<?php if($now2 =="mom"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>general/mom">MoM</a></div>
+	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail">Print</a></div>
+	<div class="header_top" style="float:right; margin-right:20px;"><?php echo date("d/M/y", strtotime(date('Y-m-d')));?></div>
+	<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/logout">Logout</a></div>
+	<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail"><?php echo $user['name']?></a></div>
 	<?php if($user['role']=='admin'){?>
-		<div class="header_top" style="float:right; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>user/">User</a></div>
-		<div class="<?php if($now1 == "agenda"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px; padding-top:5px;"><a href="<?php echo base_url()?>agenda/">Agenda</a></div>
+		<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/">User</a></div>
+		<div class="<?php if($now1 == "agenda"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>agenda/">Agenda</a></div>
 	<?php }?>
 	<div style="clear:both"></div>
 </div>

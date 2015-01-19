@@ -40,6 +40,10 @@ class Mmilestone extends CI_Model {
         return $this->db->insert('timeline', $timeline);
     }
     
+    function insert_update_issue($update){
+        return $this->db->insert('updates', $update);
+    }
+    
     //GET FUNCTION
     
     function get_all_workblock_milestone($workblock_id){
@@ -112,6 +116,14 @@ class Mmilestone extends CI_Model {
     	$this->db->join('user', 'user.id = timeline.user_id');
     	$this->db->order_by('date_created', 'desc');
     	$result = $this->db->get('timeline');
+    	return $result->result();
+    }
+    
+    function get_update_issue_by_ms_id($ms_id){
+    	$this->db->where('milestone_id',$ms_id);
+    	$this->db->join('user', 'user.id = updates.user_id');
+    	$this->db->order_by('date_created', 'desc');
+    	$result = $this->db->get('updates');
     	return $result->result();
     }
     

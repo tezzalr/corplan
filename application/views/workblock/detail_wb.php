@@ -347,6 +347,19 @@
     		},
 		});
 	}
+	
+	function submit_update_issue(id){
+		$("#formupdateissue_"+id).ajaxForm({	
+    		dataType: 'json',
+    		success: function(resp) 
+    		{
+        		if(resp.status==1){
+					$("#content_ui_"+id).html(resp.html);
+				}else{}
+    		},
+		});
+	}
+	
 	function show_notes_delay(id){
 		$.ajax({
 			type: "GET",
