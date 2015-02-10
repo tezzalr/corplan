@@ -122,7 +122,7 @@
 						</div>
 						<?php }?>
 					</td>
-					<?php if($user['role']=='admin'){?><td style="width:80px">
+					<?php if($user['role']=='admin' || $user['role']=='PMO'){?><td style="width:80px">
 						<button class="btn btn-warning  btn-xs" onclick="edit_init(<?php echo $int['int']->id?>,'<?php echo $segment?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_initiative(<?php echo $int['int']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 					</td><?php }?>

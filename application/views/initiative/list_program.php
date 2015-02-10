@@ -80,7 +80,7 @@
 						</div>
 						<?php }?>
 					</td>
-					<?php if($user['role']=='admin'){?><td style="width:70px">
+					<?php if($user['role']=='admin' || $user['role']=='PMO'){?><td style="width:70px">
 						<button class="btn btn-warning  btn-xs" onclick="toggle_visibility('edit_prog_<?php echo $prog['prog']->id?>');"><span class="glyphicon glyphicon-pencil"></span></button>
 						<button class="btn btn-danger btn-xs" onclick="delete_program(<?php echo $prog['prog']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 					</td><?php }?>
