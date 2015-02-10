@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2015 at 05:57 AM
+-- Generation Time: Feb 10, 2015 at 08:15 AM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -822,7 +822,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `initiative` varchar(600) DEFAULT NULL,
   `unitkerja` varchar(355) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
 
 --
 -- Dumping data for table `user`
@@ -860,7 +860,12 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role`, `segment`, `ja
 (37, 'dyah', '5f4dcc3b5aa765d61d8327deb882cf99', 'Dyah Eti Irawati', 'PIC', '', 'DH', '1.2.B.1', ''),
 (38, 'ikhwan', '5f4dcc3b5aa765d61d8327deb882cf99', 'Ikhwan Muhammad', 'PIC', '', 'DH', '1.2.B.2', ''),
 (39, '0077152627', 'cc992bb9f221bcc7c0143e4d25ad43d6', 'Setyo Wibowo', 'PMO', '', '', '', ''),
-(40, 'jurina', '5f4dcc3b5aa765d61d8327deb882cf99', 'Jurina', 'PMO', '', '', '', '');
+(40, 'jurina', '5f4dcc3b5aa765d61d8327deb882cf99', 'Jurina', 'PMO', '', '', '', ''),
+(41, 'andika.nugroho', 'a6aaafedc61e2362cd95b683b410d46c', 'Andika Putra Nugroho', 'PMO', '', '', '', ''),
+(42, 'umi.kawiryani', '1911a331467f1570b93a8ca6f4a833a9', 'Umi Kawiryani Tjiptoningsih', 'PMO', '', '', '', ''),
+(43, 'abdul.rahmaan.fw', '799048c9278567a4c7e71ed4b45271d6', 'Abdul Rahmaan Fauzi Wahyu', 'PMO', '', '', '', ''),
+(44, 'fransiska.dita', '329675cf803f171e155e3327463aa6c1', 'Fransiska Dita Novia Wardani', 'PMO', '', '', '', ''),
+(45, 'putu.prasthiani', '067e4fd4f8ec3da01ef8a36ccfd14442', 'Putu Dewi Prasthiani', 'PMO', '', '', '', '');
 
 -- --------------------------------------------------------
 

@@ -20,6 +20,7 @@ class User extends CI_Controller {
 			$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
 			$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+			$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
 			$data['footer'] = $this->load->view('shared/footer','',TRUE);
 			$data['content'] = $this->load->view('user/list_user',array('user'=>$users),TRUE);
 	
@@ -57,6 +58,7 @@ class User extends CI_Controller {
     	$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
 		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv, 'info' => $data_user),TRUE);
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
         $data['content'] = $this->load->view('user/input',array(),TRUE);
     
@@ -176,7 +178,6 @@ class User extends CI_Controller {
          if($password==null){
              $password = $this->input->post('password');
          }
-         $value;
          if($this->muser->get_user_password($password)){
              $value = $this->muser->get_user_password($password);
          }else{

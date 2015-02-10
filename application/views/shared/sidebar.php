@@ -2,7 +2,7 @@
 	<div style="padding-left:20px">
 		<div style="margin-bottom:10px; margin-left:10px;"><img src="<?php echo base_url();?>assets/img/general/no-profile-img.gif" alt="..." class="img-circle" style="height:80px;"></div>
 		<div style="font-size:13px;"><?php echo $user['name']?></div>
-		<div style="font-size:11px;">Administrator</div>
+		<div style="font-size:11px;"><?php echo $user['role']?></div>
 	</div>
 	<hr style="margin:10px 0 0 0">
 	<ul class="nav" id="side-menu">

@@ -98,7 +98,7 @@ class Muser extends CI_Model {
     
     function get_user_login(){
         $user = $this->session->userdata('user');
-    	$this->db->where('id',$user['user_id']);
+    	$this->db->where('id',$user['id']);
         $result = $this->db->get('user');
         if($result->num_rows==1){
             return $result->row(0);
@@ -119,7 +119,13 @@ class Muser extends CI_Model {
     }
     
     function get_user_password($password){
-    	$user = $this->get_user_login();
+    	$user = $this->session->userdata('user');
+    	$this->db->where('id',$user['id']);
+        $result = $this->db->get('user');
+        if($result->num_rows==1){
+            $user = $result->row(0);
+        }
+    	//$user = $this->get_user_login();
     	$m = md5($password);
     	if($m == $user->password){return true;}
     	else{return false;}
