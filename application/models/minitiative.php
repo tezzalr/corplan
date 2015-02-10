@@ -28,6 +28,10 @@ class Minitiative extends CI_Model {
         return $this->db->insert('initiative', $program);
     }
     
+    function insert_remark($program){
+    	return $this->db->insert('remark', $program);
+    }
+    
     //GET FUNCTION
     
     function get_all_programs(){
@@ -45,7 +49,7 @@ class Minitiative extends CI_Model {
         	$initiatives = $this->get_all_program_initiatives($prog->id);
         	$status = "";
         	foreach($initiatives as $int){
-        		$res_status = $this->get_initiative_status($int->id)['status'];
+        		$res_status = $this->get_initiative_status($int->id,$int->end)['status'];
         		if($status){
 					if($res_status == "Delay"){$status = "Delay";}
 					else{
@@ -92,14 +96,37 @@ class Minitiative extends CI_Model {
         	$code = explode('.',$int->code);
         	if(count($code)>3){$code3 = $code[3];}else{$code3 = 0;}
         	$arr[$i]['code'] = ($code[0]*1000000)+$code[1]*10000+(ord($code[2])-96)*100+$code3;
-        	$arr[$i]['stat']=$this->get_initiative_status($int->id)['status'];
-        	$arr[$i]['wb']=$this->get_initiative_status($int->id)['sumwb'];
-        	$arr[$i]['wbs']=$this->get_initiative_status($int->id)['wb'];
+        	
+        	$status_initiative_all = $this->get_initiative_status($int->id,$int->end);
+        	$arr[$i]['stat']=$status_initiative_all['status'];
+        	if(!$arr[$i]['stat']){$arr[$i]['stat'] = $int->status;}
+        	$arr[$i]['wb']=$status_initiative_all['sumwb'];
+        	$arr[$i]['wbs']=$status_initiative_all['wb'];
+        	
         	$arr[$i]['pic']=$this->get_initiative_pic($int->code);
         	$arr[$i]['child']=$this->get_initiative_child($int->code);
         	$i++;
         }
         return $arr;
+    }
+    
+    function get_init_workblocks_status($init_id){
+    	$arr = array();
+    	
+    	$arr['inprog'] = count($this->get_wb_status_sum('In Progress', $init_id));
+    	$arr['notyet'] = count($this->get_wb_status_sum('Not Started Yet', $init_id));
+    	$arr['complete'] = count($this->get_wb_status_sum('Completed', $init_id));
+    	$arr['delay'] = count($this->get_wb_status_sum('Delay', $init_id));
+    	
+    	return $arr;
+    }
+    
+    function get_wb_status_sum($status, $init){
+    	$this->db->where('status', $status);
+    	$this->db->where('initiative_id', $init);
+    	$query = $this->db->get('workblock');
+        $res = $query->result();
+        return $res;
     }
     
     function get_initiative_child($code){
@@ -139,30 +166,66 @@ class Minitiative extends CI_Model {
         }
     }
     
-    function get_initiative_status($id){
+    /*function get_initiative_status($id){
     	$this->db->where('initiative_id', $id);
     	//$this->db->order_by('status', 'asc');
     	$query = $this->db->get('workblock');
         $result = $query->result();
         $status = ""; $arr = array();
-        foreach($result as $res){
-        	$res_status = $this->get_workblock_status($res->id);
-        	if($status){
-        		if($res_status == "Delay"){$status = "Delay";}
-        		else{
-        			if($status != "Delay"){
-        				if($res_status == "In Progress"){$status = "In Progress";}
-        				elseif($status=="Completed" && $res_status == "Not Started Yet"){$status = "In Progress";}
-        				elseif($res_status=="Completed" && $status == "Not Started Yet"){$status = "In Progress";}
-        			}
-        		}
-        	}
-        	else{$status = $res_status;}
+        if($result){
+			foreach($result as $res){
+				$res_status = $this->get_workblock_status($res->id);
+				if($status){
+					if($res_status == "Delay"){$status = "Delay";}
+					else{
+						if($status != "Delay"){
+							if($res_status == "In Progress"){$status = "In Progress";}
+							elseif($status=="Completed" && $res_status == "Not Started Yet"){$status = "In Progress";}
+							elseif($res_status=="Completed" && $status == "Not Started Yet"){$status = "In Progress";}
+						}
+					}
+				}
+				else{$status = $res_status;}
+			}
         }
         $arr['status']=$status;
         $arr['sumwb']=count($result);
         $arr['wb']=$result;
         return $arr;
+    }*/
+    
+    function get_initiative_status($id,$end){
+    	$this->db->where('initiative_id', $id);
+    	$this->db->order_by('status', 'asc');
+    	$query = $this->db->get('workblock');
+        $result = $query->result();
+        $status = ""; $arr = array();
+        if($result){
+			foreach($result as $res){
+				if($status){
+					if($res->status == "Delay"){$status = "Delay";}
+					else{
+						if($status != "Delay"){
+							if($res->status == "In Progress"){$status = "In Progress";}
+							elseif($status=="Completed" && $res->status == "Not Started Yet"){$status = "In Progress";}
+						}
+					}
+				}
+				else{$status = $res->status;}
+			}
+        	if($status == "Delay"){if($end>date("Y-m-d")){$status="At Risk";}}
+        }
+        $arr['status']=$status;
+        $arr['sumwb']=count($result);
+        $arr['wb']=$result;
+        return $arr;
+        
+    }
+    
+    function get_initiative_status_only($init){
+        $status =  $this->get_initiative_status($init->id,$init->end)['status'];
+        if(!$status){$status = $init->status;}
+        return $status;
     }
     
     function get_info_initiative_by_id($id){
@@ -182,7 +245,7 @@ class Minitiative extends CI_Model {
         
         foreach($result as $res){
         	$arr[$i]['init'] = $res;
-        	$arr[$i]['stat'] = $this->get_initiative_status($res->id)['status'];
+        	$arr[$i]['stat'] = $this->get_initiative_status($res->id,$res->end)['status'];
         	$i++;
         }
         return $arr;
@@ -235,6 +298,46 @@ class Minitiative extends CI_Model {
     	$this->db->order_by('milestone.id', 'asc');
     	$query = $this->db->get('program');
         return $query->result();
+    }
+    
+    function get_remarks_by_init_id($id){
+    	$this->db->select('remark.*, user.name as user_name');
+    	$this->db->join('user','remark.user_id = user.id');
+    	$this->db->where('initiative_id', $id);
+    	$this->db->order_by('created', 'desc');
+    	$query = $this->db->get('remark');
+    	return $query->result();
+    }
+    
+    function get_all_segments_status(){
+    	$arr = array();
+    	$status = return_arr_status();
+    	$segments = return_all_segments();
+    	
+    	foreach($segments as $segment){
+    		$arr[$segment]['name'] = $segment;
+    		$arr[$segment]['stat'] = $this->get_segment_status($status,$segment);
+    	}
+    	return $arr;
+    }
+    
+    function get_segment_status($allstat, $segment){
+    	$arr_status = array();
+    	foreach($allstat as $each){$arr_status[$each]=0;}
+    	$this->db->select('initiative.*, program.segment');
+    	$this->db->join('program','initiative.program_id = program.id');
+    	$this->db->where('segment',$segment);
+    	$query = $this->db->get('initiative');
+    	$inits = $query->result();
+    	foreach($inits as $init){
+    		$status = $this->get_initiative_status_only($init);
+    		if(!$status){
+    			if($init->status){$status=$init->status;}
+    			else{$status = "Not Started Yet";}
+    		}
+    		$arr_status[$status] = $arr_status[$status]+1;
+    	}
+    	return $arr_status;
     }
     
     //UPDATE FUNCTION

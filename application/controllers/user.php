@@ -7,6 +7,7 @@ class User extends CI_Controller {
         
         $this->load->model('muser');
         $this->load->model('mmilestone');
+        $this->load->model('minitiative');
     }
     
     public function index()
@@ -38,6 +39,7 @@ class User extends CI_Controller {
     	$data['title'] = "User Login";
     	
         $data['header'] = '';
+        $data['sidebar'] = '';
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
         $data['content'] = $this->load->view('user/login',array('params' => $params),TRUE);
     
@@ -153,11 +155,44 @@ class User extends CI_Controller {
     	$this->output->set_content_type('application/json')
                      ->set_output(json_encode($json));
 	}
+	
+	public function form_password(){
+    	$data['title'] = 'Recapt Segment';
+    	
+    	$user = $this->session->userdata('user');
+    	
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		
+		$data_content['segment_status'] = $this->minitiative->get_all_segments_status();
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['content'] = $this->load->view('user/form_password',$data_content,TRUE);
+		$this->load->view('front',$data);
+    }
+    
+    public function check_user_password($password=null,$format=null){
+         if($password==null){
+             $password = $this->input->post('password');
+         }
+         $value;
+         if($this->muser->get_user_password($password)){
+             $value = $this->muser->get_user_password($password);
+         }else{
+             $value = $this->muser->get_user_password($password);
+         }
+         if($format==null){
+            $this->output->set_content_type('application/json')
+                        ->set_output(json_encode(array("value" => $value)));
+         }
+         return $value;
+     }
     
     public function change_password(){
     	$user['password'] = md5($this->input->post('password_new'));
-        
-        if($this->muser->update_user($user)){
+        $user_ses = $this->session->userdata('user');
+        if($this->muser->update_user($user,$user_ses['id'])){
         	$json['status']=1;
         }
         $this->output->set_content_type('application/json')

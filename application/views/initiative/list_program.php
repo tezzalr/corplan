@@ -1,7 +1,5 @@
-<div id="" class="container no_pad">
-	<div class="no_pad" style="margin-bottom: 50px;">
-		<h2 style="">Programs</h2>
-	</div>
+<div style="padding:5px 10px 5px 0">
+	<h2>Programs</h2>
 	<div style="">
 		<div style="margin-bottom:10px; float:right;">
 		<a href="<?php echo base_url()?>initiative/input_program" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> Program</a>

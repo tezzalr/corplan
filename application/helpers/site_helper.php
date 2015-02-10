@@ -12,47 +12,7 @@
  */
    	
    	 
-	function get_direktorat_where($direktorat,$model){
-		if($direktorat == 'CB'){
-			$model->db->where("(`group` = 'CORPORATE BANKING AGRO BASED' OR `group` = 'CORPORATE BANKING I' OR `group` = 'CORPORATE BANKING II' OR `group` = 'CORPORATE BANKING III' OR `group` = 'SYNDICATION, OIL & GAS')");
-		}
-		elseif($direktorat == 'IB'){
-			$model->db->where("(`group` = 'INSTITUTIONAL BANKING I' OR `group` = 'INSTITUTIONAL BANKING II')");
-		}
-		elseif($direktorat == 'CBB'){
-			$model->db->where("(`group` = 'JAKARTA COMMERCIAL SALES' OR `group` = 'REGIONAL COMMERCIAL SALES I' OR `group` = 'REGIONAL COMMERCIAL SALES II' )");
-		}
-		elseif($direktorat == 'CB1'){
-			$model->db->where("(`group` = 'CORPORATE BANKING I')");
-		}
-		elseif($direktorat == 'CB2'){
-			$model->db->where("(`group` = 'CORPORATE BANKING II')");
-		}
-		elseif($direktorat == 'CB3'){
-			$model->db->where("(`group` = 'CORPORATE BANKING III')");
-		}
-		elseif($direktorat == 'AGB'){
-			$model->db->where("(`group` = 'CORPORATE BANKING AGRO BASED')");
-		}
-		elseif($direktorat == 'SOG'){
-			$model->db->where("(`group` = 'SYNDICATION, OIL & GAS')");
-		}
-		elseif($direktorat == 'IB1'){
-			$model->db->where("(`group` = 'INSTITUTIONAL BANKING I')");
-		}
-		elseif($direktorat == 'IB2'){
-			$model->db->where("(`group` = 'INSTITUTIONAL BANKING II')");
-		}
-		elseif($direktorat == 'JCS'){
-			$model->db->where("(`group` = 'JAKARTA COMMERCIAL SALES')");
-		}
-		elseif($direktorat == 'RCS1'){
-			$model->db->where("(`group` = 'REGIONAL COMMERCIAL SALES I')");
-		}
-		elseif($direktorat == 'RCS2'){
-			$model->db->where("(`group` = 'REGIONAL COMMERCIAL SALES II')");
-		}
-	}
+	
 	
 	function get_type_select_month($type,$model){
     	if($type == 'wholesale'){
@@ -246,26 +206,38 @@
     	elseif($i==19){return "OW_fbi";}
     }
        
-    function change_real_name($initial){
-    	if($initial == "CASA"){return "CASA";}
-    	elseif($initial ==  "TD"){return "Time Deposit";}
-		elseif($initial ==  "WCL"){return 'Working Capital Loan';}
-		elseif($initial ==  "IL"){return 'Investment Loan';}
-		elseif($initial ==  "SL"){return 'Structured Loan';}
-		elseif($initial ==  "TR"){return 'Trust Receipt';}
-		elseif($initial ==  "FX"){return 'FX & Derivatives';}
-		elseif($initial ==  "SCF"){return 'Supply Chain Financing';}
-		elseif($initial ==  "Trade"){return 'Trade Services';}
-		elseif($initial ==  "BG"){return 'Bank Guarantee';}
-		elseif($initial ==  "OIR"){return 'Outgoing Intl Remittance';}
-		elseif($initial ==  "PWE"){return 'PWE non L/C';}
-		elseif($initial ==  "ECM"){return 'ECM';}
-		elseif($initial ==  "DCM"){return 'DCM';}
-		elseif($initial ==  "MA"){return 'M&A';}
-		elseif($initial ==  "LMF"){return 'Loan Maintenance Fee';}
-		elseif($initial ==  "SF"){return 'Syndication Fee';}
-		elseif($initial ==  "OW_nii"){return 'NII Others';}
-		elseif($initial ==  "OW_fbi"){return 'FBI Others';}
+    function segment_abv($initial){
+    	if($initial == "Wholesale"){return "WS";}
+		elseif($initial ==  "Individuals"){return 'Ind';}
+		elseif($initial ==  "Organization"){return 'Org';}
+		elseif($initial ==  "Performance Management"){return 'PM';}
+		else{return $initial;}
+    }
+    
+    function sign_status($status){
+    	if($status == "Not Started Yet"){return "circle-notyet";}
+    	elseif($status == "In Progress"){return "circle-inprog";}
+    	elseif($status == "Completed"){return "circle-completed";}
+    	elseif($status == "At Risk"){return "circle-atrisk";}
+    	elseif($status == "Delay"){return "circle-delay";}
+    }
+    
+    function color_status($status){
+    	if($status == "Not Started Yet"){return "#bbb";}
+    	elseif($status == "In Progress"){return "#27c24c";}
+    	elseif($status == "Completed"){return "#337ab7";}
+    	elseif($status == "At Risk"){return "#F6C600";}
+    	elseif($status == "Delay"){return "#FF0000";}
+    }
+    
+    function return_arr_status(){
+    	$arr = array("Not Started Yet","In Progress","At Risk","Delay","Completed");
+    	return $arr;
+    }
+    
+    function return_all_segments(){
+    	$arr = array("Wholesale","SME","Mikro","Individuals","IT","HC","Risk","Organization","Distribution","Performance Management","Marketing");
+    	return $arr;
     }
     
     function get_tot_income($ws, $al, $month,$pow){
@@ -303,17 +275,3 @@
     	return $bagi;
     }
     
-    function get_month_name($month){
-    	if($month == 1){return "Jan";}
-    	elseif($month == 2){return "Feb";}
-    	elseif($month == 3){return "Mar";}
-    	elseif($month == 4){return "Apr";}
-    	elseif($month == 5){return "Mei";}
-    	elseif($month == 6){return "Jun";}
-    	elseif($month == 7){return "Jul";}
-    	elseif($month == 8){return "Agu";}
-    	elseif($month == 9){return "Sep";}
-    	elseif($month == 10){return "Okt";}
-    	elseif($month == 11){return "Nov";}
-    	elseif($month == 12){return "Des";}
-    }

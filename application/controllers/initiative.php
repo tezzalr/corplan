@@ -7,6 +7,7 @@ class Initiative extends CI_Controller {
         parent::__construct();
         $this->load->model('minitiative');
         $this->load->model('mworkblock');
+        $this->load->model('mremark');
         $this->load->model('mmilestone');
         $this->load->model('muser');
         
@@ -49,6 +50,7 @@ class Initiative extends CI_Controller {
 		$initiatives = $this->minitiative->get_all_initiatives($user_initiative, $segment);
 		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
 		$data['content'] = $this->load->view('initiative/list_initiative',array('ints' => $initiatives,'programs' => $programs, 'form_new' => $form_new),TRUE);
 
 		$this->load->view('front',$data);
@@ -94,6 +96,7 @@ class Initiative extends CI_Controller {
         $program['kickoff'] = $this->input->post('kickoff');
         $program['completion'] = $this->input->post('completion');
         $program['description'] = $this->input->post('description');
+        $program['status'] = $this->input->post('status');
         $program['GH_PIC'] = $this->input->post('GH_PIC');
         
         if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
@@ -178,6 +181,7 @@ class Initiative extends CI_Controller {
 		
 		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
 		$data['content'] = $this->load->view('initiative/list_program',array('programs' => $programs),TRUE);
 
 		$this->load->view('front',$data);
@@ -257,5 +261,113 @@ class Initiative extends CI_Controller {
 
 		$this->load->view('front',$data);
 	} 
+	
+	/*Initiative New */
+	
+	public function detail(){
+		$data['title'] = 'Detail Initiative';
+    	
+    	$user = $this->session->userdata('user');
+    	
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		$init_id = $this->uri->segment(3);
+		
+		$views['init'] = $this->minitiative->get_initiative_by_id($init_id);
+		$views['init_status'] = $this->minitiative->get_initiative_status_only($views['init']);
+		$views['wb_status'] = $this->minitiative->get_init_workblocks_status($init_id);
+		$views['info'] = $this->load->view('initiative/detail/_general_info',array(
+		'initiative'=>$views['init'],'stat'=>$views['init_status'],'wb' => $views['wb_status']),TRUE);
+		
+		$remarks = $this->mremark->get_remarks_by_init_id($init_id);
+		$views['remarks'] = $this->load->view('initiative/detail/_list_remarks',array('remarks'=>$remarks),TRUE);
+		$views['form_rmrk'] = $this->load->view('initiative/detail/_form_remarks',array('remark'=>'','init_id'=>$init_id),TRUE);
+		
+		$workblocks = $this->mworkblock->get_all_initiative_workblock($init_id);
+		$views['wb'] = $this->load->view('initiative/detail/_list_workblocks',array('workblocks'=>$workblocks,'init_id'=>$init_id),TRUE);
+		
+		$views['form_wb'] = $this->load->view('initiative/detail/_form_workblocks',array('wb'=>'','init_id'=>$init_id),TRUE);
+		$form_prog = $this->load->view('initiative/detail/_form_progress',array(),TRUE);
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['content'] = $this->load->view('initiative/detail',$views,TRUE);
+		$this->load->view('front',$data);
+	}
+	
+	public function submit_remark(){
+    	$init_id = $this->uri->segment(3);
+    	$user = $this->session->userdata('user');
+    	$program['initiative_id'] = $init_id;
+    	$program['content'] = $this->input->post('remark');
+    	$program['user_id'] = $user['id'];
+    	$program['created'] = date('Y-m-d h:i:s');
+        
+        $id = $this->input->post('id');
+        
+        if($id){
+        	if($this->mremark->update_remark($program,$id)){$json['status'] = 1;}
+        	else{$json['status'] = 0;}
+        }
+        else{
+        	if($this->mremark->insert_remark($program)){$json['status'] = 1;}
+        	else{$json['status'] = 0;}
+		}
+                
+		$remarks = $this->mremark->get_remarks_by_init_id($init_id);
+		$content = $this->load->view('initiative/detail/_list_remarks',array('remarks'=>$remarks),TRUE);
+		$json['html'] = $content;
+		
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+    }
+    
+    public function edit_remark(){
+		$id = $this->input->get('id');
+		$init = $this->input->get('init');
+
+    	if($id){
+			$remark = $this->mremark->get_remark_by_id($id); 
+			if($remark){
+				$json['status'] = 1;
+				$json['html'] = $this->load->view('initiative/detail/_form_remarks',array('remark'=>$remark,'init_id'=>$init),TRUE);
+			}else{
+				$json['status'] = 0;
+			}
+		}
+		else{
+			$json['status'] = 1;
+			$json['html'] = $this->load->view('initiative/detail/_form_remarks',array('remark'=>'','init_id'=>$init),TRUE);
+		}
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+	
+	public function delete_remark(){
+        if($this->mremark->delete_remark()){
+    		$json['status'] = 1;
+    	}
+    	else{
+    		$json['status'] = 0;
+    	}
+    	$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+    
+    public function segment(){
+    	$data['title'] = 'Recapt Segment';
+    	
+    	$user = $this->session->userdata('user');
+    	
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		
+		$data_content['segment_status'] = $this->minitiative->get_all_segments_status();
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['content'] = $this->load->view('initiative/segment',$data_content,TRUE);
+		$this->load->view('front',$data);
+    }
     
 }

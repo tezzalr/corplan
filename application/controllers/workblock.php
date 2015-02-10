@@ -8,6 +8,7 @@ class Workblock extends CI_Controller {
         $this->load->model('mworkblock');
         $this->load->model('mmilestone');
         $this->load->model('minitiative');
+        $this->load->model('mlogact');
         
         $session = $this->session->userdata('user');
         
@@ -51,21 +52,90 @@ class Workblock extends CI_Controller {
 		}
     }
     
+    public function edit_workblock(){
+		$id = $this->input->get('id');
+		$init = $this->input->get('init');
+		$wb = $this->mworkblock->get_workblock_by_id($id); 
+    	
+    	if($id){
+			if($wb){
+				$json['status'] = 1;
+				$json['html'] = $this->load->view('initiative/detail/_form_workblocks',array('wb'=>$wb,'init_id'=>$init),TRUE);
+			}else{
+				$json['status'] = 0;
+			}
+		}
+		else{
+			$json['status'] = 1;
+				$json['html'] = $this->load->view('initiative/detail/_form_workblocks',array('wb'=>'','init_id'=>$init),TRUE);
+		}
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+    
     public function submit_workblock(){
-      	$id = $this->uri->segment(3);
+      	$id = $this->input->post('id');
       	$program['title'] = $this->input->post('title');
-      	$program['pic'] = $this->input->post('pic');
-      	$program['objective'] = $this->input->post('objective');
-        $program['initiative_id'] = $this->input->post('initiative');
+        $program['initiative_id'] = $this->input->post('init_id');
+        $program['status'] = $this->input->post('status');
+        $user = $this->session->userdata('user');
+        
+        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
+    		$program['start'] = $start->format('Y-m-d');
+    	}
+    	
+    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
+    		$program['end'] = $end->format('Y-m-d');
+    	}
+        
+        $int = $this->minitiative->get_initiative_by_id($program['initiative_id']);
         
         if($id){
-        	if($this->mworkblock->update_workblock($program,$id)){redirect("initiative/detail_initiative/".$program['initiative_id']);}
-        	else{redirect("initiative/detail_initiative/".$program['initiative_id']);}
+        	if($this->mworkblock->update_workblock($program,$id)){$json['status'] = 1;}
+        	else{$json['status'] = 0;}
         }
         else{
-        	if($this->mworkblock->insert_workblock($program)){redirect("initiative/detail_initiative/".$program['initiative_id']);}
-        	else{redirect("initiative/detail_initiative/".$program['initiative_id']);}
+        	if($this->mworkblock->insert_workblock($program)){
+        		$log['user_id'] = $user['id'];
+        		$log['initiative_id'] = $program['initiative_id'];
+        		$log['date'] = date('Y-m-d h:i:s');
+        		$log['content'] = "<p> ".$user['name']." membuat Workblock baru : <br><br><b> ".$program['title']."</b><br><br>Pada Initiative : ".$int->code." ".$int->title ."</p>";
+        		
+        		if($this->mlogact->insert_logact($log)){
+        			$json['status'] = 1;}
+        	}
+        	else{$json['status'] = 0;}
 		}
+		$views['wb_status'] = $this->minitiative->get_init_workblocks_status($program['initiative_id']);
+		$workblocks = $this->mworkblock->get_all_initiative_workblock($program['initiative_id']);
+		$json['html'] = $this->load->view('initiative/detail/_list_workblocks',array('workblocks'=>$workblocks,'init_id'=>$program['initiative_id']),TRUE);
+		
+		$views['init'] = $this->minitiative->get_initiative_by_id($program['initiative_id']);
+		$views['init_status'] = $this->minitiative->get_initiative_status_only($views['init']);
+		$json['info'] = $this->load->view('initiative/detail/_general_info',array('initiative'=>$views['init'],'stat'=>$views['init_status'],'wb' => $views['wb_status']),TRUE);
+		
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+    }
+    
+    public function check_range_date_init($code=null,$format=null){
+    	if($code==null){
+            $init = $this->input->post('init_id');
+            
+            $end = DateTime::createFromFormat('m/d/Y', $this->input->post('value'));
+    		$value = $end->format('Y-m-d');
+         }
+         $date = date();
+         if($value < $date){
+             $value = false;
+         }else{
+             $value = true;
+         }
+         if($format==null){
+            $this->output->set_content_type('application/json')
+                        ->set_output(json_encode(array("value" => $value)));
+         }
+         return $value;
     }
     
     public function delete_workblock(){

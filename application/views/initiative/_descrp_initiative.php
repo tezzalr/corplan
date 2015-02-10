@@ -22,7 +22,7 @@
 					<button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button>
 				</div>
 				<div style="float:left; width:7%; margin-right:5px;"><?php echo $ko['init']->code?></div> 
-				<div style="float:left; max-width:80%"><a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $ko['init']->id?>"><?php echo $ko['init']->title?></a></div>
+				<div style="float:left; max-width:80%"><a href="<?php echo base_url()?>initiative/detail/<?php echo $ko['init']->id?>"><?php echo $ko['init']->title?></a></div>
 				<div style="clear:both"></div>
 			</div>
 		<?php }?>

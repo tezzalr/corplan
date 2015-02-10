@@ -1,53 +1,63 @@
-/* Sticky footer styles
--------------------------------------------------- */
+.sidebar_nav_left{
+	padding:20px 5px 0 5px;
+	position:fixed;
+	z-index:100;
+	width:180px;
+	bottom:0px;
+	top:0px;
+	background-color: #f8f8f8;
+	border-right:1px solid #ddd;
+}
 
-html,
-body {
-  height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
+.sidebar_nav_left .nav-second-level li a {
+    padding-left: 37px;
 }
-body a:hover{
-	color:#444;
+
+.content{
+	background: #fff;
+	margin-left:180px;
+	padding-left:20px;
 }
-.no_pad{
-	padding: 0;
+.content_no_sb{
+	background: #fff;
+	padding-left:20px;
 }
-.right_col{
-	float: right;
+.header{
+	margin-left:0px;
+	padding-left:180px;
 }
-.headertab{
-	background-color:#0B3861;
+
+.header_top{
+	height:38px;
+	padding:5px;
+	padding-top:8px;
+}
+.header_top a{
 	color:white;
 }
-.headertab th {
-	text-align:center
+.header_top a:hover{
+	color:white;
 }
-/* Wrapper for page content to push down footer */
-#wrap {
-  min-height: 100%;
-  height: auto;
-  /* Negative indent footer by its height */
-  margin: 0 auto -35px;
-  /* Pad bottom by footer height */
-  padding: 0 0 28px;
+.aprv-alert{
+	background-color:#f2dede;
+	padding:5px
 }
-#fill {
-  height: 100%;
-  /* Negative indent footer by its height */
-  margin: 0 auto -35px;
-  /* Pad bottom by footer height */
-  padding: 0 0 28px;
+.aprv-alert span{
+	color:#a94442
 }
-#fill_scroll {
-  	min-height: 100%;
-  	margin: 0 auto -35px;
-  	padding: 0 0 28px;
-  	position:relative;
-  	background-color:white;
-  	width: 100%;
+.lala{
+	font-size:11px
+}
+.header_active{
+	background-color:white;
+	height:38px;
+	padding:5px;
+	padding-top:8px;
+}
+.header_active a{
+	color:black;
 }
 
-/* Set the fixed height of the footer here */
 #footer {
   height: 25px;
   background-color: #000;
@@ -66,61 +76,38 @@ body a:hover{
 	margin-right: 5px;
 }
 
-.sold_out{
-	color: #B50D15;
-}
-
-.breadmy a{
-	color:#0D177A;
-}
-
-/* Custom page CSS
--------------------------------------------------- */
-/* Not required for template or sticky footer method. */
-
-#wrap, #fill, #fill_scroll > .container {
-  padding: 60px 15px 0;
-}
-.container .text-muted {
-  margin: 20px 0;
-}
-.container{
-	//height:88%;
-	//overflow:scroll;
-}
-
 #footer > .container {
   padding-left: 10px;
   padding-right: 10px;
   width: 100%;
 }
 
-/* Validate CSS
--------------------------------------------------- */
-input.error{
-	border-color:#a94442;
-}
-label.error{
-	color:#a94442;
-}
-input.valid{
-	border-color:#3c763d;
-}
-.checkbox label.error{
-	display:block;
-	font-weight:bold;
-}
+/*Status CSS*/
 
-/* Shopping List
--------------------------------------------------- */
-#shopping_list{
+.circle.text-left{margin-left:0;}
+.circle{
+	display: inline-block;
+	width: 7px;
+	height: 7px;
+	border-radius: 500px;
+	margin: 0 .5em;
+	background-color: #ddd;
+	vertical-align: baseline;
+	border: 2px solid transparent;
 }
-#tablecartdiv{
-	width:300px; 
-	position:fixed; 
-	right:0; 
-	top:50px;
-	z-index:98;
-	overflow:auto;
-	bottom: 30px;
+.circle-lg{
+	width: 14px;
+	height: 14px;
+}
+.circle-notyet{background-color:#bbb;}
+.circle-inprog{background-color:#27c24c;}
+.circle-delay{background-color:#FF0000;}
+.circle-atrisk{background-color:#F6C600;}
+.circle-completed{background-color:#337ab7;}
+
+.text-left{text-align:left;}
+
+.error{
+	color:#FF0000;
+	font-size:12px;
 }

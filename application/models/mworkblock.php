@@ -34,8 +34,8 @@ class Mworkblock extends CI_Model {
         foreach($res as $wb){
         	$arr[$i]['wb']=$wb;
         	$arr[$i]['stat']=$this->get_workblock_status($wb->id);
-        	$arr[$i]['ms']=$this->get_all_workblock_milestone($wb->id);
-        	$arr[$i]['date'] = $this->get_milestone_minmax_date($wb->id);
+        	//$arr[$i]['ms']=$this->get_all_workblock_milestone($wb->id);
+        	//$arr[$i]['date'] = $this->get_milestone_minmax_date($wb->id);
         	$i++;
         }
         return $arr;
@@ -102,7 +102,7 @@ class Mworkblock extends CI_Model {
     	$this->db->where('id',$id);
     	$this->db->delete('workblock');
     	if($this->db->affected_rows()>0){
-    		return $this->delete_milestone_workblock($id);
+    		return true;
     	}
     	else{
     		return false;

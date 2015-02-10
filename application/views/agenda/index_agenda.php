@@ -2,7 +2,7 @@
 	$sumdate = date("t", mktime(0,0,0, $datereq['month'], 1, $datereq['year']));
 	$day = date("N", mktime(0,0,0, $datereq['month'], 1, $datereq['year'])); $firstday = true;
 ?>
-<div id="" class="container no_pad">
+<div id="" class="">
 	<div style="padding:12px">
 		<div>
 			<a href="#" onclick="toggle_visibility('tochange_date');" ><h3 style="float:right"><?php echo date("F", mktime(0,0,0, $datereq['month'], 1, $datereq['year']))." ".$datereq['year']?></h3></a>

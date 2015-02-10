@@ -1,7 +1,14 @@
-<div id="" class="container no_pad">
-	<div class="no_pad" style="margin-bottom: 50px;">
-		<h2 style=""><?php echo $segment?> Initiative</h2>
-	</div>
+<style>
+	.progress-bar-black {
+    	background-color: #aaa;
+	}
+	.btn-inverse {
+    	background-color: #ccc;
+	}
+</style>
+<div style="padding:5px 10px 5px 0">
+
+	<h2><?php echo $segment?> Initiative</h2>
 	<div>
 		<?php $roles = explode(',',$user['role']); if(in_array("PMO",$roles) || in_array("admin",$roles)){?><div style="margin-bottom:10px; float:right;">
 		<button onclick="toggle_visibility('new_initiative');" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span> Initiative</button>
@@ -13,11 +20,12 @@
 		<div style="margin-bottom:10px; float:left">
 			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>" style="color:black">Status:</a>
 			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/nsy" style="color:black"><button class="btn btn-inverse btn-xs"><span style="color:grey" class="glyphicon glyphicon-off"></span></button><span style="margin-right:10px"> Not Started Yet</span></a>
-			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/progress" style="color:black"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-refresh"></span></button><span style="margin-right:10px"> On Progress</span></a>
-			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/completed" style="color:black"><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button><span style="margin-right:10px"> Completed</span></a>
+			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/progress" style="color:black"><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-refresh"></span></button><span style="margin-right:10px"> On Progress</span></a>
+			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/completed" style="color:black"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-ok"></span></button><span style="margin-right:10px"> Completed</span></a>
+			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/risk" style="color:black"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-exclamation-sign"></span></button><span style="margin-right:10px"> At Risk</span></a>
 			<a href="<?php echo base_url()?>initiative/list_initiative/<?php echo $this->uri->segment(3)?>/delay" style="color:black"><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button><span> Delay</span></a>
 		</div>
-		<div style="clear:both">
+		<div style="clear:both"></div>
 		
 		<div id="new_initiative" style="display:none">
 			<?php echo $form_new?>
@@ -25,7 +33,7 @@
 		
 		<table class="table table-bordered">
 			<thead>
-				<tr class="headertab"><th style="width:60px">Program</th><th colspan=3>Initiatives</th><th>WB</th><th>PIC</th><th style="width:24%">Date</th></tr>
+				<tr class="headertab"><th style="width:60px">Prgm</th><th colspan=3>Initiatives</th><th>WB</th><th>PIC</th><th style="width:24%">Date</th></tr>
 			</thead>
 			<tbody>
 				<?php
@@ -39,6 +47,7 @@
 						if($statshow == "progress"){$statshow = "In Progress";}
 						elseif($statshow == "completed"){$statshow = "Completed";}
 						elseif($statshow == "delay"){$statshow = "Delay";}
+						elseif($statshow == "risk"){$statshow = "At Risk";}
 						else{$statshow = "Not Started Yet";}
 					} $arr_descript = array();
 					foreach($ints as $int){  ?>
@@ -51,8 +60,9 @@
 				<tr id="initia_<?php echo $int['int']->id?>">
 					<?php 
 						if($int['stat']=="Delay"){$clr="danger"; $icn="remove";}
-						elseif($int['stat']=="In Progress"){$clr="warning"; $icn="refresh";}
-						elseif($int['stat']=="Completed"){$clr="success"; $icn="ok";}
+						elseif($int['stat']=="In Progress"){$clr="success"; $icn="refresh";}
+						elseif($int['stat']=="Completed"){$clr="primary"; $icn="ok";}
+						elseif($int['stat']=="At Risk"){$clr="warning"; $icn="exclamation-sign";}
 						else{$clr="inverse"; $icn="off";}
 					?>
 					<?php if(!$int['child'] && $int['int']->parent_code){?>
@@ -67,7 +77,7 @@
 				
 					<?php if($int['int']->parent_code){ $codewdth = 9; ?><td style="width:45%"><?php }else{ $codewdth = 7; ?><td style="width:45%" colspan=2><?php }?>
 						<div style="float:left; width:<?php echo $codewdth?>%; margin-right:5px;"><?php echo $int['int']->code?></div> 
-						<div style="float:left; max-width:88%"><a href="<?php echo base_url()?>initiative/detail_initiative/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></div>
+						<div style="float:left; max-width:88%"><a href="<?php echo base_url()?>initiative/detail/<?php echo $int['int']->id?>"><?php echo $int['int']->title?></a></div>
 						<div style="clear:both"></div>
 					</td>
 					<td style="width:40px"><button class="btn btn-default btn-xs" onclick="show_descript(<?php echo $int['int']->id?>,'<?php echo $segment?>')"><span class="glyphicon glyphicon-list"></span></button></td>
@@ -99,9 +109,10 @@
 							<span><?php echo date("j M y", $stdate);?></span>
 							<span style="float:right"><?php echo date("j M y", $eddate);?></span>
 							<?php 
-								if($pcttgl <= 50 ){$barcol="success";}
+								/*if($pcttgl <= 50 ){$barcol="success";}
 								elseif($pcttgl > 50 && $pcttgl <= 80){$barcol="warning";}
-								elseif($pcttgl > 80 ){$barcol="danger";}
+								elseif($pcttgl > 80 ){$barcol="black";}*/
+								$barcol = "black";
 							?>
 							<div class="progress" style="margin-bottom:0">
 							  <div class="progress-bar progress-bar-<?php echo $barcol?>" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $pcttgl?>%">
@@ -125,7 +136,6 @@
 			</tbody>
 		</table>
 	</div><div style="clear:both"></div><br>
-</div>
 </div>
 <script>
     $('#start').datepicker({

@@ -77,6 +77,18 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-2 control-label input-sm">Status</label>
+				<div class="col-sm-4">
+				  <select class="form-control input-sm" name="status" id="status" onchange="">
+					<option value="Not Started Yet" <?php if($init){if($init->status == "Not Started Yet"){echo "selected";}}?>>Not Started Yet</option>
+					<option value="In Progress" <?php if($init){if($init->status == "In Progress"){echo "selected";}}?>>In Progress</option>
+					<option value="Completed" <?php if($init){if($init->status == "Completed"){echo "selected";}}?>>Completed</option>
+					<option value="At Risk" <?php if($init){if($init->status == "At Risk"){echo "selected";}}?>>At Risk</option>
+					<option value="Delay" <?php if($init){if($init->status == "Delay"){echo "selected";}}?>>Delay</option>
+				  </select>
+				</div><div style="clear:both"></div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-2 control-label">Description</label>
 				<div class="col-sm-9">
 					<textarea type="text" class="form-control" id="description<?php echo $init->id?>" name="description"><?php echo $init->description?></textarea>

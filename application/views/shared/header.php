@@ -1,52 +1,30 @@
 <?php $now2 = $this->uri->segment(2); $now1 = $this->uri->segment(1);?>
-<style>
-	.header_top{
-		height:38px;
-		padding:5px;
-		padding-top:8px;
-	}
-	.header_top a{
-		color:white;
-	}
-	.header_top a:hover{
-		color:white;
-	}
-	.aprv-alert{
-		background-color:#f2dede;
-		padding:5px
-	}
-	.aprv-alert span{
-		color:#a94442
-	}
-	.lala{
-		font-size:11px
-	}
-	.header_active{
-		background-color:white;
-		height:38px;
-		padding:5px;
-		padding-top:8px;
-	}
-	.header_active a{
-		color:black;
-	}
-</style>
-<div style="width:100%; background-color:black; color:white; padding-left:60px; ">
+
+<div style="width:100%; background-color:#337ab7; color:white; padding-left:60px; ">
+	<!--
 	<div class="header_top" style="float:left; margin-right:20px; padding-top:5px;"><img src="<?php echo base_url()?>assets/img/general/mandiri.png" style="width:70px"></div>
 	<div class="<?php if($now2 == "overview"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>general/overview">Overview</a></div>
 	<div class="<?php if($now2=="list_programs"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>initiative/list_programs">Programs</a></div>
 	<div class="<?php if(($now1=="initiative" && $now2 !="list_programs")||$now1=="workblock"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>initiative/list_initiative/Wholesale">Initiatives</a></div>
 	<div class="<?php if($now2 =="outlook"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>general/outlook">Outlook</a></div>
-	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail">Log</a></div>
+	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>logact/">Log</a></div>
 	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>assets/other/Daftar PIC Wholesale Initiative.pdf">PIC</a></div>
 	<div class="<?php if($now2 =="mom"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>general/mom">MoM</a></div>
-	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail">Print</a></div>
+	<div class="header_top" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail">Print</a></div>-->
+	
+	<div class="header_top dropdown" style="float:right; margin-right:20px;">
+		<button style="width:40px" class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+			<span class="glyphicon glyphicon-cog" style="margin-right:3px"></span>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" style="right:0; left:auto;" role="menu" aria-labelledby="dropdownMenu1">
+		<li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url()?>user/form_password">Change Password</a></li>
+	  </ul>
+	</div>
 	<div class="header_top" style="float:right; margin-right:20px;"><?php echo date("d/M/y", strtotime(date('Y-m-d')));?></div>
 	<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/logout">Logout</a></div>
-	<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>workblock/detail"><?php echo $user['name']?></a></div>
 	<?php if($user['role']=='admin'){?>
 		<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/">User</a></div>
-		<div class="<?php if($now1 == "agenda"){echo "header_active";}else{echo "header_top";}?>" style="float:left; margin-right:20px;"><a href="<?php echo base_url()?>agenda/">Agenda</a></div>
 	<?php }?>
 	<div style="clear:both"></div>
 </div>

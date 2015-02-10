@@ -10,7 +10,7 @@ $(document).ready(function(){
 });
 </script>
 
-<div id="" class="container no_pad" style="height:100%">
+<div id="" class="container no_pad" style="height:100%;">
 	<div class="col-md-6 login-form" style="margin 0 auto;  position: relative; top: 30%;">
 		<form class="form-signin" action="<?php echo base_url();?>user/userEnter" method="post" role="form" style="width:75%">
 			<img src="<?php echo base_url()?>assets/img/general/dreamworks.png" style="width:100%"><br>
