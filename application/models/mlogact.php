@@ -27,9 +27,9 @@ class Mlogact extends CI_Model {
     //GET FUNCTION
     
     function get_logact(){
-    	$this->db->select('logact.*,initiative.title as init_tit, initiative.code as init_code, program.title as prog_tit, program.code as prog_code, program.segment as segment');
-    	$this->db->join('initiative', 'initiative.id = logact.initiative_id');
-    	$this->db->join('program', 'program.id = initiative.program_id');
+    	$this->db->select('logact.*'/*,initiative.title as init_tit, initiative.code as init_code, program.title as prog_tit, program.code as prog_code, program.segment as segment'*/);
+    	//$this->db->join('initiative', 'initiative.id = logact.initiative_id');
+    	//$this->db->join('program', 'program.id = initiative.program_id');
     	$this->db->order_by('date','desc');
     	$result = $this->db->get('logact');
     	return $result->result();

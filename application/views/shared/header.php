@@ -18,14 +18,16 @@
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" style="right:0; left:auto;" role="menu" aria-labelledby="dropdownMenu1">
+		<li role="presentation" class="dropdown-header">Account</li>
 		<li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url()?>user/form_password">Change Password</a></li>
+		<li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url()?>user/logout">Logout</a></li>
+		<?php if($user['role']=='admin'){?>
+		<li class="divider"></li>
+			<li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url()?>user/">User Management</a></li>
+		<?php }?>
 	  </ul>
 	</div>
 	<div class="header_top" style="float:right; margin-right:20px;"><?php echo date("d/M/y", strtotime(date('Y-m-d')));?></div>
-	<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/logout">Logout</a></div>
-	<?php if($user['role']=='admin'){?>
-		<div class="header_top" style="float:right; margin-right:20px;"><a href="<?php echo base_url()?>user/">User</a></div>
-	<?php }?>
 	<div style="clear:both"></div>
 </div>
 <?php if($pending){?>

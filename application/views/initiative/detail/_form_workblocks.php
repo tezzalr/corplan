@@ -52,6 +52,22 @@
 </form>
 
 <script>
+	$.validator.addMethod("checkrange", function(value, element) {
+		var responsedate;
+		$.ajax({
+			type: "POST",
+			url: config.base+"workblock/check_range_date_init",
+			data: {date: value,init_id: <?php echo $init_id?>},
+			dataType:"json",
+			async: false,
+			success: function(result)
+			{
+				if(result.value===true){responsedate = true;}else if(result.value===false){responsedate=false;}
+			}
+		})
+		return responsedate;
+	}, "Date Was Not In the Range");
+	
 	$('#start').datepicker({
 		autoclose: true,
 		todayHighlight: true
@@ -70,11 +86,11 @@
 			},
 			start: {
 				required: true,
-				//checkrange: true
+				checkrange: true
 			},
 			end: {
 				required: true,
-				//checkrange: true
+				checkrange: true
 			}
 		}
 	});

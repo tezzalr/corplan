@@ -96,13 +96,8 @@ class Workblock extends CI_Controller {
         }
         else{
         	if($this->mworkblock->insert_workblock($program)){
-        		$log['user_id'] = $user['id'];
-        		$log['initiative_id'] = $program['initiative_id'];
-        		$log['date'] = date('Y-m-d h:i:s');
-        		$log['content'] = "<p> ".$user['name']." membuat Workblock baru : <br><br><b> ".$program['title']."</b><br><br>Pada Initiative : ".$int->code." ".$int->title ."</p>";
-        		
-        		if($this->mlogact->insert_logact($log)){
-        			$json['status'] = 1;}
+        		$content = "<p> ".$user['name']." membuat Workblock baru : <br><br><b> ".$program['title']."</b><br><br>Pada Initiative : ".$int->code." ".$int->title ."</p>";
+        		$json['status'] = insert_logact($this,$int->segment,$content);
         	}
         	else{$json['status'] = 0;}
 		}
@@ -118,28 +113,26 @@ class Workblock extends CI_Controller {
                      ->set_output(json_encode($json));
     }
     
-    public function check_range_date_init($code=null,$format=null){
-    	if($code==null){
-            $init = $this->input->post('init_id');
-            
-            $end = DateTime::createFromFormat('m/d/Y', $this->input->post('value'));
-    		$value = $end->format('Y-m-d');
-         }
-         $date = date();
-         if($value < $date){
-             $value = false;
-         }else{
-             $value = true;
-         }
-         if($format==null){
-            $this->output->set_content_type('application/json')
-                        ->set_output(json_encode(array("value" => $value)));
-         }
-         return $value;
+    public function check_range_date_init(){
+		$init = $this->minitiative->get_initiative_by_id($this->input->post('init_id'));
+		$end = DateTime::createFromFormat('m/d/Y', $this->input->post('date'));
+		$date = $end->format('Y-m-d');
+         
+		 if(($date >= $init->start) && ($date <= $init->end)){
+			 $value['value'] = true;
+		 }else{
+			 $value['value'] = false;
+		 }
+         
+        $this->output->set_content_type('application/json')
+                        ->set_output(json_encode($value));
+                        
+         return $value['value'];
     }
     
     public function delete_workblock(){
         if($this->mworkblock->delete_workblock()){
+        	
     		$json['status'] = 1;
     	}
     	else{

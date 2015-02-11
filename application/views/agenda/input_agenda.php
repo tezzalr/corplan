@@ -62,11 +62,11 @@ $(document).ready(function(){
 			 <div class="form-group">
 				<label for="" class="col-sm-2 control-label">Date</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" id="start" name="start" placeholder="mm/dd/YYYY">
+					<input type="text" class="form-control" id="start" name="start" placeholder="mm/dd/YYYY" <?php if($choose_date){echo 'value="'.$choose_date.'"';}?>>
 					<small style="color:grey">*format: mm/dd/YYYY</small>
 				</div>
 				<div class="col-sm-2">
-					<input type="text" class="form-control" id="start_time" name="start_time" placeholder="hh:mm">
+					<input type="text" class="form-control" id="start_time" name="start_time" placeholder="hh:mm" value="08:00">
 					<small style="color:grey">*format: hh:mm</small>
 				</div>
 				<!--

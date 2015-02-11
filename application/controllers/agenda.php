@@ -65,9 +65,16 @@ class Agenda extends CI_Controller {
 		$user = $this->session->userdata('user');
 		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
 		
+		$choose_date = "";
+		
+		if($this->uri->segment(3)&&$this->uri->segment(4)&&$this->uri->segment(5)){
+			$choose_date = $this->uri->segment(3)."/".$this->uri->segment(4)."/".$this->uri->segment(5);
+		}
+		
 		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
 		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('agenda/input_agenda',array('agenda' => ''),TRUE);
+		$data['content'] = $this->load->view('agenda/input_agenda',array('agenda' => '','choose_date'=>$choose_date),TRUE);
 
 		$this->load->view('front',$data);
     }

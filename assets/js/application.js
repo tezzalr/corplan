@@ -24,6 +24,9 @@ $.validator.addMethod("ispasswordtrue", function(value, element) {
 	})
 	return responsepass;
 }, "Password Wrong");
+
+
+
 $.validator.addMethod(
 	"dateTrio",
 	function(value, element) {

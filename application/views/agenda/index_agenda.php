@@ -46,7 +46,7 @@
 									<div class="as"></div>
 								<?php }else{?>
 									<div class="as">
-										<div><hr style="margin-bottom:5px;"><div style="float:left; top:2px;"><?php echo $i;?></div></div><div style="clear:both"></div>
+										<div><hr style="margin-bottom:5px;"><div style="float:left; top:2px;"><a href="<?php echo base_url()?>agenda/input_agenda/<?php echo $datereq['month'].'/'.$i.'/'.$datereq['year'];?>"><?php echo $i?></a></div></div><div style="clear:both"></div>
 										<div id="agendaisi">
 											<div>
 												<?php 
