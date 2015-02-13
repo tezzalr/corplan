@@ -111,3 +111,10 @@
 	color:#FF0000;
 	font-size:12px;
 }
+
+.progress-bar-black {
+	background-color: #aaa;
+}
+.btn-inverse {
+	background-color: #ccc;
+}

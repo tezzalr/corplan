@@ -8,11 +8,11 @@
         <link href="<?php echo base_url();?>assets/css/datepicker.css" rel="stylesheet"/>
         <link href="<?php echo base_url();?>assets/css/token-input.css" rel="stylesheet" />
         <link href="<?php echo base_url();?>assets/css/sb-admin-2.css" rel="stylesheet" />
-        <link href="<?php echo base_url();?>assets/css/shared.css" rel="stylesheet" />
         <link href="<?php echo base_url();?>assets/cthree/c3.min.css" rel="stylesheet" />
         <link href="<?php echo base_url();?>assets/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
         <link href="<?php echo base_url();?>assets/css/bootstrap.min.css" rel="stylesheet">
         <link href="<?php echo base_url();?>assets/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="<?php echo base_url();?>assets/css/shared.css" rel="stylesheet" />
         <script>
 			var config = {
 				 base: "<?php echo base_url(); ?>"

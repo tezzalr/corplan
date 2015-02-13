@@ -1,4 +1,4 @@
-<h5>Data Remark</h5><hr>
+<h5>Data Remark</h5>
 <form method ="post" action="<?php echo base_url()?>initiative/submit_remark/<?php echo $init_id?>" method ="post" id="form_remark" role="form">
 	<input type="hidden" value="<?php if($remark){echo $remark->id;}?>" name="id">
 	<div class="form-group">

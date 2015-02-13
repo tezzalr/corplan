@@ -14,15 +14,20 @@
 			<div style="margin-bottom:5px">
 				<?php 
 					if($ko['stat']=="Delay"){$clr="danger"; $icn="remove";}
-					elseif($ko['stat']=="In Progress"){$clr="warning"; $icn="refresh";}
-					elseif($ko['stat']=="Completed"){$clr="success"; $icn="ok";}
+					elseif($ko['stat']=="In Progress"){$clr="success"; $icn="refresh";}
+					elseif($ko['stat']=="Completed"){$clr="primary"; $icn="ok";}
+					elseif($ko['stat']=="At Risk"){$clr="warning"; $icn="exclamation-sign";}
 					else{$clr="inverse"; $icn="off";}
+					
 				?>
 				<div style="float:left; width:5%; margin-right:5px;">
 					<button class="btn btn-<?php echo $clr?> btn-xs" disabled><span class="glyphicon glyphicon-<?php echo $icn?>"></span></button>
 				</div>
+				<!--<div style="color:#337ab7; float:left; width:10%;">
+					<center><h5><?php echo segment_abv($log->segment)?></h5></center>
+				</div>-->
 				<div style="float:left; width:7%; margin-right:5px;"><?php echo $ko['init']->code?></div> 
-				<div style="float:left; max-width:80%"><a href="<?php echo base_url()?>initiative/detail/<?php echo $ko['init']->id?>"><?php echo $ko['init']->title?></a></div>
+				<div style="float:left; max-width:70%"><a href="<?php echo base_url()?>initiative/detail/<?php echo $ko['init']->id?>"><?php echo $ko['init']->title?></a></div>
 				<div style="clear:both"></div>
 			</div>
 		<?php }?>

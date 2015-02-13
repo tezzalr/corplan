@@ -1,11 +1,3 @@
-<style>
-	.progress-bar-black {
-    	background-color: #aaa;
-	}
-	.btn-inverse {
-    	background-color: #ccc;
-	}
-</style>
 <div style="padding:5px 10px 5px 0">
 
 	<h2><?php echo $segment?> Initiative</h2>

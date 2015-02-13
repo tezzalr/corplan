@@ -245,7 +245,7 @@ class Minitiative extends CI_Model {
         
         foreach($result as $res){
         	$arr[$i]['init'] = $res;
-        	$arr[$i]['stat'] = $this->get_initiative_status($res->id,$res->end)['status'];
+        	$arr[$i]['stat'] = $this->get_initiative_status_only($res);
         	$i++;
         }
         return $arr;
@@ -318,6 +318,13 @@ class Minitiative extends CI_Model {
     		$arr[$segment]['name'] = $segment;
     		$arr[$segment]['stat'] = $this->get_segment_status($status,$segment);
     	}
+    	return $arr;
+    }
+    
+    function get_one_segment_status($segment){
+    	$status = return_arr_status();
+    	$arr = $this->get_segment_status($status,$segment);
+
     	return $arr;
     }
     

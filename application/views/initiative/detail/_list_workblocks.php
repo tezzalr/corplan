@@ -19,9 +19,9 @@
 					<div style="margin-bottom:5px;"><strong><?php echo $wb['wb']->title?></strong></div>
 					<p style="font-size:12px"></p>
 					<div class="" style="margin-top:15px;">
-						<button onclick="add_remark();" class="btn btn-default  btn-xs" style="height:20px;">
+						<!--<button onclick="add_remark();" class="btn btn-default  btn-xs" style="height:20px;">
 							<span style="font-size:10px">Progres</span>
-						</button>
+						</button>-->
 						<button onclick="edit_workblock(<?php echo $wb['wb']->id?>,<?php echo $init_id?>);" class="btn btn-warning  btn-xs" style="height:20px;">
 							<span class="glyphicon glyphicon-pencil"></span>
 						</button>
