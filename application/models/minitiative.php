@@ -110,6 +110,37 @@ class Minitiative extends CI_Model {
         return $arr;
     }
     
+    
+    function get_program_initiatives($user_initiative, $program_id){
+    	$this->db->select('initiative.*, program.title as program, program.code as progcode');
+    	$this->db->join('program', 'program.id = initiative.program_id');
+    	$this->db->order_by('initiative.code', 'asc');
+    	/*if($user_initiative){
+    		$this->db->where_in('initiative.code', $user_initiative);
+    	}*/
+    	$this->db->where('program_id',$program_id);
+    	$query = $this->db->get('initiative');
+        $res = $query->result();
+        $arr = array(); $i=0;
+        foreach($res as $int){
+        	$arr[$i]['int']=$int;
+        	$code = explode('.',$int->code);
+        	if(count($code)>3){$code3 = $code[3];}else{$code3 = 0;}
+        	$arr[$i]['code'] = ($code[0]*1000000)+$code[1]*10000+(ord($code[2])-96)*100+$code3;
+        	
+        	$status_initiative_all = $this->get_initiative_status($int->id,$int->end);
+        	$arr[$i]['stat']=$status_initiative_all['status'];
+        	if(!$arr[$i]['stat']){$arr[$i]['stat'] = $int->status;}
+        	$arr[$i]['wb']=$status_initiative_all['sumwb'];
+        	$arr[$i]['wbs']=$status_initiative_all['wb'];
+        	
+        	$arr[$i]['pic']=$this->get_initiative_pic($int->code);
+        	$arr[$i]['child']=$this->get_initiative_child($int->code);
+        	$i++;
+        }
+        return $arr;
+    }
+    
     function get_init_workblocks_status($init_id){
     	$arr = array();
     	

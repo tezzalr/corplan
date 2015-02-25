@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "initiative";
+$route['default_controller'] = "initiative/segment";
 $route['404_override'] = '';
 
 

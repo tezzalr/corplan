@@ -13,11 +13,11 @@
 			<a href="<?php echo base_url()?>initiative/segment"><i class="fa fa-sitemap fa-fw"></i> Segment</a>
 		</li>
 		<li>
-			<a href="<?php echo base_url()?>program/list_programs"><i class="fa fa-dashboard fa-fw"></i> Programs</a>
+			<a href="<?php echo base_url()?>program/list_programs/Wholesale"><i class="fa fa-dashboard fa-fw"></i> Programs</a>
 		</li>
-		<li>
+		<!--<li>
 			<a href="<?php echo base_url()?>initiative/list_initiative/Wholesale"><i class="fa fa-bar-chart-o fa-fw"></i> Initiative</a>
-		</li>
+		</li>-->
 		<li>
 			<a href="<?php echo base_url()?>general/outlook"><i class="fa fa-table fa-fw"></i> Outlook</a>
 		</li>

@@ -1,17 +1,50 @@
+<style>
+	.pmo_header{
+		margin-right:40px;
+	}
+	.pmo_header_active a{
+		margin-right:40px;
+		color: black;
+	}
+</style>
 <div style="padding:5px 10px 5px 0">
+	<div>
+		<div style="width:50%; float:left; font-size:16px">
+			<span style="color:grey; font-size:11px">Business PMO</span>
+			<div>
+				<?php $bisnis = array('Wholesale','SME','Mikro','Individuals'); 
+					foreach($bisnis as $each){
+						$class="pmo_header";
+						if($this->uri->segment(3)==$each){
+							$class="pmo_header_active";
+						} 
+						echo "<span class='".$class."'><a href='".base_url()."program/list_programs/".$each."'>".$each."</a></span>";
+					}
+				?>
+			</div>
+		</div>
+		<div style="width:50%; float:left; font-size:16px">
+			<span style="color:grey; font-size:11px">Support PMO</span>
+			<div>
+				<?php $support = array('IT','HC','Distribution','Risk'); 
+					foreach($support as $each){ 
+						$class="pmo_header";
+						if($this->uri->segment(3)==$each){
+							$class="pmo_header_active";
+						}
+						echo "<span class='".$class."'><a href='".base_url()."program/list_programs/".$each."'>".$each."</a></span>";
+					}
+				?>
+			</div>
+		</div><div style="clear:both"></div>
+	</div>
+	<hr>
 	<h2><?php echo $segment?> Programs</h2>
 	<div style="">
 		<div style="margin-bottom:10px; float:right;">
 		<a href="<?php echo base_url()?>initiative/input_program" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span> Program</a>
 		</div>
 		
-		<!--
-			<a href="<?php echo base_url()?>initiative/list_programs" style="color:black">Status:</a>
-			<a href="<?php echo base_url()?>initiative/list_programs/nsy" style="color:black"><button class="btn btn-inverse btn-xs"><span style="color:grey" class="glyphicon glyphicon-off"></span></button><span style="margin-right:10px"> Not Started Yet</span></a>
-			<a href="<?php echo base_url()?>initiative/list_programs/progress" style="color:black"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-refresh"></span></button><span style="margin-right:10px"> On Progress</span></a>
-			<a href="<?php echo base_url()?>initiative/list_programs/completed" style="color:black"><button class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button><span style="margin-right:10px"> Completed</span></a>
-			<a href="<?php echo base_url()?>initiative/list_programs/delay" style="color:black"><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button><span> Delay</span></a>
-		-->
 		<div style="margin-bottom:10px; float:left">
 			<span class="circle circle-notyet circle-lg text-left"></span>Not Started Yet
 			<span class="circle circle-inprog circle-lg text-left" style="margin-left:10px"></span>In Progress
@@ -20,9 +53,6 @@
 			<span class="circle circle-completed circle-lg text-left" style="margin-left:10px"></span>Completed
 		</div>
 		<div style="clear:both">
-		<!--<div class="panel panel-primary">
-			<div class="panel-heading">Summary</div>
-			<div class="panel-body" style="padding:10px;">-->
 				<table class="table table-bordered">
 				<thead style="background-color:#5bc0f0; color:white">
 					<tr>
@@ -54,7 +84,7 @@
 						<!--<td style="width:40px"><?php echo $prog['status']['Not Started Yet']?></td>-->
 						<td style="width:550px">
 							<div style="float:left; width:30px; margin-right:5px;"><?php echo $prog['prog']->code?></div> 
-							<div style="float:left; max-width:490px"><?php echo $prog['prog']->title?></div>
+							<div style="float:left; max-width:490px"><a href="<?php echo base_url()?>initiative/list_program_initiative/<?php echo $prog['prog']->id ?>"><?php echo $prog['prog']->title?></a></div>
 							<div style="clear:both"></div>
 						</td>
 						<?php 
@@ -83,9 +113,6 @@
 								<span><?php echo date("j M y", $stdate);?></span>
 								<span style="float:right"><?php echo date("j M y", $eddate);?></span>
 								<?php 
-									/*if($pcttgl <= 50 ){$barcol="success";}
-									elseif($pcttgl > 50 && $pcttgl <= 80){$barcol="warning";}
-									elseif($pcttgl > 80 ){$barcol="danger";}*/
 									$barcol = "black";
 								?>
 								<div class="progress" style="margin-bottom:0">
@@ -101,9 +128,9 @@
 							<button class="btn btn-danger btn-xs" onclick="delete_program(<?php echo $prog['prog']->id?>)"><span class="glyphicon glyphicon-trash"></span></button>
 						</td><?php }?>
 					</tr>
-					<tr id="edit_prog_<?php echo $prog['prog']->id?>" style="display:none"><td></td>
+					<tr id="edit_prog_<?php echo $prog['prog']->id?>" style="display:none">
 						<div>
-						<td colspan=7>
+						<td colspan=9>
 							<form class="form-horizontal" action="<?php echo base_url();?>initiative/submit_initiative/<?php echo $prog['prog']->id?>" method ="post" id="formsignup" role="form">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Program</label>

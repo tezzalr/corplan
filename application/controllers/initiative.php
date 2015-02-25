@@ -9,6 +9,7 @@ class Initiative extends CI_Controller {
         $this->load->model('mworkblock');
         $this->load->model('mremark');
         $this->load->model('mmilestone');
+        $this->load->model('mprogram');
         $this->load->model('muser');
         
         $session = $this->session->userdata('user');
@@ -26,7 +27,7 @@ class Initiative extends CI_Controller {
     }
     
     /*Initiative*/
-    public function list_initiative(){
+    /*public function list_initiative(){
     	$data['title'] = "List All Initiatives";
 		$segment = $this->uri->segment(3);
 		
@@ -68,7 +69,7 @@ class Initiative extends CI_Controller {
 		$data['content'] = $this->load->view('initiative/input_initiative',array('programs' => $programs),TRUE);
 
 		$this->load->view('front',$data);
-    }
+    }*/
     
     public function edit_initiative(){
     	$id = $this->input->get('id');
@@ -84,37 +85,6 @@ class Initiative extends CI_Controller {
 		}
 		$this->output->set_content_type('application/json')
                      ->set_output(json_encode($json));
-    }
-    
-    public function submit_initiative(){
-      	$id = $this->uri->segment(3);
-      	$segment = $this->input->post('segment');
-      	$program['title'] = $this->input->post('title');
-        $program['code'] = $this->input->post('code');
-        $program['parent_code'] = $this->input->post('parent');
-        $program['program_id'] = $this->input->post('program');
-        $program['kickoff'] = $this->input->post('kickoff');
-        $program['completion'] = $this->input->post('completion');
-        $program['description'] = $this->input->post('description');
-        $program['status'] = $this->input->post('status');
-        $program['GH_PIC'] = $this->input->post('GH_PIC');
-        
-        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
-    		$program['start'] = $start->format('Y-m-d');
-    	}
-    	
-    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
-    		$program['end'] = $end->format('Y-m-d');
-    	}
-        
-        if($id){
-        	if($this->minitiative->update_initiative($program,$id)){redirect('initiative/list_initiative/'.$segment);}
-        	else{redirect('initiative/input_initiative/'.$segment);}
-        }
-        else{
-        	if($this->minitiative->insert_initiative($program)){redirect('initiative/list_initiative/'.$segment);}
-        	else{redirect('initiative/input_initiative/'.$segment);}
-        }
     }
     
     public function detail_initiative(){
@@ -263,6 +233,79 @@ class Initiative extends CI_Controller {
 	} 
 	
 	/*Initiative New */
+	
+	public function list_program_initiative(){
+    	$data['title'] = "List All Initiatives";
+		$program_id = $this->uri->segment(3);
+		
+		//Header
+		$user = $this->session->userdata('user');
+		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+		
+		$this->minitiative->check_initiative_status();
+		
+		$program = $this->mprogram->get_program_by_id($program_id);
+		$user_info = $this->muser->get_user_by_id($user['id']);
+		$roles = explode(',',$user['role']); $user_initiative="";
+		if((in_array('PIC',$roles))&&!(in_array('PMO',$roles))){
+			$user_initiative = explode(';',$user_info->initiative);	
+		}
+		
+		$initiatives = $this->minitiative->get_program_initiatives($user_initiative, $program_id);
+		
+		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
+		$data['footer'] = $this->load->view('shared/footer','',TRUE);
+		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
+		$data['content'] = $this->load->view('initiative/list_initiative',array('ints' => $initiatives,'program' => $program),TRUE);
+
+		$this->load->view('front',$data);
+    }
+    
+    public function input_initiative(){
+		$id = $this->input->get('id');
+		$program_id = $this->input->get('program');
+		$initiative = "";
+		if($id){
+			$initiative = $this->minitiative->get_initiative_by_id($id);
+		}
+		$program = $this->mprogram->get_program_by_id($program_id);
+    	$json['status'] = 1;
+		$json['html'] = $this->load->view('initiative/_input_initiative',array('program' => $program, 'int' => $initiative),TRUE);
+		
+		$this->output->set_content_type('application/json')
+                     ->set_output(json_encode($json));
+	}
+	
+	public function submit_initiative(){
+      	$id = $this->input->post('id');
+      	$program['title'] = $this->input->post('title');
+        $program['code'] = $this->input->post('code');
+        $program['parent_code'] = $this->input->post('parent');
+        $program['program_id'] = $this->input->post('program_id');
+        $program['kickoff'] = $this->input->post('kickoff');
+        $program['completion'] = $this->input->post('completion');
+        $program['description'] = $this->input->post('description');
+        $program['status'] = $this->input->post('status');
+        $program['GH_PIC'] = $this->input->post('GH_PIC');
+        $program['pic'] = $this->input->post('pic');
+        
+        if($this->input->post('start')){$start = DateTime::createFromFormat('m/d/Y', $this->input->post('start'));
+    		$program['start'] = $start->format('Y-m-d');
+    	}
+    	
+    	if($this->input->post('end')){$end = DateTime::createFromFormat('m/d/Y', $this->input->post('end'));
+    		$program['end'] = $end->format('Y-m-d');
+    	}
+        
+        if($id){
+        	if($this->minitiative->update_initiative($program,$id)){redirect('initiative/list_program_initiative/'.$program['program_id']);}
+        	else{redirect('initiative/input_initiative/'.$segment);}
+        }
+        else{
+        	if($this->minitiative->insert_initiative($program)){redirect('initiative/list_program_initiative/'.$program['program_id']);}
+        	else{redirect('initiative/input_initiative/'.$segment);}
+        }
+    }
 	
 	public function detail(){
 		$data['title'] = 'Detail Initiative';

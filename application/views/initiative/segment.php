@@ -30,7 +30,7 @@
 								$arrtotbis[$stat] = 0;
 							}
 							foreach($bisnis as $each){
-							echo "<tr><td>".$each."</td>";
+							echo "<tr><td><a href='".base_url()."program/list_programs/".$each."'>".$each."</a></td>";
 							foreach($stss as $stat){
 								echo "<td>".$segment_status[$each]['stat'][$stat]."</td>";
 								$arrtotbis[$stat] = $arrtotbis[$stat]+$segment_status[$each]['stat'][$stat];
@@ -72,7 +72,7 @@
 								$arrtotsup[$stat] = 0;
 							}
 							foreach($support as $each){
-							echo "<tr><td>".$each."</td>";
+							echo "<tr><td><a href='".base_url()."program/list_programs/".$each."'>".$each."</a></td>";
 							foreach($stss as $stat){
 								echo "<td>".$segment_status[$each]['stat'][$stat]."</td>";
 								$arrtotsup[$stat] = $arrtotsup[$stat]+$segment_status[$each]['stat'][$stat];

@@ -27,6 +27,16 @@ class Mprogram extends CI_Model {
     
     //GET FUNCTION
     
+    function get_program_by_id($id){
+        $this->db->where('id',$id);
+        $result = $this->db->get('program');
+        if($result->num_rows==1){
+            return $result->row(0);
+        }else{
+            return false;
+        }
+    }
+    
     function get_segment_programs($segment){
     	//$this->db->where('role', 3);
     	$this->db->where('segment', $segment);
