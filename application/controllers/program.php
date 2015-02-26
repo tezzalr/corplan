@@ -128,8 +128,8 @@ class Program extends CI_Controller {
 					$this->minitiative->update_initiative($data,$int->id);
 				}
 				else{
-					$prog = $this->mprogram->get_program_by_code($prog_id_yes);
-					$data['program_id'] = $prog->id;
+					$prog_int = $this->mprogram->get_program_by_code($prog_id_yes);
+					$data['program_id'] = $prog_int->id;
 					$this->minitiative->insert_initiative($data);
 				}
 				
