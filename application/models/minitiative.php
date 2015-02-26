@@ -94,8 +94,8 @@ class Minitiative extends CI_Model {
         foreach($res as $int){
         	$arr[$i]['int']=$int;
         	$code = explode('.',$int->code);
-        	if(count($code)>3){$code3 = $code[3];}else{$code3 = 0;}
-        	$arr[$i]['code'] = ($code[0]*1000000)+$code[1]*10000+(ord($code[2])-96)*100+$code3;
+        	//if(count($code)>3){$code3 = $code[3];}else{$code3 = 0;}
+        	$arr[$i]['code'] = ($code[0]*1000000)+$code[1]*10000/*+(ord($code[2])-96)*100*/;
         	
         	$status_initiative_all = $this->get_initiative_status($int->id,$int->end);
         	$arr[$i]['stat']=$status_initiative_all['status'];
