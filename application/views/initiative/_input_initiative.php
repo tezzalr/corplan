@@ -38,7 +38,7 @@
 			<label for="" class="col-sm-2 control-label">Start</label>
 			<div class="col-sm-9">
 				<?php $start=""; if($int){if($int->start){$start = date("m/d/Y", strtotime($int->start));}}?>
-				<input type="date" class="form-control" id="start" name="start" placeholder="mm/dd/YYYY" value="<?php echo $start?>">
+				<input type="text" class="form-control" id="start" name="start" placeholder="mm/dd/YYYY" value="<?php echo $start?>">
 				<small style="color:grey">*format: mm/dd/YYYY</small>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 			<label for="" class="col-sm-2 control-label">End</label>
 			<div class="col-sm-9">
 				<?php $end=""; if($int){if($int->end){$end = date("m/d/Y", strtotime($int->end));}}?>
-				<input type="date" class="form-control" id="end" name="end" placeholder="mm/dd/YYYY" value="<?php echo $end?>">
+				<input type="text" class="form-control" id="end" name="end" placeholder="mm/dd/YYYY" value="<?php echo $end?>">
 				<small style="color:grey">*format: mm/dd/YYYY</small>
 			</div>
 		</div>

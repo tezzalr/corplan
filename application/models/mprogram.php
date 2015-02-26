@@ -37,6 +37,16 @@ class Mprogram extends CI_Model {
         }
     }
     
+    function get_program_by_code($code){
+        $this->db->where('code',$code);
+        $result = $this->db->get('program');
+        if($result->num_rows==1){
+            return $result->row(0);
+        }else{
+            return false;
+        }
+    }
+    
     function get_segment_programs($segment){
     	//$this->db->where('role', 3);
     	$this->db->where('segment', $segment);
@@ -87,7 +97,10 @@ class Mprogram extends CI_Model {
     
     //UPDATE FUNCTION
     
-    
+    function update_program($program,$id){
+        $this->db->where('id',$id);
+        return $this->db->update('program', $program);
+    }
     
     //DELETE FUNCTION
     function delete_program(){

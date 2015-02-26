@@ -11,6 +11,7 @@ class Program extends CI_Controller {
         $this->load->model('mremark');
         $this->load->model('mmilestone');
         $this->load->model('muser');
+        $this->load->library('excel');
         
         $session = $this->session->userdata('user');
         
@@ -90,142 +91,79 @@ class Program extends CI_Controller {
                      ->set_output(json_encode($json));
 	}
 	
-	public function get_description(){
-       	$id = $this->input->get('id');
-    	$int = $this->minitiative->get_info_initiative_by_id($id); 
-		if($int){
-			$view = $this->load->view('initiative/_descrp_initiative',array('int' => $int),TRUE);
+	public function input_data_segment(){
+		$segment = $this->uri->segment(3);
+    	$exel = $this->read_excel("Data Segment ".$segment.".xlsx",1);
+    	$arrres = array(); $s=0; $prog = '';
+    	//if($this->mnasabah->empty_table('nasabah')){
+		for ($row = 0; $row <= $exel['row']; ++$row) {
+			$data = "";
+			for ($col = 0; $col < $exel['col']; ++$col) {
+				$arrres[$row][$col] = $exel['wrksheet']->getCellByColumnAndRow($col, $row)->getValue();
+			}
 			
-			$json['status'] = 1;
-            $json['message'] = $view;
-            $json['title'] = $int['init']->title;
-		}else{
-			$json['status'] = 0;
+			$data['title'] = $arrres[$row][1];
+			$data['code'] = $arrres[$row][0];
+			$data['description'] = $arrres[$row][6];
+			//$data['tier'] = $arrres[$row][1];
+			if($arrres[$row][2]=="P"){
+				$prog_id_yes = $data['code'];
+				$data['segment'] = $segment;
+				$prog = $this->mprogram->get_program_by_code($data['code']);
+				if($prog){
+					$this->mprogram->update_program($data,$prog->id);
+				}
+				else{
+					$this->mprogram->insert_program($data);
+				}
+			}
+			elseif($arrres[$row][2]=="I"){
+				$data['start'] = date("Y-m-d",excelDateToDate($arrres[$row][4]));
+				$data['end'] = date("Y-m-d",excelDateToDate($arrres[$row][5]));
+				$data['kickoff'] = $arrres[$row][7];
+				$data['completion'] = $arrres[$row][8];
+				$data['pic'] = $arrres[$row][3];
+				$int = $this->minitiative->get_initiative_by_code($data['code']);
+				if($int){
+					$this->minitiative->update_initiative($data,$int->id);
+				}
+				else{
+					$prog = $this->mprogram->get_program_by_code($prog_id_yes);
+					$data['program_id'] = $prog->id;
+					$this->minitiative->insert_initiative($data);
+				}
+				
+			}
+			
+			/*$nasabah['company'] = $arrres[$row][1];
+			$nasabah['group'] = $arrres[$row][2];
+			$nasabah['sector'] = $arrres[$row][3];
+			$nasabah['gas'] = $arrres[$row][4];
+			$nasabah['oldbuc'] = $arrres[$row][5];
+			$nasabah['newbuc'] = $arrres[$row][6];
+			$nasabah['rm'] = $arrres[$row][7];
+			$nasabah['loan'] = $arrres[$row][8];
+			$nasabah['dana'] = $arrres[$row][9];
+			$nasabah['ncl'] = $arrres[$row][10];*/
+			
+			//$this->mnasabah->insert_nasabah($nasabah);
 		}
-		$this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
-	}
-	
-	public function mind_map(){
-		$allthing = $this->minitiative->get_all('Wholesale');
-		$data['title'] = "List All Initiatives";
-		
-		$user = $this->session->userdata('user');
-		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
-		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
-		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('initiative/mind_map',array('all'=>$allthing),TRUE);
-
-		$this->load->view('front',$data);
-	} 
-	
-	/*Initiative New */
-	
-	public function detail(){
-		$data['title'] = 'Detail Initiative';
-    	
-    	$user = $this->session->userdata('user');
-    	
-		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
-		$init_id = $this->uri->segment(3);
-		
-		$views['init'] = $this->minitiative->get_initiative_by_id($init_id);
-		$views['init_status'] = $this->minitiative->get_initiative_status_only($views['init']);
-		$views['wb_status'] = $this->minitiative->get_init_workblocks_status($init_id);
-		$views['info'] = $this->load->view('initiative/detail/_general_info',array(
-		'initiative'=>$views['init'],'stat'=>$views['init_status'],'wb' => $views['wb_status']),TRUE);
-		
-		$remarks = $this->mremark->get_remarks_by_init_id($init_id);
-		$views['remarks'] = $this->load->view('initiative/detail/_list_remarks',array('remarks'=>$remarks),TRUE);
-		$views['form_rmrk'] = $this->load->view('initiative/detail/_form_remarks',array('remark'=>'','init_id'=>$init_id),TRUE);
-		
-		$workblocks = $this->mworkblock->get_all_initiative_workblock($init_id);
-		$views['wb'] = $this->load->view('initiative/detail/_list_workblocks',array('workblocks'=>$workblocks,'init_id'=>$init_id),TRUE);
-		
-		$views['form_wb'] = $this->load->view('initiative/detail/_form_workblocks',array('wb'=>'','init_id'=>$init_id),TRUE);
-		$form_prog = $this->load->view('initiative/detail/_form_progress',array(),TRUE);
-		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
-		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
-		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('initiative/detail',$views,TRUE);
-		$this->load->view('front',$data);
-	}
-	
-	public function submit_remark(){
-    	$init_id = $this->uri->segment(3);
-    	$user = $this->session->userdata('user');
-    	$program['initiative_id'] = $init_id;
-    	$program['content'] = $this->input->post('remark');
-    	$program['user_id'] = $user['id'];
-    	$program['created'] = date('Y-m-d h:i:s');
-        
-        $id = $this->input->post('id');
-        
-        if($id){
-        	if($this->mremark->update_remark($program,$id)){$json['status'] = 1;}
-        	else{$json['status'] = 0;}
-        }
-        else{
-        	if($this->mremark->insert_remark($program)){$json['status'] = 1;}
-        	else{$json['status'] = 0;}
-		}
-                
-		$remarks = $this->mremark->get_remarks_by_init_id($init_id);
-		$content = $this->load->view('initiative/detail/_list_remarks',array('remarks'=>$remarks),TRUE);
-		$json['html'] = $content;
-		
-		$this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
+		//}
     }
     
-    public function edit_remark(){
-		$id = $this->input->get('id');
-		$init = $this->input->get('init');
-
-    	if($id){
-			$remark = $this->mremark->get_remark_by_id($id); 
-			if($remark){
-				$json['status'] = 1;
-				$json['html'] = $this->load->view('initiative/detail/_form_remarks',array('remark'=>$remark,'init_id'=>$init),TRUE);
-			}else{
-				$json['status'] = 0;
-			}
-		}
-		else{
-			$json['status'] = 1;
-			$json['html'] = $this->load->view('initiative/detail/_form_remarks',array('remark'=>'','init_id'=>$init),TRUE);
-		}
-		$this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
-	}
-	
-	public function delete_remark(){
-        if($this->mremark->delete_remark()){
-    		$json['status'] = 1;
-    	}
-    	else{
-    		$json['status'] = 0;
-    	}
-    	$this->output->set_content_type('application/json')
-                     ->set_output(json_encode($json));
-	}
-    
-    public function segment(){
-    	$data['title'] = 'Recapt Segment';
-    	
-    	$user = $this->session->userdata('user');
-    	
-		$pending_aprv = $this->mmilestone->get_pending_aprv($user['id'],$user['role']);
+    private function read_excel($file,$sheet){
+    	$arrres = array();
+    	$objReader = PHPExcel_IOFactory::createReader('Excel2007');
+		$objReader->setReadDataOnly(TRUE);
+		$objPHPExcel = $objReader->load("assets/upload/".$file);
 		
-		$data_content['segment_status'] = $this->minitiative->get_all_segments_status();
+		$arrres['wrksheet'] = $objPHPExcel->getActiveSheet();
+		// Get the highest row and column numbers referenced in the worksheet
+		$arrres['row'] = $arrres['wrksheet']->getHighestRow(); // e.g. 10
+		$highestColumn = $arrres['wrksheet']->getHighestColumn(); // e.g 'F'
+		$arrres['col'] = PHPExcel_Cell::columnIndexFromString($highestColumn);
 		
-		$data['header'] = $this->load->view('shared/header',array('user' => $user,'pending'=>$pending_aprv),TRUE);	
-		$data['sidebar'] = $this->load->view('shared/sidebar','',TRUE);
-		$data['footer'] = $this->load->view('shared/footer','',TRUE);
-		$data['content'] = $this->load->view('initiative/segment',$data_content,TRUE);
-		$this->load->view('front',$data);
+		return $arrres;
     }
     
 }

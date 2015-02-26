@@ -197,6 +197,18 @@ class Minitiative extends CI_Model {
         }
     }
     
+    function get_initiative_by_code($code){
+    	$this->db->select('initiative.*, program.title as program, program.code as program_code, program.segment as segment');
+        $this->db->join('program', 'program.id = initiative.program_id');
+        $this->db->where('initiative.code',$code);
+        $result = $this->db->get('initiative');
+        if($result->num_rows==1){
+            return $result->row(0);
+        }else{
+            return false;
+        }
+    }
+    
     /*function get_initiative_status($id){
     	$this->db->where('initiative_id', $id);
     	//$this->db->order_by('status', 'asc');

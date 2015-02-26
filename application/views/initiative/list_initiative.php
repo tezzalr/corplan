@@ -1,5 +1,5 @@
 <div style="padding:5px 10px 5px 0">
-	<span style="color:#bbb; font-size:12px"><?php echo $program->segment?> Program</span>
+	<span style="color:#bbb; font-size:12px"><a style="color:#bbb" href="<?php echo base_url();?>program/list_programs/<?php echo $program->segment?>"><?php echo $program->segment?> Program</a></span>
 	<h4 style="margin:5px 0 10px 0"><span style="margin-right:15px"><?php echo $program->code?></span><?php echo $program->title?></h4><br>
 	<div>
 		<?php $roles = explode(',',$user['role']); if(in_array("PMO",$roles) || in_array("admin",$roles)){?><div style="margin-bottom:10px; float:right;">
