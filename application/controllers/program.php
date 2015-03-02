@@ -146,7 +146,7 @@ class Program extends CI_Controller {
 				else{
 					$int_wb = $this->minitiative->get_initiative_by_code($init_id_yes);
 					$data['initiative_id'] = $int_wb->id;
-					$this->mworkblock->insert_workblocks($data);
+					$this->mworkblock->insert_workblock($data);
 				}
 				
 			}
