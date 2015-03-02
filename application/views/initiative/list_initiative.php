@@ -31,7 +31,7 @@
 		<div id="initiative_content">
 			<table class="table table-bordered">
 				<thead>
-				<tr class="headertab"><th style="width:60px">Prgm</th><th colspan=3>Initiatives</th><th>WB</th><th>PIC</th><th style="width:24%">Date</th></tr>
+				<tr class="headertab"><th style="width:60px">Prgm</th><th colspan=3>Initiatives</th><th>WB</th><th>PIC</th><th style="width:20%">Date</th></tr>
 			</thead>
 				<tbody>
 					<?php
@@ -81,7 +81,7 @@
 						<td style="width:40px"><button class="btn btn-default btn-xs" onclick=""><span class="glyphicon glyphicon-list"></span></button></td>
 						<td style="text-align:right; width:20px"><?php echo $int['wb']?></td>
 						<td>
-						<?php $sumpic = count($int['pic']); $i=1;
+						<!--<?php $sumpic = count($int['pic']); $i=1;
 							if($int['pic'] && !$int['child']){
 								foreach($int['pic'] as $pic){
 									$namaar = explode(' ',$pic->name);
@@ -90,7 +90,8 @@
 										echo ", ";
 									} $i++;
 								}
-							}?>
+							}?>-->
+							<?php echo $int['int']->pic?>
 						</td>
 						<td>
 							<?php if($int['int']->start && $int['int']->end){?>

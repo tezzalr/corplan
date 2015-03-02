@@ -68,6 +68,16 @@ class Mworkblock extends CI_Model {
         }
     }
     
+    function get_workblock_by_code($code){
+        $this->db->where('code',$code);
+        $result = $this->db->get('workblock');
+        if($result->num_rows==1){
+            return $result->row(0);
+        }else{
+            return false;
+        }
+    }
+    
     function get_workblock_status($id){
     	$this->db->where('workblock_id', $id);
     	$this->db->order_by('status', 'asc');

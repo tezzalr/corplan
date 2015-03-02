@@ -94,7 +94,7 @@ class Program extends CI_Controller {
 	public function input_data_segment(){
 		$segment = $this->uri->segment(3);
     	$exel = $this->read_excel("Data Segment ".$segment.".xlsx",1);
-    	$arrres = array(); $s=0; $prog = '';
+    	$arrres = array(); $s=0;
     	//if($this->mnasabah->empty_table('nasabah')){
 		for ($row = 0; $row <= $exel['row']; ++$row) {
 			$data = "";
@@ -118,6 +118,7 @@ class Program extends CI_Controller {
 				}
 			}
 			elseif($arrres[$row][2]=="I"){
+				$init_id_yes = $data['code'];
 				$data['start'] = date("Y-m-d",excelDateToDate($arrres[$row][4]));
 				$data['end'] = date("Y-m-d",excelDateToDate($arrres[$row][5]));
 				$data['kickoff'] = $arrres[$row][7];
@@ -131,6 +132,21 @@ class Program extends CI_Controller {
 					$prog_int = $this->mprogram->get_program_by_code($prog_id_yes);
 					$data['program_id'] = $prog_int->id;
 					$this->minitiative->insert_initiative($data);
+				}
+				
+			}
+			elseif($arrres[$row][2]=="W"){
+				$data['start'] = date("Y-m-d",excelDateToDate($arrres[$row][4]));
+				$data['end'] = date("Y-m-d",excelDateToDate($arrres[$row][5]));
+				$data['pic'] = $arrres[$row][3];
+				$wb = $this->mworkblock->get_workblock_by_code($data['code']);
+				if($wb){
+					$this->mworkblock->update_workblock($data,$wb->id);
+				}
+				else{
+					$int_wb = $this->minitiative->get_initiative_by_code($init_id_yes);
+					$data['initiative_id'] = $int_wb->id;
+					$this->mworkblock->insert_workblocks($data);
 				}
 				
 			}
