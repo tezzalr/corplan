@@ -96,7 +96,7 @@ class Program extends CI_Controller {
     	$exel = $this->read_excel("Data Segment ".$segment.".xlsx",1);
     	$arrres = array(); $s=0;
     	//if($this->mnasabah->empty_table('nasabah')){
-		for ($row = 0; $row <= $exel['row']; ++$row) {
+		for ($row = 1; $row <= $exel['row']; ++$row) {
 			$data = "";
 			for ($col = 0; $col < $exel['col']; ++$col) {
 				$arrres[$row][$col] = $exel['wrksheet']->getCellByColumnAndRow($col, $row)->getValue();
@@ -123,6 +123,7 @@ class Program extends CI_Controller {
 				$data['end'] = date("Y-m-d",excelDateToDate($arrres[$row][5]));
 				$data['kickoff'] = $arrres[$row][7];
 				$data['completion'] = $arrres[$row][8];
+				$data['status'] = $arrres[$row][9];
 				$data['pic'] = $arrres[$row][3];
 				$int = $this->minitiative->get_initiative_by_code($data['code']);
 				if($int){
